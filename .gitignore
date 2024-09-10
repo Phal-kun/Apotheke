@@ -1,0 +1,6 @@
+# NetBeans specific folders
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
