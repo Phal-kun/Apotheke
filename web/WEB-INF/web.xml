@@ -12,8 +12,32 @@
         <servlet-name>DefaultServlet</servlet-name>
         <servlet-class>Controller.Blog.DefaultServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>BlogServlet</servlet-name>
+        <servlet-class>Controller.BlogServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteBlogServlet</servlet-name>
+        <servlet-class>Controller.DeleteBlogServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>StatusServlet</servlet-name>
+        <servlet-class>Controller.StatusServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>DefaultServlet</servlet-name>
         <url-pattern>/DefaultServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BlogServlet</servlet-name>
+        <url-pattern>/BlogManager</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteBlogServlet</servlet-name>
+        <url-pattern>/DeleteBlog</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StatusServlet</servlet-name>
+        <url-pattern>/Status</url-pattern>
     </servlet-mapping>
 </web-app>

@@ -46,16 +46,16 @@ public class DAO {
     
     
     
-    public static void main(String[] args){
-        
+//    public static void main(String[] args){
+//        
 //        ArrayList<Monster> charlist = INSTANCE.getMonList(1, 1);
 //        for (Monster characters : charlist) {
 //            System.out.println(characters);
 //        }
 //        Stage stage = INSTANCE.getStage(1);
 //        System.out.println(stage);
-        INSTANCE.loadDB();
-        System.out.println("----");
-    }
-    
+//        INSTANCE.loadDB();
+//        System.out.println("----");
+//    }
+//    
 }
