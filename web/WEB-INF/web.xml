@@ -12,8 +12,16 @@
         <servlet-name>DefaultServlet</servlet-name>
         <servlet-class>Controller.Blog.DefaultServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CRUDUserListServlet</servlet-name>
+        <servlet-class>Controller.User.CRUDUserListServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>DefaultServlet</servlet-name>
         <url-pattern>/DefaultServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CRUDUserListServlet</servlet-name>
+        <url-pattern>/CRUDUserListServlet</url-pattern>
     </servlet-mapping>
 </web-app>

@@ -1,8 +1,9 @@
---create database SWP
+
+--create database SWP391
 -- drop database SWP391
 
 CREATE TABLE [user] (
-  [userID] INT PRIMARY KEY,
+  [userID] INT PRIMARY KEY IDENTITY(1,1),
   [fullname] NVARCHAR(255),
   [phone] NVARCHAR(255),
   [username] NVARCHAR(255),
@@ -15,13 +16,13 @@ CREATE TABLE [user] (
 GO
 
 CREATE TABLE [role] (
-  [roleID] INT PRIMARY KEY,
+  [roleID] INT PRIMARY KEY IDENTITY(1,1),
   [roleName] NVARCHAR(255)
 );
 GO
 
 CREATE TABLE [product] (
-  [productID] INT PRIMARY KEY,
+  [productID] INT PRIMARY KEY IDENTITY(1,1),
   [productName] NVARCHAR(255),
   [CategoryID] INT,
   [originID] INT,
@@ -30,12 +31,12 @@ CREATE TABLE [product] (
   [FormID] INT,
   [Description] NVARCHAR(255),
   [ImportDate] DATE,
-  [ExpiredDate] DATE
+  [ExpiredDate] DATE,
 );
 GO
 
 CREATE TABLE [Component] (
-  [componentID] INT PRIMARY KEY,
+  [componentID] INT PRIMARY KEY IDENTITY(1,1),
   [componentName] NVARCHAR(255)
 );
 GO
@@ -49,31 +50,31 @@ CREATE TABLE [ComponentProduct] (
 GO
 
 CREATE TABLE [Origin] (
-  [originID] INT PRIMARY KEY,
+  [originID] INT PRIMARY KEY IDENTITY(1,1),
   [originName] NVARCHAR(255)
 );
 GO
 
 CREATE TABLE [ProductUnit] (
-  [productUnitID] INT PRIMARY KEY,
+  [productUnitID] INT PRIMARY KEY IDENTITY(1,1),
   [productUnitName] NVARCHAR(255)
 );
 GO
 
 CREATE TABLE [Form] (
-  [formID] INT PRIMARY KEY,
+  [formID] INT PRIMARY KEY IDENTITY(1,1),
   [formName] NVARCHAR(255)
 );
 GO
 
 CREATE TABLE [Manufacturer] (
-  [manufacturerID] INT PRIMARY KEY,
+  [manufacturerID] INT PRIMARY KEY IDENTITY(1,1),
   [manufacturerName] NVARCHAR(255)
 );
 GO
 
 CREATE TABLE [Category] (
-  [CategoryID] INT PRIMARY KEY,
+  [CategoryID] INT PRIMARY KEY IDENTITY(1,1),
   [ParentCategoryID] INT,
   [CategoryName] NVARCHAR(255),
   [Description] NVARCHAR(255)
@@ -81,17 +82,18 @@ CREATE TABLE [Category] (
 GO
 
 CREATE TABLE [productDetail] (
-  [productDetailID] INT PRIMARY KEY,
+  [productDetailID] INT PRIMARY KEY IDENTITY(1,1),
   [productID] INT,
   [productUnitID] INT,
   [volume] INT,
   [stock] INT,
-  [price] INT
+  [price] INT,
+
 );
 GO
 
 CREATE TABLE [blog] (
-  [blogID] INT PRIMARY KEY,
+  [blogID] INT PRIMARY KEY IDENTITY(1,1),
   [title] NVARCHAR(255),
   [content] NVARCHAR(MAX),
   [publicDate] DATE,
@@ -101,7 +103,7 @@ CREATE TABLE [blog] (
 GO
 
 CREATE TABLE [tag] (
-  [tagID] INT PRIMARY KEY,
+  [tagID] INT PRIMARY KEY IDENTITY(1,1),
   [tagName] NVARCHAR(255)
 );
 GO
@@ -154,3 +156,4 @@ GO
 
 ALTER TABLE [blogTag] ADD FOREIGN KEY ([tagID]) REFERENCES [tag] ([tagID]);
 GO
+

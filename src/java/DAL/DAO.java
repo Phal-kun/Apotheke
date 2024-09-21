@@ -31,15 +31,15 @@ public class DAO {
         String sql = "select * from [Role]";
         try{
             PreparedStatement ps = con.prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
-            while(rs.next()){
-                int roleid = rs.getInt("roleid");
-                String rolename = rs.getString("rolename");
-                int permision = rs.getInt("permission");
-                System.out.println(roleid + " - " + rolename + " - " + permision);
+            try (ResultSet rs = ps.executeQuery()) {
+                while(rs.next()){
+                    int roleid = rs.getInt("roleid");
+                    String rolename = rs.getString("rolename");
+                    int permision = rs.getInt("permission");
+                    System.out.println(roleid + " - " + rolename + " - " + permision);
+                }
             }
-            rs.close();
-        }catch (Exception e){
+        }catch (SQLException e){
             status = "Error at read Account "+e.getMessage();
         }
     }

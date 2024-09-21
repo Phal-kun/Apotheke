@@ -41,6 +41,7 @@ public class DAOUserList {
             }
         }catch (SQLException e){
             status = "Error at read Account "+e.getMessage();
+            System.out.println(status);
         }
     }
     
@@ -61,7 +62,7 @@ public class DAOUserList {
         }    
     }
     
-    public ArrayList<User> getUser(int page, boolean sort, String sortType, boolean isCustomer) {
+    public ArrayList<User> getUser(int page, boolean sort, String sortCol, boolean isCustomer, String keyword, String filter) {
         try {
             String sql = """
         SELECT 
@@ -69,20 +70,65 @@ public class DAOUserList {
         FROM 
             [User] u JOIN [role] r ON u.role = r.roleID
         WHERE
-            u.role %s
+            %s
         ORDER BY
-            %s %s
+            %s
         OFFSET ? ROWS
         FETCH NEXT 10 ROWS ONLY;
         """;
 
-            String roleCondition = isCustomer ? "= 1" : "!= 1";
-            String orderByColumn = sortType;  
-            String orderDirection = sort ? "ASC" : "DESC";
-            sql = String.format(sql, roleCondition, orderByColumn, orderDirection);
+            // Set up the base WHERE clause
+            StringBuilder condition = new StringBuilder(isCustomer ? "u.role = 1" : "u.role != 1");
+
+            // Add search condition
+            if (keyword != null && !keyword.isEmpty()) {
+                condition.append(" AND (u.fullname LIKE ? OR u.username LIKE ? OR u.address LIKE ? OR u.phone LIKE ?)");
+            }
+
+            // Add filter conditions
+            if (filter != null && !filter.isEmpty()) {
+                String[] filterArr = filter.split(",");
+                for (String string : filterArr) {
+                    switch (string) {
+                        case "male" ->
+                            condition.append(" AND u.gender = 'male'");
+                        case "female" ->
+                            condition.append(" AND u.gender = 'female'");
+                        case "warehouse" ->
+                            condition.append(" AND u.role = 2");
+                        case "sale" ->
+                            condition.append(" AND u.role = 3");
+                        case "marketing" ->
+                            condition.append(" AND u.role = 4");
+                        case "active" ->
+                            condition.append(" AND u.status = 1");
+                        case "deactive" ->
+                            condition.append(" AND u.status = 0");
+                    }
+                }
+            }
+
+            // Set up sort order
+            String order = sortCol + (sort ? " ASC" : " DESC");
+
+            // Format the SQL string
+            sql = String.format(sql, condition.toString(), order);
 
             PreparedStatement statement = con.prepareStatement(sql);
-            statement.setInt(1, (page - 1) * 10);
+
+            // Set the search parameters if keyword exists
+            int paramIndex = 1;
+            if (keyword != null && !keyword.isEmpty()) {
+                String keywordPattern = "%" + keyword + "%";
+                statement.setString(paramIndex++, keywordPattern);
+                statement.setString(paramIndex++, keywordPattern);
+                statement.setString(paramIndex++, keywordPattern);
+                statement.setString(paramIndex++, keywordPattern);
+            }
+
+            // Set pagination offset
+            statement.setInt(paramIndex, (page - 1) * 10);
+
             ResultSet rs = statement.executeQuery();
             return toArrUser(rs);
         } catch (SQLException ex) {
@@ -90,6 +136,7 @@ public class DAOUserList {
             return null;
         }
     }
+
     
     public ArrayList<Role> toArrRole(ResultSet rs){
         ArrayList roleList = new ArrayList<>();
@@ -122,8 +169,10 @@ public class DAOUserList {
     
     
     public static void main(String[] args){
-        INSTANCE.loadDB();
-        System.out.println(INSTANCE.getUser(1,true,"userID",true));
+        ArrayList userList = INSTANCE.getUser(1,true,"userID",false,"John","sale,male");
+        for (Object object : userList) {
+            System.out.println(object);
+        }
         System.out.println("----");
     }
     
