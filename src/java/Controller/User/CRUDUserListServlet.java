@@ -11,6 +11,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import DAL.DAOUserList;
+import java.util.ArrayList;
 
 /**
  *
@@ -53,7 +55,9 @@ public class CRUDUserListServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+        DAOUserList db = DAOUserList.INSTANCE;
+        ArrayList userList = db.getUser(1, true, "fullname", true, "", "");
+        request.setAttribute("userList", userList);
     } 
 
     /** 
