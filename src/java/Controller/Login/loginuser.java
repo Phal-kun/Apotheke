@@ -5,19 +5,21 @@
 
 package Controller.Login;
 
-import Controller.Blog.*;
+import DAL.UserDao;
+import Model.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 /**
  *
- * @author ASUS
+ * @author Dell
  */
-public class DefaultServlet extends HttpServlet {
+public class loginuser extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -34,10 +36,10 @@ public class DefaultServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet DefaultServlet</title>");  
+            out.println("<title>Servlet loginuser</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet DefaultServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet loginuser at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -54,7 +56,46 @@ public class DefaultServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        
+        UserDao userd= new UserDao();
+        User user = userd.login(username, password);
+        if(user ==null){
+            request.setAttribute("mess", "Wrong user or pass");
+            request.getRequestDispatcher("View/Home.jsp").forward(request, response);
+      
+
+                     
+        }else{
+            HttpSession session = request.getSession();
+            session.setAttribute("account", user);
+            if(user.isStatus()== true){
+                switch(user.getRole()){
+                    case 1:
+                        response.sendRedirect("View/Login_Register/customerHome.jsp");
+                        break; 
+                    case 2:
+                        response.sendRedirect("View/Login_Register/warehouseHome.jsp");
+                        break;
+                    case 3:
+                        response.sendRedirect("View/Login_Register/saleHome.jsp");
+                        break;
+                    case 4:
+                        response.sendRedirect("View/Login_Register/marketingHome.jsp");
+                        break;
+                    default:
+                        response.sendRedirect("View/Login_Register/adminHome.jsp");
+                        break;    
+                }
+            
+            
+            }else{
+                response.sendRedirect("View/Login_Register/active.jsp");
+            }
+            
+            
+           }
     } 
 
     /** 

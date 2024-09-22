@@ -12,8 +12,24 @@
         <servlet-name>DefaultServlet</servlet-name>
         <servlet-class>Controller.Blog.DefaultServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>loginuser</servlet-name>
+        <servlet-class>Controller.Login.loginuser</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>loginGoogle</servlet-name>
+        <servlet-class>Controller.Login.loginGoogle</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>DefaultServlet</servlet-name>
         <url-pattern>/DefaultServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>loginuser</servlet-name>
+        <url-pattern>/loginuser</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>loginGoogle</servlet-name>
+        <url-pattern>/loginGoogle</url-pattern>
     </servlet-mapping>
 </web-app>
