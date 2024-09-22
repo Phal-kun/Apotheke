@@ -78,8 +78,7 @@ public class UpdateProductServlet extends HttpServlet {
 
         ArrayList<Component> componentList = ProductDAO.INSTANCE.loadComponentList();
         request.setAttribute("componentList", componentList);
-
-        
+       
         RequestDispatcher rd = request.getRequestDispatcher("View/ProductManage/UpdateProduct.jsp");
         rd.forward(request, response);
     } 
@@ -110,10 +109,6 @@ public class UpdateProductServlet extends HttpServlet {
         if (productName == null || productName.trim().isEmpty()) {
             hasError = true;
             errorMsg.append("Product Name ");
-        }
-        if (description == null || description.trim().isEmpty()) {
-            hasError = true;
-            errorMsg.append("Description ");
         }
         int productID = 0 ,categoryID = 0, originID = 0, manufacturerID = 0, formID = 0;
 

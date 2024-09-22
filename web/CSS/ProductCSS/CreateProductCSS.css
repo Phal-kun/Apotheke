@@ -117,6 +117,14 @@ input {
     margin: 20px;
 }
 
+.back-btn{
+    width: 100%;
+    text-align: center;
+    margin: 20px;
+    display: flex;
+    justify-content: flex-start;
+}
+
 button {
     background-color: #e67e22;
     border-radius: 4px;

@@ -107,10 +107,6 @@ public class CreateProductServlet extends HttpServlet {
             hasError = true;
             errorMsg.append("Product Name ");
         }
-        if (description == null || description.trim().isEmpty()) {
-            hasError = true;
-            errorMsg.append("Description ");
-        }
         int categoryID = 0, originID = 0, manufacturerID = 0, formID = 0;
 
         try {

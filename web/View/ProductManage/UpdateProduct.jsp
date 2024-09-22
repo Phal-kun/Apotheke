@@ -19,13 +19,12 @@
                 <p id="description">Update product's information below</p>
             </div>
         </header>
-        <div class="container">
-            <form id="product-form" action="UpdateProduct" method="POST">
 
-                <div class="labels">
-                    <label id="productID-label" for="productID">* Product's ID</label></div>
-                <div class="input-tab">
-                    <input class="input-field" type="text" id="productID" name="productID" value="${updateProduct.getProductID()}" readonly></div>
+        
+        <div class="container">
+
+            <form id="product-form" action="UpdateProduct" method="POST" onsubmit="return validateTable();">
+                <input type="hidden" id="productID" name="productID" value="${updateProduct.getProductID()}" readonly>
 
                 <div class="labels">
                     <label id="productName-label" for="productName">* Product's Name</label></div>
@@ -117,8 +116,8 @@
                     </tbody>
                 </table>
 
-                <button type="button" onclick="myCreateFunction()">Create Row</button><br>
-                
+                <button type="button" onclick="addRow()">Create Row</button><br>
+
                 <div class="labels">
                     <label for="description">Tell us more about the product</label></div>
                 <div class="input-tab">
@@ -129,67 +128,85 @@
                 <c:if test="${not empty errorMsg}">
                     <p style="color:red;">${errorMsg}</p>
                 </c:if>
+                    
+                    <div class="back-btn">
+            <a href="ListProduct">
+                <button type="button">Back to List</button>
+            </a>
+        </div>
             </form>
         </div>
     </body>
 
-<script>
-    function myCreateFunction() {
-        var table = document.getElementById("component-table");
-        var row = table.insertRow(1);
+    <script>
+        function addRow() {
+            var table = document.getElementById("component-table");
+            var row = table.insertRow(1);
 
-        // Use innerHTML to create the entire row structure
-        row.innerHTML = `
-        <td>
-            <select id="dropdown" name="componentID" required onchange="updateMeasureUnit(this)">
-                <option disabled value selected>Select a component</option>
-                    <c:forEach var="component" items="${componentList}">
-                                    <option value="${component.getComponentID()}" data-unit="${component.getComponentMeasureUnit()}">
-                                        ${component.getComponentName()}
-                                    </option>
-                    </c:forEach>
-            </select>
-        </td>
-        <td>
-            <input class="input-field" type="number" name="quantity" placeholder="Enter quantity" min="1" required onchange="validateQuantity(this)" />
-        </td>
-        <td>
-            <span class="measure-unit">Unit</span>
-        </td>
-        <td>
-            <button type="button" onclick="deleteRow(this)">Delete</button>
-        </td>
-    `;
-    }
-
-    function updateMeasureUnit(select) {
-        var unit = select.options[select.selectedIndex].dataset.unit; // Get the data-unit attribute
-        var measureUnitSpan = select.closest('tr').querySelector('.measure-unit'); // Find the measure unit span
-        measureUnitSpan.textContent = unit; // Update the measure unit
-    }
-
-    function validateQuantity(input) {
-        var quantity = parseInt(input.value, 10);
-        if (quantity < 1) {
-            alert("Quantity must be greater than 0.");
-            input.value = ""; // Clear the input if invalid
+            // Use innerHTML to create the entire row structure
+            row.innerHTML = `
+            <td>
+                <select id="dropdown" name="componentID" required onchange="updateMeasureUnit(this)">
+                    <option disabled value selected>Select a component</option>
+        <c:forEach var="component" items="${componentList}">
+                                        <option value="${component.getComponentID()}" data-unit="${component.getComponentMeasureUnit()}">
+            ${component.getComponentName()}
+                                        </option>
+        </c:forEach>
+                </select>
+            </td>
+            <td>
+                <input class="input-field" type="number" name="quantity" placeholder="Enter quantity" min="1" required onchange="validateQuantity(this)" />
+            </td>
+            <td>
+                <span class="measure-unit">Unit</span>
+            </td>
+            <td>
+                <button type="button" onclick="deleteRow(this)">Delete</button>
+            </td>
+        `;
         }
-    }
 
-    function deleteRow(button) {
-        var row = button.closest('tr'); // Get the closest row to the button
-        row.parentNode.removeChild(row); // Remove the row
-    }
-    
-    function showAlert(message) {
-        if (message && message !== "false") {
-            alert(message);
+        function updateMeasureUnit(select) {
+            var unit = select.options[select.selectedIndex].dataset.unit; // Get the data-unit attribute
+            var measureUnitSpan = select.closest('tr').querySelector('.measure-unit'); // Find the measure unit span
+            measureUnitSpan.textContent = unit; // Update the measure unit
         }
-    }
-    
-    function initializePage() {
-        showAlert('${createMsg}');
-    }
-</script>
+
+        function validateQuantity(input) {
+            var quantity = parseInt(input.value, 10);
+            if (quantity < 1) {
+                alert("Quantity must be greater than 0.");
+                input.value = ""; // Clear the input if invalid
+            }
+        }
+
+        function deleteRow(button) {
+            var row = button.closest('tr'); // Get the closest row to the button
+            row.parentNode.removeChild(row); // Remove the row
+        }
+
+        function showAlert(message) {
+            if (message && message !== "false") {
+                alert(message);
+            }
+        }
+
+        function initializePage() {
+            showAlert('${createMsg}');
+        }
+
+        function validateTable() {
+            var table = document.getElementById("component-table");
+            var rowCount = table.rows.length;
+
+            if (rowCount < 2) { // < 2 because the first row is usually the header
+                alert("The table must have at least one row.");
+                return false; // Prevent form submission
+            }
+            return true; // Allow form submission
+        }
+
+    </script>
 
 </html>
