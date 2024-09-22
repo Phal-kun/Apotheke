@@ -4,48 +4,53 @@
  */
 package DAL;
 
+import static DAL.DAO.INSTANCE;
 import Model.Blog.Blog;
 import Model.Blog.Tag;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
+
 /**
  *
  * @author ACER
  */
-public class BlogDAO extends DBContext {
+public class BlogDAO {
+
     // Singleton instance
     public static BlogDAO instance = new BlogDAO();
     private Connection connection;
 
-    // Constructor
-    public BlogDAO() {
-        // Initialize connection
-        this.connection = connect;
+    private BlogDAO() {
+        if (instance == null) {
+            connection = new DBContext().connect;
+        } else {
+            instance = this;
+        }
     }
 
-    // Get connection method
-    public Connection getConnection() {
-        return this.connection;
-    }
+    public void createBlog(Blog blog) {
+        String query = "INSERT INTO Blog (title, content, userID, publicDate, status) VALUES (?, ?, ?, GETDATE(), 1)";
 
-    // Add a new blog
-    public void addBlog(Blog blog) {
-        String sql = "INSERT INTO Blog (title, content, publicDate, userID, status) VALUES (?, ?, ?, ?, ?)";
-        try (Connection conn = getConnection();
-             PreparedStatement st = conn.prepareStatement(sql)) {
-            
-            st.setString(1, blog.getTitle());
-            st.setString(2, blog.getContent());
-            st.setDate(3, new java.sql.Date(blog.getPublicDate().getTime()));
-            st.setInt(4, blog.getUserID());
-            st.setBoolean(5, blog.isStatus());
-            
-            st.executeUpdate();
+        try (PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+            stmt.setString(1, blog.getTitle());
+            stmt.setString(2, blog.getContent());
+            stmt.setInt(3, blog.getUserID());
+
+            stmt.executeUpdate();
+
+            // Get the generated blog ID
+            try (ResultSet rs = stmt.getGeneratedKeys()) {
+                if (rs.next()) {
+                    blog.setBlogID(rs.getInt(1));
+                }
+            }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -54,19 +59,24 @@ public class BlogDAO extends DBContext {
     // Get all blogs
     public List<Blog> getAllBlogs() {
         List<Blog> blogs = new ArrayList<>();
-        String sql = "SELECT * FROM Blog";
-        try (Connection conn = getConnection();
-             PreparedStatement st = conn.prepareStatement(sql);
-             ResultSet rs = st.executeQuery()) {
-            
+        String query = "SELECT b.blogID, b.title, b.content, b.publicDate, b.userID, b.status FROM Blog b";
+
+        try (PreparedStatement stmt = connection.prepareStatement(query); ResultSet rs = stmt.executeQuery()) {
+
             while (rs.next()) {
-                Blog blog = new Blog();
-                blog.setBlogID(rs.getInt("blogID"));
-                blog.setTitle(rs.getString("title"));
-                blog.setContent(rs.getString("content"));
-                blog.setPublicDate(rs.getDate("publicDate"));
-                blog.setUserID(rs.getInt("userID"));
-                blog.setStatus(rs.getBoolean("status"));
+                int blogID = rs.getInt("blogID");
+                String title = rs.getString("title");
+                String content = rs.getString("content");
+                Date publicDate = rs.getDate("publicDate");
+                int userID = rs.getInt("userID");
+                boolean status = rs.getBoolean("status");
+
+                Blog blog = new Blog(blogID, title, content, publicDate, userID, status);
+
+                // Fetch tags for this blog
+                List<Tag> tags = TagDAO.instance.getTagsForBlog(blogID);
+                blog.setTags(tags);
+
                 blogs.add(blog);
             }
         } catch (SQLException e) {
@@ -77,90 +87,57 @@ public class BlogDAO extends DBContext {
 
     // Update a blog
     public void updateBlog(Blog blog) {
-        String sql = "UPDATE Blog SET title = ?, content = ?, userID = ?, status = ? WHERE blogID = ?";
-        try (Connection conn = getConnection();
-             PreparedStatement st = conn.prepareStatement(sql)) {
-            
-            st.setString(1, blog.getTitle());
-            st.setString(2, blog.getContent());
-            st.setDate(3, new java.sql.Date(blog.getPublicDate().getTime()));
-            st.setInt(4, blog.getUserID());
-            st.setBoolean(5, blog.isStatus());
-            st.setInt(6, blog.getBlogID());
-            
-            st.executeUpdate();
+        // Update blog details
+        String updateBlogQuery = "UPDATE Blog SET title = ?, content = ? WHERE blogID = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(updateBlogQuery)) {
+            stmt.setString(1, blog.getTitle());
+            stmt.setString(2, blog.getContent());
+            stmt.setInt(3, blog.getBlogID());
+            stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
 
-    // Add a new tag
-    public void addTag(Tag tag) {
-        String sql = "INSERT INTO Tag (tagName) VALUES (?)";
-        try (Connection conn = getConnection();
-             PreparedStatement st = conn.prepareStatement(sql)) {
-            
-            st.setString(1, tag.getTagName());
-            st.executeUpdate();
+        // Delete existing blog-tag relationships
+        String deleteTagsQuery = "DELETE FROM blogTag WHERE blogID = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(deleteTagsQuery)) {
+            stmt.setInt(1, blog.getBlogID());
+            stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
 
-    // Get all tags
-    public List<Tag> getAllTags() {
-        List<Tag> tags = new ArrayList<>();
-        String sql = "SELECT * FROM Tag";
-        try (Connection conn = getConnection();
-             PreparedStatement st = conn.prepareStatement(sql);
-             ResultSet rs = st.executeQuery()) {
-            
-            while (rs.next()) {
-                Tag tag = new Tag();
-                tag.setTagID(rs.getInt("tagID"));
-                tag.setTagName(rs.getString("tagName"));
-                tags.add(tag);
+        // Insert the new blog-tag relationships
+        String insertTagQuery = "INSERT INTO blogTag (blogID, tagID) VALUES (?, ?)";
+        try (PreparedStatement stmt = connection.prepareStatement(insertTagQuery)) {
+            for (Tag tag : blog.getTags()) {
+                stmt.setInt(1, blog.getBlogID());
+                stmt.setInt(2, tag.getTagID());
+                stmt.executeUpdate();
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return tags;
     }
 
-    // Update a tag
-    public void updateTag(Tag tag) {
-        String sql = "UPDATE Tag SET tagName = ? WHERE tagID = ?";
-        try (Connection conn = getConnection();
-             PreparedStatement st = conn.prepareStatement(sql)) {
-            
-            st.setString(1, tag.getTagName());
-            st.setInt(2, tag.getTagID());
-            st.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    // Delete a tag
-    public void deleteTag(int tagID) {
-        String sql = "DELETE FROM Tag WHERE tagID = ?";
-        try (Connection conn = getConnection();
-             PreparedStatement st = conn.prepareStatement(sql)) {
-            
-            st.setInt(1, tagID);
-            st.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-    
     // Method to delete a blog by its ID
     public void deleteBlog(int blogID) {
-        String query = "DELETE FROM blog WHERE blogID = ?";
-        try (PreparedStatement ps = connection.prepareStatement(query)) {
-            ps.setInt(1, blogID);
-            ps.executeUpdate();
-        } catch (Exception e) {
+        String deleteBlogTagQuery = "DELETE FROM blogTag WHERE blogID = ?";
+        String deleteBlogQuery = "DELETE FROM blog WHERE blogID = ?";
+
+        try (PreparedStatement psBlogTag = connection.prepareStatement(deleteBlogTagQuery); PreparedStatement psBlog = connection.prepareStatement(deleteBlogQuery)) {
+
+            // First, delete the related entries in the blogTag table
+            psBlogTag.setInt(1, blogID);
+            psBlogTag.executeUpdate();
+
+            // Then, delete the blog from the blog table
+            psBlog.setInt(1, blogID);
+            psBlog.executeUpdate();
+
+            System.out.println("Blog and related tags deleted successfully.");
+
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
@@ -175,8 +152,57 @@ public class BlogDAO extends DBContext {
             e.printStackTrace();
         }
     }
-    
+
+    public Blog getBlogById(int blogID) {
+        String sql = "SELECT * FROM Blog WHERE blogID = ?";
+        Blog blog = null;
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            ps.setInt(1, blogID);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    blog = new Blog();
+                    blog.setBlogID(rs.getInt("blogID"));
+                    blog.setTitle(rs.getString("title"));
+                    blog.setContent(rs.getString("content"));
+                    blog.setPublicDate(rs.getDate("publicDate"));
+                    blog.setUserID(rs.getInt("userID"));
+                    blog.setStatus(rs.getBoolean("status"));
+                }
+                List<Tag> tags = TagDAO.instance.getTagsForBlog(blogID);
+                blog.setTags(tags);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return blog;
+    }
+
     public static void main(String[] args) {
-        System.out.println(BlogDAO.instance.getAllBlogs());
+//        System.out.println(BlogDAO.instance.getAllBlogs());
+
+        List<Blog> blogs = BlogDAO.instance.getAllBlogs();
+
+        // Iterate through each blog and print its details along with tags
+        for (Blog blog : blogs) {
+            System.out.println("Blog ID: " + blog.getBlogID());
+            System.out.println("Title: " + blog.getTitle());
+            System.out.println("Content: " + blog.getContent());
+            System.out.println("Public Date: " + blog.getPublicDate());
+            System.out.println("User ID: " + blog.getUserID());
+            System.out.println("Status: " + blog.isStatus());
+
+            // Print associated tags
+            List<Tag> tags = blog.getTags();
+            if (tags != null && !tags.isEmpty()) {
+                System.out.println("Tags:");
+                for (Tag tag : tags) {
+                    System.out.println("- " + tag.getTagName());
+                }
+            } else {
+                System.out.println("No tags for this blog.");
+            }
+            System.out.println("-----------------------------");
+        }
     }
 }

@@ -6,18 +6,22 @@
 package Controller;
 
 import DAL.BlogDAO;
+import DAL.TagDAO;
+import Model.Blog.Blog;
+import Model.Blog.Tag;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  *
  * @author ACER
  */
-public class StatusServlet extends HttpServlet {
+public class SearchBlogServlet extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -34,10 +38,10 @@ public class StatusServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet StatusServlet</title>");  
+            out.println("<title>Servlet SearchBlogServlet</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet StatusServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet SearchBlogServlet at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -54,7 +58,40 @@ public class StatusServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+        // Get the search keyword from the request
+        String keyword = request.getParameter("keyword");
+        
+        // Get the selected tags from the request (tagFilter is an array of tag IDs)
+        String[] tagFilter = request.getParameterValues("tagFilter");
+
+        // DAO objects to retrieve blogs and tags
+        BlogDAO blogDAO = BlogDAO.instance;
+        TagDAO tagDAO = TagDAO.instance;
+
+        // Get the list of blogs filtered by keyword and tags
+        List<Blog> blogList;
+
+        if ((keyword == null || keyword.isEmpty()) && (tagFilter == null || tagFilter.length == 0)) {
+            // No filters applied, get all blogs
+            blogList = blogDAO.getAllBlogs();
+        } else {
+            // Search and filter blogs based on the keyword and tags
+            blogList = tagDAO.searchBlogsByKeywordAndTags(keyword, tagFilter);
+        }
+
+        // Get the list of all tags for the checkbox filter
+        List<Tag> tagList = tagDAO.getAllTags();
+
+        // Set the results and tag list in the request scope
+        request.setAttribute("blogList", blogList);
+        request.setAttribute("tagList", tagList);
+        
+        // Preserve search criteria in the request scope for JSP
+        request.setAttribute("keyword", keyword);
+        request.setAttribute("tagFilter", tagFilter);
+
+        // Forward the request back to BlogManager.jsp to display the results
+        request.getRequestDispatcher("View/BlogManage/BlogManager.jsp").forward(request, response);
     } 
 
     /** 
@@ -67,14 +104,7 @@ public class StatusServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        int blogID = Integer.parseInt(request.getParameter("blogID"));
-        
-        // Call the DAO to toggle the status of the blog by ID
-        BlogDAO blogDAO = BlogDAO.instance;
-        blogDAO.toggleBlogStatus(blogID);
-        
-        // Redirect back to the Blog Manager page
-        response.sendRedirect("blogManager");
+        doGet(request, response);
     }
 
     /** 

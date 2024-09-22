@@ -6,6 +6,7 @@
 package Controller;
 
 import DAL.BlogDAO;
+import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -70,11 +71,12 @@ public class DeleteBlogServlet extends HttpServlet {
         int blogID = Integer.parseInt(request.getParameter("blogID"));
         
         // Call the DAO to delete the blog by ID
-        BlogDAO blogTagDAO = BlogDAO.instance;
-        blogTagDAO.deleteBlog(blogID);
+        BlogDAO.instance.deleteBlog(blogID);
+        request.setAttribute("deleteMsg","Delete Successful!");
         
         // Redirect back to the Blog Manager page
-        response.sendRedirect("BlogManager");
+        RequestDispatcher rd = request.getRequestDispatcher("BlogManager");
+        rd.forward(request, response);
     }
 
     /** 

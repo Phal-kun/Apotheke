@@ -1,6 +1,7 @@
 package Model.Blog;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -13,9 +14,34 @@ public class Blog {
     private Date publicDate;
     private int userID;
     private boolean status;
+    private List<Tag> tags;
 
     public Blog() {
     }
+
+    public Blog(int blogID, String title, String content, Date publicDate, int userID, boolean status, List<Tag> tags) {
+        this.blogID = blogID;
+        this.title = title;
+        this.content = content;
+        this.publicDate = publicDate;
+        this.userID = userID;
+        this.status = status;
+        this.tags = tags;
+    }
+
+    public Blog(List<Tag> tags) {
+        this.tags = tags;
+    }
+
+    public Blog(int blogID, String title, String content, int userID, boolean status) {
+        this.blogID = blogID;
+        this.title = title;
+        this.content = content;
+        this.userID = userID;
+        this.status = status;
+    }
+    
+    
 
     public Blog(int blogID, String title, String content, Date publicDate, int userID, boolean status) {
         this.blogID = blogID;
@@ -74,10 +100,17 @@ public class Blog {
         this.status = status;
     }
 
+    public List<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
+    }
+
     @Override
     public String toString() {
-        return "Blog{" + "blogID=" + blogID + ", title=" + title + ", content=" + content + ", publicDate=" + publicDate + ", userID=" + userID + ", status=" + status + '}';
+        return "Blog{" + "blogID=" + blogID + ", title=" + title + ", content=" + content + ", publicDate=" + publicDate + ", userID=" + userID + ", status=" + status + ", tags=" + tags + '}';
     }
-    
-    
+ 
 }

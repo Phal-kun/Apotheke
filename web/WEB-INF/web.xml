@@ -21,8 +21,20 @@
         <servlet-class>Controller.DeleteBlogServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>StatusServlet</servlet-name>
-        <servlet-class>Controller.StatusServlet</servlet-class>
+        <servlet-name>StatusBlogServlet</servlet-name>
+        <servlet-class>Controller.StatusBlogServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EditBlogServlet</servlet-name>
+        <servlet-class>Controller.EditBlogServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CreateBlogServlet</servlet-name>
+        <servlet-class>Controller.CreateBlogServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SearchBlogServlet</servlet-name>
+        <servlet-class>Controller.SearchBlogServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>DefaultServlet</servlet-name>
@@ -37,7 +49,19 @@
         <url-pattern>/DeleteBlog</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>StatusServlet</servlet-name>
-        <url-pattern>/Status</url-pattern>
+        <servlet-name>StatusBlogServlet</servlet-name>
+        <url-pattern>/StatusBlog</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EditBlogServlet</servlet-name>
+        <url-pattern>/EditBlog</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreateBlogServlet</servlet-name>
+        <url-pattern>/CreateBlog</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SearchBlogServlet</servlet-name>
+        <url-pattern>/SearchBlog</url-pattern>
     </servlet-mapping>
 </web-app>
