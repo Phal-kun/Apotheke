@@ -12,8 +12,32 @@
         <servlet-name>DefaultServlet</servlet-name>
         <servlet-class>Controller.Blog.DefaultServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>createProductServlet</servlet-name>
+        <servlet-class>Controller.Product.CreateProductServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>updateProductServlet</servlet-name>
+        <servlet-class>Controller.Product.UpdateProductServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ListProductServlet</servlet-name>
+        <servlet-class>Controller.Product.ListProductServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>DefaultServlet</servlet-name>
         <url-pattern>/DefaultServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>createProductServlet</servlet-name>
+        <url-pattern>/CreateProduct</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>updateProductServlet</servlet-name>
+        <url-pattern>/UpdateProduct</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ListProductServlet</servlet-name>
+        <url-pattern>/ListProduct</url-pattern>
     </servlet-mapping>
 </web-app>

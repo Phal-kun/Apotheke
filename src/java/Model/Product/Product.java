@@ -20,14 +20,13 @@ public class Product {
     Manufacturer manufacturer;
     Form form;
     String description;
-    Date importDate;
-    Date exportDate;
     ArrayList<Component> component;
+    boolean isActive;
 
     public Product() {
     }
 
-    public Product(int productID, String productName, Category category, Origin origin, Manufacturer manufacturer, Form form, String description, Date importDate, Date exportDate, ArrayList component) {
+    public Product(int productID, String productName, Category category, Origin origin, Manufacturer manufacturer, Form form, String description, ArrayList<Component> component, boolean isActive) {
         this.productID = productID;
         this.productName = productName;
         this.category = category;
@@ -35,10 +34,12 @@ public class Product {
         this.manufacturer = manufacturer;
         this.form = form;
         this.description = description;
-        this.importDate = importDate;
-        this.exportDate = exportDate;
         this.component = component;
+        this.isActive = isActive;
     }
+
+
+
 
     public int getProductID() {
         return productID;
@@ -96,28 +97,20 @@ public class Product {
         this.description = description;
     }
 
-    public Date getImportDate() {
-        return importDate;
-    }
-
-    public void setImportDate(Date importDate) {
-        this.importDate = importDate;
-    }
-
-    public Date getExportDate() {
-        return exportDate;
-    }
-
-    public void setExportDate(Date exportDate) {
-        this.exportDate = exportDate;
-    }
-
     public ArrayList getComponent() {
         return component;
     }
 
     public void setComponent(ArrayList component) {
         this.component = component;
+    }
+
+    public boolean isIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(boolean isActive) {
+        this.isActive = isActive;
     }
 
     @Override
@@ -130,8 +123,6 @@ public class Product {
         hash = 71 * hash + Objects.hashCode(this.manufacturer);
         hash = 71 * hash + Objects.hashCode(this.form);
         hash = 71 * hash + Objects.hashCode(this.description);
-        hash = 71 * hash + Objects.hashCode(this.importDate);
-        hash = 71 * hash + Objects.hashCode(this.exportDate);
         hash = 71 * hash + Objects.hashCode(this.component);
         return hash;
     }
@@ -170,18 +161,12 @@ public class Product {
         if (!Objects.equals(this.form, other.form)) {
             return false;
         }
-        if (!Objects.equals(this.importDate, other.importDate)) {
-            return false;
-        }
-        if (!Objects.equals(this.exportDate, other.exportDate)) {
-            return false;
-        }
         return Objects.equals(this.component, other.component);
     }
 
     @Override
     public String toString() {
-        return "Product{" + "productID=" + productID + ", productName=" + productName + ", category=" + category + ", origin=" + origin + ", manufacturer=" + manufacturer + ", form=" + form + ", description=" + description + ", importDate=" + importDate + ", exportDate=" + exportDate + ", component=" + component + '}';
+        return "Product{" + "productID=" + productID + ", productName=" + productName + ", category=" + category + ", origin=" + origin + ", manufacturer=" + manufacturer + ", form=" + form + ", description=" + description  + ", component=" + component + '}';
     }
 
     

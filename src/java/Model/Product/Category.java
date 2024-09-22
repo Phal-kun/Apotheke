@@ -97,7 +97,7 @@ public class Category {
 
     @Override
     public String toString() {
-        return "Category{" + "categoryID=" + categoryID + ", parentCategory=" + parentCategory + ", categoryName=" + categoryName + ", description=" + description + '}';
+        return "Category{" + "categoryID=" + categoryID + ", parentCategory=" + (parentCategory != null ? parentCategory.categoryID : "null")  + ", categoryName=" + categoryName + ", description=" + description + '}';
     }
     
     
