@@ -15,37 +15,39 @@ import Model.User.*;
  * @author ASUS
  */
 public class DAOUserList {
+
     public static DAOUserList INSTANCE = new DAOUserList();
     private Connection con;
-    private String status="OK";
-    
-    private DAOUserList(){
-        if (INSTANCE==null){
+    private String status = "OK";
+
+    private DAOUserList() {
+        if (INSTANCE == null) {
             con = new DBContext().connect;
-        }else
+        } else {
             INSTANCE = this;
+        }
     }
-    
-    public void loadDB(){
+
+    public void loadDB() {
         System.out.println("Loading data...");
         String sql = "select * from [Role]";
-        try{
+        try {
             PreparedStatement ps = con.prepareStatement(sql);
             try (ResultSet rs = ps.executeQuery()) {
-                while(rs.next()){
+                while (rs.next()) {
                     int roleid = rs.getInt("roleid");
                     String rolename = rs.getString("rolename");
                     int permision = rs.getInt("permission");
                     System.out.println(roleid + " - " + rolename + " - " + permision);
                 }
             }
-        }catch (SQLException e){
-            status = "Error at read Account "+e.getMessage();
+        } catch (SQLException e) {
+            status = "Error at read Account " + e.getMessage();
             System.out.println(status);
         }
     }
-    
-    public ArrayList<Role> getRole(){       
+
+    public ArrayList<Role> getRole() {
         try {
             String sql = """
             SELECT 
@@ -59,10 +61,10 @@ public class DAOUserList {
         } catch (SQLException ex) {
             Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
             return null;
-        }    
+        }
     }
-    
-    public ArrayList<User> getUser(int page, boolean sort, String sortCol, boolean isCustomer, String keyword, String filter) {
+
+    public ArrayList<User> getUser(int page, boolean sort, String sortCol, boolean isCustomer, String keyword, String filterArr[]) {
         try {
             String sql = """
         SELECT 
@@ -85,29 +87,31 @@ public class DAOUserList {
                 condition.append(" AND (u.fullname LIKE ? OR u.username LIKE ? OR u.address LIKE ? OR u.phone LIKE ?)");
             }
 
-            // Add filter conditions
-            if (filter != null && !filter.isEmpty()) {
-                String[] filterArr = filter.split(",");
-                for (String string : filterArr) {
-                    switch (string) {
+            // Add filter conditions    
+            StringBuilder filterCondition = new StringBuilder();
+            if (filterArr != null && filterArr.length > 0) {
+                filterCondition.append(" AND (");
+                for (String filter : filterArr) {
+                    switch (filter) {
                         case "male" ->
-                            condition.append(" AND u.gender = 'male'");
+                            filterCondition.append(" OR u.gender = 'male'");
                         case "female" ->
-                            condition.append(" AND u.gender = 'female'");
+                            filterCondition.append(" OR u.gender = 'female'");
                         case "warehouse" ->
-                            condition.append(" AND u.role = 2");
+                            filterCondition.append(" OR u.role = 2");
                         case "sale" ->
-                            condition.append(" AND u.role = 3");
+                            filterCondition.append(" OR u.role = 3");
                         case "marketing" ->
-                            condition.append(" AND u.role = 4");
+                            filterCondition.append(" OR u.role = 4");
                         case "active" ->
-                            condition.append(" AND u.status = 1");
-                        case "deactive" ->
-                            condition.append(" AND u.status = 0");
+                            filterCondition.append(" OR u.status = 1");
+                        case "inactive" ->
+                            filterCondition.append(" OR u.status = 0");
                     }
                 }
+                filterCondition = new StringBuilder(filterCondition.toString().replaceFirst(" OR", "")).append(")");
             }
-
+            condition.append(filterCondition);
             // Set up sort order
             String order = sortCol + (sort ? " ASC" : " DESC");
 
@@ -137,43 +141,237 @@ public class DAOUserList {
         }
     }
 
+    public int getTotalPages(boolean isCustomer, String keyword, String[] filterArr) {
+        try {
+            String countSql = """
+            SELECT COUNT(*)
+            FROM [User] u JOIN [role] r ON u.role = r.roleID
+            WHERE %s
+        """;
+
+            StringBuilder condition = new StringBuilder(isCustomer ? "u.role = 1" : "u.role != 1");
+
+            if (keyword != null && !keyword.isEmpty()) {
+                condition.append(" AND (u.fullname LIKE ? OR u.username LIKE ? OR u.address LIKE ? OR u.phone LIKE ?)");
+            }
+
+            StringBuilder filterCondition = new StringBuilder();
+            if (filterArr != null && filterArr.length > 0) {
+                filterCondition.append(" AND (");
+                for (String filter : filterArr) {
+                    switch (filter) {
+                        case "male" ->
+                            filterCondition.append(" OR u.gender = 'male'");
+                        case "female" ->
+                            filterCondition.append(" OR u.gender = 'female'");
+                        case "warehouse" ->
+                            filterCondition.append(" OR u.role = 2");
+                        case "sale" ->
+                            filterCondition.append(" OR u.role = 3");
+                        case "marketing" ->
+                            filterCondition.append(" OR u.role = 4");
+                        case "active" ->
+                            filterCondition.append(" OR u.status = 1");
+                        case "inactive" ->
+                            filterCondition.append(" OR u.status = 0");
+                    }
+                }
+                filterCondition = new StringBuilder(filterCondition.toString().replaceFirst(" OR", "")).append(")");
+            }
+            condition.append(filterCondition);
+
+            countSql = String.format(countSql, condition);
+
+            PreparedStatement statement = con.prepareStatement(countSql);
+
+            // Set parameters for the search part
+            if (keyword != null && !keyword.isEmpty()) {
+                statement.setString(1, "%" + keyword + "%");
+                statement.setString(2, "%" + keyword + "%");
+                statement.setString(3, "%" + keyword + "%");
+                statement.setString(4, "%" + keyword + "%");
+            }
+
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                int totalRecords = rs.getInt(1);
+                int recordsPerPage = 10;  
+                return (int) Math.ceil(totalRecords / (double) recordsPerPage);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
+    }
     
-    public ArrayList<Role> toArrRole(ResultSet rs){
+    public User getUserById(int id) {
+        try {
+            // SQL query to fetch user by id
+            String sql = """
+            SELECT 
+                * 
+            FROM 
+                [User] u 
+            JOIN 
+                [role] r ON u.role = r.roleID 
+            WHERE 
+                u.userID = ?;
+        """;
+
+            PreparedStatement statement = con.prepareStatement(sql);
+   
+            statement.setInt(1, id);
+
+            ResultSet rs = statement.executeQuery();
+
+            return toUser(rs);
+        } catch (SQLException ex) {
+            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+
+
+    public void updateStatus(int userId, boolean status) {
+        try {
+            String sql = """
+        UPDATE [user]
+        SET status = ?
+        WHERE userID = ?
+        """;
+            PreparedStatement statement = con.prepareStatement(sql);
+
+            statement.setBoolean(1, status);  
+            statement.setInt(2, userId);      
+
+            statement.executeUpdate();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void updateStaff(User user) {
+        try {
+            String sql = """
+        UPDATE [user]
+        SET fullname = ?, 
+            phone = ?, 
+            username = ?, 
+            gender = ?, 
+            status = ?, 
+            role = ?, 
+            address = ?
+        WHERE userID = ?;
+        """;
+            PreparedStatement statement = con.prepareStatement(sql);
+
+            statement.setString(1, user.getFullname());  
+            statement.setString(2, user.getPhone());
+            statement.setString(3, user.getUsername());
+            statement.setString(4, user.getGender());
+            statement.setBoolean(5, user.isStatus());
+            statement.setInt(6, user.getRole().getRoleID());
+            statement.setString(7, user.getAddress());
+            statement.setInt(8, user.getUserID());
+            statement.executeUpdate();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void resetPassword(int userID){
+        try {
+            String sql = """
+        UPDATE [user]
+        SET password = '12345678'
+        WHERE userID = ?;
+        """;
+            PreparedStatement statement = con.prepareStatement(sql);
+
+            statement.setInt(1, userID);  
+            statement.executeUpdate();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void addStaff(User user){
+        try {
+            String sql = """
+        INSERT INTO [user](fullname,phone,username,password,gender,status,role,address)
+        VALUES (?,?,?,?,?,?,?,?)
+        """;
+            PreparedStatement statement = con.prepareStatement(sql);
+
+            statement.setString(1, user.getFullname());  
+            statement.setString(2, user.getPhone());
+            statement.setString(3, user.getUsername());
+            statement.setString(4, user.getPassword());
+            statement.setString(5, user.getGender());
+            statement.setBoolean(6, user.isStatus());
+            statement.setInt(7, user.getRole().getRoleID());
+            statement.setString(8, user.getAddress());
+            
+            statement.executeUpdate();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+
+    public ArrayList<Role> toArrRole(ResultSet rs) {
         ArrayList roleList = new ArrayList<>();
-        try{
-            while(rs.next()){
+        try {
+            while (rs.next()) {
                 Role role = new Role(rs.getInt("roleID"), rs.getString("roleName"));
                 roleList.add(role);
             }
             return roleList;
-        }catch(SQLException e){
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
             return roleList;
         }
     }
-    
-    public ArrayList<User> toArrUser(ResultSet rs){
+
+    public ArrayList<User> toArrUser(ResultSet rs) {
         ArrayList userList = new ArrayList<>();
-        try{
-            while(rs.next()){
+        try {
+            while (rs.next()) {
                 Role role = new Role(rs.getInt("roleID"), rs.getString("roleName"));
-                User user = new User(rs.getInt("userID"),rs.getString("fullname"), rs.getString("phone"),rs.getString("username"),rs.getString("password"),rs.getString("gender"),Boolean.parseBoolean(rs.getString("status")), role, rs.getString("address"));
+                User user = new User(rs.getInt("userID"), rs.getString("fullname"), rs.getString("phone"), rs.getString("username"), rs.getString("password"), rs.getString("gender"), rs.getBoolean("status"), role, rs.getString("address"));
                 userList.add(user);
             }
-        }catch(SQLException e){
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
         return userList;
     }
     
-    
-    
-    public static void main(String[] args){
-        ArrayList userList = INSTANCE.getUser(1,true,"userID",false,"John","sale,male");
-        for (Object object : userList) {
-            System.out.println(object);
+    public User toUser(ResultSet rs) {
+        User user = new User();
+        try {
+            if (rs.next()) {
+                Role role = new Role(rs.getInt("roleID"), rs.getString("roleName"));
+                user = new User(rs.getInt("userID"), rs.getString("fullname"), rs.getString("phone"), rs.getString("username"), rs.getString("password"), rs.getString("gender"), rs.getBoolean("status"), role, rs.getString("address"));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
         }
+        return user;
+    }
+
+    public static void main(String[] args) {
+//        ArrayList userList = INSTANCE.getUser(1, true, "userID", true, "", null);
+//        for (Object object : userList) {
+//            System.out.println(object);
+//        }
+        User user = new User(3,"Alice Johnson","2223334444","alicejohn","254682","female",true,new Role(3,""),"789 Maple St");
+        INSTANCE.updateStaff(user);
         System.out.println("----");
     }
-    
+
 }

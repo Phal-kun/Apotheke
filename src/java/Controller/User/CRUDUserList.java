@@ -12,13 +12,15 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import DAL.DAOUserList;
+import Model.User.*;
+import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
 
 /**
  *
  * @author ASUS
  */
-public class CRUDUserListServlet extends HttpServlet {
+public class CRUDUserList extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -56,8 +58,12 @@ public class CRUDUserListServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         DAOUserList db = DAOUserList.INSTANCE;
-        ArrayList userList = db.getUser(1, true, "fullname", true, "", "");
+        HttpSession session = request.getSession();      
+        
+        ArrayList<User> userList = db.getUser(1, true, "fullname", true, "", null);
         request.setAttribute("userList", userList);
+        session.setAttribute("showcustomer", true);
+        request.getRequestDispatcher("/View/UserManage/UserList.jsp").forward(request, response);
     } 
 
     /** 
@@ -70,7 +76,23 @@ public class CRUDUserListServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+        DAOUserList db = DAOUserList.INSTANCE;
+        HttpSession session = request.getSession(false);       
+ 
+        
+        if(request.getParameter("show")!=null){
+            session.setAttribute("showcustomer", request.getParameter("show").equals("true"));
+        }
+        
+        String keyword = request.getParameter("keyword");
+        session.setAttribute("keyword", keyword);
+        
+        String filterArr[] = request.getParameterValues("filter");
+        session.setAttribute("filter", filterArr);
+
+        ArrayList<User> userList = db.getUser(1, true, "fullname", (boolean)session.getAttribute("showcustomer"), (String)session.getAttribute("keyword"), (String[])session.getAttribute("filter"));
+        request.setAttribute("userList", userList);
+        request.getRequestDispatcher("/View/UserManage/UserList.jsp").forward(request, response);
     }
 
     /** 

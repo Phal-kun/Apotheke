@@ -1,0 +1,70 @@
+table, th, td {
+    border: 1px solid black;
+}
+
+/* Tool bar style */
+/* Toolbar styling to align elements in one line */
+.toolbar {
+    display: flex;
+    justify-content: space-between; /* Spread elements across the container */
+    align-items: center; /* Vertically center the content */
+    margin-bottom: 20px; /* Space below the toolbar */
+}
+
+#choserole {
+    display: flex;
+    gap: 10px; /* Space between Customer and Staff */
+}
+
+#searchfilter {
+    display: flex;
+    gap: 10px; /* Space between search bar and filter button */
+    align-items: center;
+}
+
+/* Styling the filter button */
+.filter-btn {
+    background-color: #f1f1f1;
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+}
+
+/* Popup styling */
+.popuptext {
+    visibility: hidden;
+    position: fixed;
+    right: 0;
+    top: 20%; /* Adjust according to your screen */
+    width: 250px;
+    background-color: #f1f1f1;
+    padding: 20px;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 999;
+}
+
+.popuptext.show {
+    visibility: visible;
+    right: 0;
+}
+
+/* Pagination Style */
+#pagination {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.page-btn {
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+    cursor: pointer;
+}
+
+.page-btn:disabled {
+    background-color: #007bff;
+    color: white;
+    cursor: default;
+}
