@@ -1,4 +1,3 @@
-
 --create database SWP391
 -- drop database SWP391
 
@@ -156,4 +155,3 @@ GO
 
 ALTER TABLE [blogTag] ADD FOREIGN KEY ([tagID]) REFERENCES [tag] ([tagID]);
 GO
-
