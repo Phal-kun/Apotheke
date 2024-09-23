@@ -21,4 +21,4 @@
 Thumbs.db
 
 # Database configuration
-/DAL/DBContext.java
+src/java/DAL/DBContext.java
