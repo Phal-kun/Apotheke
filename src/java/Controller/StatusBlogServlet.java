@@ -5,7 +5,6 @@
 package Controller;
 
 import DAL.BlogDAO;
-import DAL.DAO;
 import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
