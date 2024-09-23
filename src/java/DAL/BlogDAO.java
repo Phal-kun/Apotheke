@@ -4,7 +4,6 @@
  */
 package DAL;
 
-import static DAL.DAO.INSTANCE;
 import Model.Blog.Blog;
 import Model.Blog.Tag;
 import java.sql.Connection;
