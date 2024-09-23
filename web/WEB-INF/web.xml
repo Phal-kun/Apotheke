@@ -9,8 +9,52 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
     <servlet>
-        <servlet-name>DefaultServlet</servlet-name>
-        <servlet-class>Controller.Blog.DefaultServlet</servlet-class>
+        <servlet-name>CRUDUserList</servlet-name>
+        <servlet-class>Controller.User.CRUDUserList</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CRUDUserAddStaff</servlet-name>
+        <servlet-class>Controller.User.CRUDUserAddStaff</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CRUDUserEditStaff</servlet-name>
+        <servlet-class>Controller.User.CRUDUserEditStaff</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CRUDUserEditCustomer</servlet-name>
+        <servlet-class>Controller.User.CRUDUserEditCustomer</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LoginServlet</servlet-name>
+        <servlet-class>Controller.User.LoginServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CRUDUserResetPassword</servlet-name>
+        <servlet-class>Controller.User.CRUDUserResetPassword</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>BlogServlet</servlet-name>
+        <servlet-class>Controller.BlogServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteBlogServlet</servlet-name>
+        <servlet-class>Controller.DeleteBlogServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>StatusBlogServlet</servlet-name>
+        <servlet-class>Controller.StatusBlogServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EditBlogServlet</servlet-name>
+        <servlet-class>Controller.EditBlogServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CreateBlogServlet</servlet-name>
+        <servlet-class>Controller.CreateBlogServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SearchBlogServlet</servlet-name>
+        <servlet-class>Controller.SearchBlogServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>createProductServlet</servlet-name>
@@ -25,8 +69,52 @@
         <servlet-class>Controller.Product.ListProductServlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>DefaultServlet</servlet-name>
-        <url-pattern>/DefaultServlet</url-pattern>
+        <servlet-name>CRUDUserList</servlet-name>
+        <url-pattern>/CRUDUserList</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CRUDUserAddStaff</servlet-name>
+        <url-pattern>/CRUDUserAddStaff</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CRUDUserEditStaff</servlet-name>
+        <url-pattern>/CRUDUserEditStaff</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CRUDUserEditCustomer</servlet-name>
+        <url-pattern>/CRUDUserEditCustomer</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoginServlet</servlet-name>
+        <url-pattern>/login</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CRUDUserResetPassword</servlet-name>
+        <url-pattern>/CRUDUserResetPassword</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BlogServlet</servlet-name>
+        <url-pattern>/BlogManager</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteBlogServlet</servlet-name>
+        <url-pattern>/DeleteBlog</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StatusBlogServlet</servlet-name>
+        <url-pattern>/StatusBlog</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EditBlogServlet</servlet-name>
+        <url-pattern>/EditBlog</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreateBlogServlet</servlet-name>
+        <url-pattern>/CreateBlog</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SearchBlogServlet</servlet-name>
+        <url-pattern>/SearchBlog</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>createProductServlet</servlet-name>

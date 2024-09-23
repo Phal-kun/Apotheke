@@ -3,21 +3,25 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
-package Controller.User;
+package Controller;
 
-import Controller.Blog.*;
+import DAL.BlogDAO;
+import DAL.TagDAO;
+import Model.Blog.Blog;
+import Model.Blog.Tag;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  *
- * @author ASUS
+ * @author ACER
  */
-public class DefaultServlet extends HttpServlet {
+public class BlogServlet extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -34,10 +38,10 @@ public class DefaultServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet DefaultServlet</title>");  
+            out.println("<title>Servlet BlogServlet</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet DefaultServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet BlogServlet at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -54,7 +58,18 @@ public class DefaultServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+         // Retrieve blog list from BlogTagDAO
+        BlogDAO blogDAO = BlogDAO.instance;
+        List<Blog> blogList = blogDAO.getAllBlogs();
+        TagDAO tagDAO = TagDAO.instance;
+        List<Tag> tagList = tagDAO.getAllTags();
+        
+        // Set the blog list as a request attribute
+        request.setAttribute("blogList", blogList);
+        request.setAttribute("tagList", tagList);
+        
+        // Forward to the JSP for displaying the blog list
+        request.getRequestDispatcher("View/BlogManage/BlogManager.jsp").forward(request, response);
     } 
 
     /** 
@@ -67,7 +82,7 @@ public class DefaultServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+        doGet(request, response);
     }
 
     /** 

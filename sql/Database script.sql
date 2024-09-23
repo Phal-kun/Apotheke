@@ -156,4 +156,3 @@ GO
 ALTER TABLE [blogTag] ADD FOREIGN KEY ([tagID]) REFERENCES [tag] ([tagID]);
 GO
 
-
