@@ -61,8 +61,3 @@ VALUES
 (4, 4, 10);  -- Dexamethasone 10mg contains 1 unit of Dexamethasone
 GO
 
--- Updating Component table to include componentMeasureUnit
-UPDATE [Component]
-SET [componentMeasureUnit] = 'mg'
-WHERE [componentID] IN (1, 2, 3, 4);
-GO
