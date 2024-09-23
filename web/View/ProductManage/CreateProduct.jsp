@@ -19,18 +19,18 @@
                 <p id="description">Insert product's informations down these field below</p>
             </div>
         </header>
-        
-        <div class="container">
- 
-            <form id="product-form" action="CreateProduct" method="POST" onsubmit="return validateTable();">
-                
-                
 
-<!--                Might want to input ID manually
-                    <div class="labels">
-                    <label id="productID-label" for="productID">* Product's ID</label></div>
-                <div class="input-tab">
-                    <input class="input-field" type="number" step="1" id="productID" name="productID" placeholder="Enter product ID. If blank, system will generate one automatically"></div>-->
+        <div class="container">
+
+            <form id="product-form" action="CreateProduct" method="POST" onsubmit="return validateTable();">
+
+
+
+                <!--                Might want to input ID manually
+                                    <div class="labels">
+                                    <label id="productID-label" for="productID">* Product's ID</label></div>
+                                <div class="input-tab">
+                                    <input class="input-field" type="number" step="1" id="productID" name="productID" placeholder="Enter product ID. If blank, system will generate one automatically"></div>-->
 
                 <div class="labels">
                     <label id="productName-label" for="productName">* Product's Name</label></div>
@@ -115,12 +115,12 @@
                 <c:if test="${not empty errorMsg}">
                     <p style="color:red;">${errorMsg}</p>
                 </c:if>
-                    
-                    <div class="back-btn">
-            <a href="ListProduct">
-                <button type="button">Back to List</button>
-            </a>
-        </div>
+
+                <div class="back-btn">
+                    <a href="ListProduct">
+                        <button type="button">Back to List</button>
+                    </a>
+                </div>
             </form>
         </div>
     </body>

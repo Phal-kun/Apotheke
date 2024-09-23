@@ -20,7 +20,7 @@
             </div>
         </header>
 
-        
+
         <div class="container">
 
             <form id="product-form" action="UpdateProduct" method="POST" onsubmit="return validateTable();">
@@ -128,12 +128,12 @@
                 <c:if test="${not empty errorMsg}">
                     <p style="color:red;">${errorMsg}</p>
                 </c:if>
-                    
-                    <div class="back-btn">
-            <a href="ListProduct">
-                <button type="button">Back to List</button>
-            </a>
-        </div>
+
+                <div class="back-btn">
+                    <a href="ListProduct">
+                        <button type="button">Back to List</button>
+                    </a>
+                </div>
             </form>
         </div>
     </body>
