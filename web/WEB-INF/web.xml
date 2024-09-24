@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="6.0" xmlns="https://jakarta.ee/xml/ns/jakartaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd">
-    <filter>
-        <filter-name>DefaultFilter</filter-name>
-        <filter-class>Filter.DefaultFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>DefaultFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
+    
     <servlet>
         <servlet-name>CRUDUserList</servlet-name>
         <servlet-class>Controller.User.CRUDUserList</servlet-class>
@@ -68,6 +61,18 @@
         <servlet-name>ListProductServlet</servlet-name>
         <servlet-class>Controller.Product.ListProductServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>loginGoogle</servlet-name>
+        <servlet-class>Controller.Login.loginGoogle</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>loginuser</servlet-name>
+        <servlet-class>Controller.Login.loginuser</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>register</servlet-name>
+        <servlet-class>Controller.Login.register</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>CRUDUserList</servlet-name>
         <url-pattern>/CRUDUserList</url-pattern>
@@ -127,5 +132,17 @@
     <servlet-mapping>
         <servlet-name>ListProductServlet</servlet-name>
         <url-pattern>/ListProduct</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>loginGoogle</servlet-name>
+        <url-pattern>/loginGoogle</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>loginuser</servlet-name>
+        <url-pattern>/loginuser</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>register</servlet-name>
+        <url-pattern>/register</url-pattern>
     </servlet-mapping>
 </web-app>

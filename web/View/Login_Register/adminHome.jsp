@@ -1,7 +1,7 @@
 <%-- 
-    Document   : DefaultJSP
-    Created on : Sep 10, 2024, 10:42:16 PM
-    Author     : ASUS
+    Document   : adminHome
+    Created on : Sep 22, 2024, 5:24:20 PM
+    Author     : Dell
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -12,6 +12,9 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <h1>Hello admin</h1>
+        <a href="${pageContext.request.contextPath}/View/Home.jsp">
+            <button>Logout</button>
+        </a>
     </body>
 </html>
