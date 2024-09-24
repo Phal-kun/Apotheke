@@ -67,7 +67,6 @@
 
             <div>
                 <button type="submit">Update Staff</button>
-                <button type="button" onclick="window.location.href='CRUDUserList'">Back to List</button>
             </div>
 
             <div id="errorMessage" class="error"></div>
@@ -77,8 +76,7 @@
             <input type="hidden" name="userID" value="${user.userID}"/>
             <input type="submit" value="Reset Password"/>
         </form>
-            
-        
+
         <script>
             function validateForm() {
                 const form = document.getElementById('addStaffForm');
