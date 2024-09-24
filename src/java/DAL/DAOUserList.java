@@ -370,6 +370,7 @@ public class DAOUserList {
 //            System.out.println(object);
 //        }
         User user = new User(3,"Alice Johnson","2223334444","alicejohn","254682","female",true,new Role(3,""),"789 Maple St");
+        System.out.println(INSTANCE.getTotalPages(false, "", null));
         INSTANCE.updateStaff(user);
         System.out.println("----");
     }
