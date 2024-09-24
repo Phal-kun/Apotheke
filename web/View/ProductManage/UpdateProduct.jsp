@@ -33,7 +33,7 @@
 
                 <!-- Origin Dropdown -->
                 <div class="labels">
-                    <label for="dropdown">Product's Origin</label>
+                    <label for="dropdown">* Product's Origin</label>
                 </div>
                 <div class="input-tab">
                     <select id="dropdown" name="originID" required>
@@ -46,7 +46,7 @@
 
                 <!-- Manufacturer Dropdown -->
                 <div class="labels">
-                    <label for="dropdown">Manufacturer</label>
+                    <label for="dropdown">* Manufacturer</label>
                 </div>
                 <div class="input-tab">
                     <select id="dropdown" name="manufacturerID" required>
@@ -59,7 +59,7 @@
 
                 <!-- Form Dropdown -->
                 <div class="labels">
-                    <label for="dropdown">Form</label>
+                    <label for="dropdown">* Form</label>
                 </div>
                 <div class="input-tab">
                     <select id="dropdown" name="formID" required>
@@ -72,7 +72,7 @@
 
                 <!-- Category Dropdown -->
                 <div class="labels">
-                    <label for="dropdown">Category</label>
+                    <label for="dropdown">* Category</label>
                 </div>
                 <div class="input-tab">
                     <select id="dropdown" name="categoryID" required>
@@ -82,7 +82,11 @@
                         </c:forEach>
                     </select>
                 </div>
-
+                
+                <!-- Component dynamic table -->
+                <div class="labels">
+                    <label>* Component table</label>
+                </div>
                 <table id="component-table">
                     <thead>
                         <tr>
