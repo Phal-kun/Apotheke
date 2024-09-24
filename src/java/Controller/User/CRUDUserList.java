@@ -59,10 +59,16 @@ public class CRUDUserList extends HttpServlet {
     throws ServletException, IOException {
         DAOUserList db = DAOUserList.INSTANCE;
         HttpSession session = request.getSession();      
+        int indexNowCo = 1;
         
-        ArrayList<User> userList = db.getUser(1, true, "fullname", true, "", null);
+        
+        
+        ArrayList<User> userList = db.getUser(indexNowCo, true, "fullname", true, "", null);
         request.setAttribute("userList", userList);
+        session.setAttribute("indexNowCo", indexNowCo);
         session.setAttribute("showcustomer", true);
+        request.setAttribute("endPageCo", db.getTotalPages(true, "", null));
+        
         request.getRequestDispatcher("/View/UserManage/UserList.jsp").forward(request, response);
     } 
 
@@ -77,21 +83,37 @@ public class CRUDUserList extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         DAOUserList db = DAOUserList.INSTANCE;
-        HttpSession session = request.getSession(false);       
- 
+        HttpSession session = request.getSession(false);  
+        int indexNowCo;
+        
+        if(request.getParameter("indexCo") != null){
+            indexNowCo = Integer.parseInt(request.getParameter("indexCo"));
+        } else {
+            indexNowCo = 1;
+        }
         
         if(request.getParameter("show")!=null){
             session.setAttribute("showcustomer", request.getParameter("show").equals("true"));
+            session.setAttribute("filter", null); 
         }
-        
+    
         String keyword = request.getParameter("keyword");
-        session.setAttribute("keyword", keyword);
-        
-        String filterArr[] = request.getParameterValues("filter");
-        session.setAttribute("filter", filterArr);
+        if (request.getParameter("keywordReset") != null && request.getParameter("keywordReset").equals("true")) {
+            session.setAttribute("keyword", keyword);
+        }
 
-        ArrayList<User> userList = db.getUser(1, true, "fullname", (boolean)session.getAttribute("showcustomer"), (String)session.getAttribute("keyword"), (String[])session.getAttribute("filter"));
+
+        String[] filterArr = request.getParameterValues("filter");
+        if (request.getParameter("filterReset") != null && request.getParameter("filterReset").equals("true")) {
+            session.setAttribute("filter", filterArr); 
+        } 
+
+        int endPageCo = db.getTotalPages((boolean)session.getAttribute("showcustomer"), (String)session.getAttribute("keyword"), (String[])session.getAttribute("filter"));
+        ArrayList<User> userList = db.getUser(indexNowCo, true, "fullname", (boolean) session.getAttribute("showcustomer"), (String) session.getAttribute("keyword"), (String[]) session.getAttribute("filter"));
         request.setAttribute("userList", userList);
+        request.setAttribute("indexNowCo", indexNowCo);
+        request.setAttribute("endPageCo", endPageCo);
+
         request.getRequestDispatcher("/View/UserManage/UserList.jsp").forward(request, response);
     }
 

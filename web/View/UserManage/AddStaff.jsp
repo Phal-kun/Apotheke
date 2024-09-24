@@ -60,8 +60,10 @@
 
         <div>
             <button type="submit">Add Staff</button>
+            <button type="button" onclick="window.location.href='CRUDUserList'">Back to List</button>
         </div>
 
+        
         <div id="errorMessage" class="error"></div>
     </form>
     <script>
