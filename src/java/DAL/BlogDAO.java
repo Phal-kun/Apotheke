@@ -177,6 +177,56 @@ public class BlogDAO {
         }
         return blog;
     }
+    
+    // Method to get blogs by selected tag IDs
+    public List<Blog> getBlogsByTags(String[] selectedTagIDs) {
+        List<Blog> blogList = new ArrayList<>();
+
+        if (selectedTagIDs == null || selectedTagIDs.length == 0) {
+            return blogList; // Return an empty list if no tags are selected
+        }
+
+        StringBuilder query = new StringBuilder();
+        query.append("SELECT DISTINCT b.blogID, b.title, b.content, b.publicDate, b.userID, b.status ")
+             .append("FROM Blog b ")
+             .append("JOIN BlogTag bt ON b.blogID = bt.blogID ")
+             .append("WHERE bt.tagID IN (");
+
+        // Dynamically append placeholders for each tagID
+        for (int i = 0; i < selectedTagIDs.length; i++) {
+            query.append("?");
+            if (i < selectedTagIDs.length - 1) {
+                query.append(", ");
+            }
+        }
+        query.append(")");
+
+        try (PreparedStatement ps = connection.prepareStatement(query.toString())) {
+            // Set the tag ID values in the prepared statement
+            for (int i = 0; i < selectedTagIDs.length; i++) {
+                ps.setString(i + 1, selectedTagIDs[i]);
+            }
+
+            // Execute the query and process the results
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Blog blog = new Blog();
+                    blog.setBlogID(rs.getInt("blogID"));
+                    blog.setTitle(rs.getString("title"));
+                    blog.setContent(rs.getString("content"));
+                    blog.setPublicDate(rs.getDate("publicDate"));
+                    blog.setUserID(rs.getInt("userID"));
+                    blog.setStatus(rs.getBoolean("status"));
+                    blogList.add(blog);
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace(); // Log and handle the exception
+        }
+
+        return blogList;
+    }
 
     public static void main(String[] args) {
 //        System.out.println(BlogDAO.instance.getAllBlogs());
@@ -203,6 +253,8 @@ public class BlogDAO {
                 System.out.println("No tags for this blog.");
             }
             System.out.println("-----------------------------");
+            String[] tagTest = {"1","2"};
+            BlogDAO.instance.getBlogsByTags(tagTest);
         }
     }
 }

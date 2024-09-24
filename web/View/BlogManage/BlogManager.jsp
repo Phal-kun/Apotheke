@@ -14,24 +14,29 @@
         <title>JSP Page</title>
     </head>
     <body>
-
+        <link href="${pageContext.request.contextPath}/CSS/BlogCSS/BlogStyle.css" rel="stylesheet" type="text/css"/>
         <h1>List of Blogs</h1>
 
-<!--         Search Form with Keyword and Tag Filters -->
+        <!--         Search Form with Keyword and Tag Filters -->
         <form action="SearchBlog" method="get">
-            <label for="keyword">Search by Title:</label>
-            <input type="text" id="keyword" name="keyword" value="${param.keyword}"><br><br>
+            <div>
+                <label for="keyword">Search by Title:</label>
+                <input type="text" id="keyword" name="keyword" value="${param.keyword}" placeholder="Enter keyword"><br><br>
+                <input type="submit" value="Search">
+            </div>
 
             <label>Filter by Tags:</label><br>
-            <c:forEach var="tag" items="${tagList}">
-                <input type="checkbox" name="tagFilter" value="${tag.tagID}" 
-                       <c:if test="${fn:contains(param.tagFilter, tag.tagID)}">checked</c:if>
-                       >${tag.tagName}<br>
-            </c:forEach><br>
-
-            <input type="submit" value="Search">
+            <!-- Checkbox list for filtering by tags -->
+            <div class="tag-filters">
+                <c:forEach var="tag" items="${tagList}">
+                    <label>
+                        <input type="checkbox" name="tag" value="${tag.tagID}">
+                        ${tag.tagName}
+                    </label>
+                </c:forEach>
+            </div>
         </form>
-
+                
         <table border="1">
             <thead>
                 <tr>
@@ -71,7 +76,7 @@
                         <td>
                             <form action="EditBlog" method="get" style="display:inline;">
                                 <input type="hidden" name="blogID" value="${blog.blogID}">
-                                <input type="submit" value="Edit">
+                                <button type="submit" value="Edit">Edit</button>
                             </form>
                         </td>
 
@@ -79,7 +84,7 @@
                         <td>
                             <form action="DeleteBlog" method="post" style="display:inline;">
                                 <input type="hidden" name="blogID" value="${blog.blogID}">
-                                <input type="submit" value="Delete">
+                                <button type="submit" value="Delete">Delete</button>
                             </form>
                         </td>
                     </tr>

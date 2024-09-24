@@ -2,25 +2,23 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package Controller;
+package Controller.Blog;
 
 import DAL.BlogDAO;
-import DAL.TagDAO;
-import Model.Blog.Blog;
-import Model.Blog.Tag;
+import DAL.DAO;
+import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
 
 /**
  *
  * @author ACER
  */
-public class CreateBlogServlet extends HttpServlet {
+public class StatusBlogServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,10 +37,10 @@ public class CreateBlogServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet CreateServlet</title>");
+            out.println("<title>Servlet StatusServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet CreateServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet StatusServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -60,12 +58,7 @@ public class CreateBlogServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Fetch available tags from the database to display in the form
-        List<Tag> tagList = TagDAO.instance.getAllTags();
-        request.setAttribute("tagList", tagList);
-
-        // Forward to the CreatePost.jsp
-        request.getRequestDispatcher("View/BlogManage/CreatePost.jsp").forward(request, response);
+        processRequest(request, response);
     }
 
     /**
@@ -79,41 +72,28 @@ public class CreateBlogServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Get parameters from the form
-        String title = request.getParameter("title");
-        String content = request.getParameter("content");
-        int userID = Integer.parseInt(request.getParameter("userID"));
+        int blogID = Integer.parseInt(request.getParameter("blogID"));
+        String status = request.getParameter("status");
 
-        // Get selected tags
-        String[] selectedTagIDs = request.getParameterValues("tagID");
+        //Toggle the status
+        boolean currentStatus = status.equals("true") ? false : true;
 
-        // Create a new blog object
-        Blog blog = new Blog();
-        blog.setTitle(title);
-        blog.setContent(content);
-        blog.setUserID(userID);
+        // Update the account status in the database
+        BlogDAO.instance.toggleBlogStatus(blogID);
 
-        // Save the blog to the database
-        BlogDAO.instance.createBlog(blog);
-
-        // Associate the selected tags with the blog
-        if (selectedTagIDs != null) {
-            for (String tagID : selectedTagIDs) {
-                TagDAO.instance.addTagToBlog(blog.getBlogID(), Integer.parseInt(tagID));
-            }
-        }
-
-        // Redirect to BlogManager after creation
-        response.sendRedirect("BlogManager");
+        // Redirect back to the Account Management page with a success message
+        request.setAttribute("statusUpdateMsg", "Status update successful!");
+        RequestDispatcher rd = request.getRequestDispatcher("BlogManager");
+        rd.forward(request, response);
     }
 
-/**
- * Returns a short description of the servlet.
- *
- * @return a String containing servlet description
- */
-@Override
-public String getServletInfo() {
+    /**
+     * Returns a short description of the servlet.
+     *
+     * @return a String containing servlet description
+     */
+    @Override
+    public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
 

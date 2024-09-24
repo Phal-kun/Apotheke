@@ -2,29 +2,25 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package Controller;
+package Controller.Blog;
 
 import DAL.BlogDAO;
 import DAL.TagDAO;
 import Model.Blog.Blog;
 import Model.Blog.Tag;
-import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
  *
  * @author ACER
  */
-public class EditBlogServlet extends HttpServlet {
+public class CreateBlogServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -43,10 +39,10 @@ public class EditBlogServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet EditServlet</title>");
+            out.println("<title>Servlet CreateServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet EditServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet CreateServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -64,18 +60,12 @@ public class EditBlogServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Get blogID from request
-        int blogID = Integer.parseInt(request.getParameter("blogID"));
-
-        // Fetch blog by ID
-        Blog blog = BlogDAO.instance.getBlogById(blogID);
+        // Fetch available tags from the database to display in the form
         List<Tag> tagList = TagDAO.instance.getAllTags();
-
-        // Set blog as request attribute and forward to edit page
-        request.setAttribute("blog", blog);
         request.setAttribute("tagList", tagList);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("View/BlogManage/UpdatePost.jsp");
-        dispatcher.forward(request, response);
+
+        // Forward to the CreatePost.jsp
+        request.getRequestDispatcher("View/BlogManage/CreatePost.jsp").forward(request, response);
     }
 
     /**
@@ -90,41 +80,40 @@ public class EditBlogServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // Get parameters from the form
-        int blogID = Integer.parseInt(request.getParameter("blogID"));
-    String title = request.getParameter("title");
-    String content = request.getParameter("content");
-    int userID = Integer.parseInt(request.getParameter("userID"));
+        String title = request.getParameter("title");
+        String content = request.getParameter("content");
+        int userID = Integer.parseInt(request.getParameter("userID"));
 
-    // Fetch the selected tags from the form (checkboxes)
-    String[] selectedTags = request.getParameterValues("tagUpdate");
+        // Get selected tags
+        String[] selectedTagIDs = request.getParameterValues("tagID");
 
-    // Parse and store the selected tags in a list
-    List<Tag> tagList = new ArrayList<>();
-    if (selectedTags != null) {
-        for (String tagID : selectedTags) {
-            int tagIdInt = Integer.parseInt(tagID);
-            tagList.add(new Tag(tagIdInt, null));  // assuming Tag has a constructor that takes ID
+        // Create a new blog object
+        Blog blog = new Blog();
+        blog.setTitle(title);
+        blog.setContent(content);
+        blog.setUserID(userID);
+
+        // Save the blog to the database
+        BlogDAO.instance.createBlog(blog);
+
+        // Associate the selected tags with the blog
+        if (selectedTagIDs != null) {
+            for (String tagID : selectedTagIDs) {
+                TagDAO.instance.addTagToBlog(blog.getBlogID(), Integer.parseInt(tagID));
+            }
         }
+
+        // Redirect to BlogManager after creation
+        response.sendRedirect("BlogManager");
     }
 
-    // Fetch the blog from DB (if needed) and update its attributes
-    Blog blog = new Blog(blogID, title, content, userID, true); // Assuming the status remains unchanged
-    blog.setTags(tagList); // Assuming the Blog class has a setTags() method
-
-    // Update the blog in the database
-    BlogDAO.instance.updateBlog(blog);
-
-    // Redirect after update
-    response.sendRedirect("BlogManager");
-    }
-
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
+/**
+ * Returns a short description of the servlet.
+ *
+ * @return a String containing servlet description
+ */
+@Override
+public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
 
