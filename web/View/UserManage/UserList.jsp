@@ -35,6 +35,7 @@
             <div id="searchfilter">
                 <form name="search" method="post" action="CRUDUserList" style="display: inline-block;">
                     <input type="text" name="keyword" placeholder="Search..."/>
+                    <input type="hidden" name="keywordReset" value="true"/>
                     <input type="submit" value="Search"/>
                 </form>
 
@@ -55,6 +56,8 @@
                                 <label for="status">Status</label><br/>
                                 <input type="checkbox" name="filter" value="active"> Active<br/>
                                 <input type="checkbox" name="filter" value="inactive"> Inactive<br/><br/>
+                                
+                                <input type="hidden" name="filterReset" value="true"/>
 
                                 <button type="submit">Filter</button>
                                 <button type="button" onclick="uncheckAll()">Clear</button>
@@ -76,6 +79,8 @@
                                 <input type="checkbox" name="filter" value="warehouse"> Warehouse<br/>
                                 <input type="checkbox" name="filter" value="sale"> Sale<br/>
                                 <input type="checkbox" name="filter" value="marketing"> Marketing<br/><br/>
+                                
+                                <input type="hidden" name="filterReset" value="true"/>
 
                                 <button type="submit">Filter</button>
                                 <button type="button" onclick="uncheckAll()">Clear</button>
@@ -201,12 +206,35 @@
                                 </c:forEach>
                             </tbody>
                         </table>
+                        
                     </c:if>
                 </c:otherwise>
             </c:choose>
         </div>
 
+        <div class="pagination" style="margin: auto; justify-content: center; margin-top: 30px;">
+            <form action="CRUDUserList" method="post" style="display: inline;">
+                <input type="hidden" name="indexCo" value="${indexNowCo - 1}" />
+                <button type="submit">&laquo;</button>
+            </form>
 
+            <c:forEach begin="1" end="${endPageCo}" var="o">
+                <form action="CRUDUserList" method="post" style="display: inline;">
+                    <input type="hidden" name="indexCo" value="${o}" />
+                    <button type="submit" class="${indexNowCo == o ? 'active' : ''}" ${indexNowCo == o ? 'disabled' : ''}>${o}</button>
+                </form>
+            </c:forEach>
+
+            <form action="CRUDUserList" method="post" style="display: inline;">
+                <input type="hidden" name="indexCo" value="${indexNowCo + 1}" />
+                <button type="submit">&raquo;</button>
+            </form>
+        </div>
+
+
+
+
+        
         <script>
             function setFormAction(url) {
                 document.getElementById("UserForm").action = url;
