@@ -50,14 +50,21 @@ table, th, td {
 }
 
 /* Pagination Style */
-
-.pagination a.disabled {
-    color: #ccc;
-    cursor: not-allowed;
+#pagination {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
 }
 
-.pagination .active {
-    font-weight: bold;
-    text-decoration: underline;
+.page-btn {
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+    cursor: pointer;
+}
+
+.page-btn:disabled {
+    background-color: #007bff;
+    color: white;
     cursor: default;
 }
