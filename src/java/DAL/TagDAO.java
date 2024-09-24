@@ -209,7 +209,8 @@ public class TagDAO {
     public static void main(String[] args) {
         System.out.println(TagDAO.instance.getAllTags());
         System.out.println(BlogDAO.instance.getBlogById(7));
-        String[] testTag = {"1","4"};
-        System.out.println(TagDAO.instance.searchBlogsByKeywordAndTags("so", testTag));
+        System.out.println(BlogDAO.instance.getBlogById(11));
+        String[] testTag = {"1","2"};
+        System.out.println(TagDAO.instance.searchBlogsByKeywordAndTags("", testTag));
     }
 }

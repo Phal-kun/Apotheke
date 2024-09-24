@@ -3,25 +3,22 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
-package Controller;
+package Controller.Blog;
 
 import DAL.BlogDAO;
-import DAL.TagDAO;
-import Model.Blog.Blog;
-import Model.Blog.Tag;
+import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
 
 /**
  *
  * @author ACER
  */
-public class BlogServlet extends HttpServlet {
+public class DeleteBlogServlet extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -38,10 +35,10 @@ public class BlogServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet BlogServlet</title>");  
+            out.println("<title>Servlet DeleteBlogServlet</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet BlogServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet DeleteBlogServlet at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -58,18 +55,7 @@ public class BlogServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-         // Retrieve blog list from BlogTagDAO
-        BlogDAO blogDAO = BlogDAO.instance;
-        List<Blog> blogList = blogDAO.getAllBlogs();
-        TagDAO tagDAO = TagDAO.instance;
-        List<Tag> tagList = tagDAO.getAllTags();
-        
-        // Set the blog list as a request attribute
-        request.setAttribute("blogList", blogList);
-        request.setAttribute("tagList", tagList);
-        
-        // Forward to the JSP for displaying the blog list
-        request.getRequestDispatcher("View/BlogManage/BlogManager.jsp").forward(request, response);
+        processRequest(request, response);
     } 
 
     /** 
@@ -82,7 +68,15 @@ public class BlogServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        doGet(request, response);
+        int blogID = Integer.parseInt(request.getParameter("blogID"));
+        
+        // Call the DAO to delete the blog by ID
+        BlogDAO.instance.deleteBlog(blogID);
+        request.setAttribute("deleteMsg","Delete Successful!");
+        
+        // Redirect back to the Blog Manager page
+        RequestDispatcher rd = request.getRequestDispatcher("BlogManager");
+        rd.forward(request, response);
     }
 
     /** 

@@ -34,27 +34,27 @@
     </servlet>
     <servlet>
         <servlet-name>BlogServlet</servlet-name>
-        <servlet-class>Controller.BlogServlet</servlet-class>
+        <servlet-class>Controller.Blog.BlogServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>DeleteBlogServlet</servlet-name>
-        <servlet-class>Controller.DeleteBlogServlet</servlet-class>
+        <servlet-class>Controller.Blog.DeleteBlogServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>StatusBlogServlet</servlet-name>
-        <servlet-class>Controller.StatusBlogServlet</servlet-class>
+        <servlet-class>Controller.Blog.StatusBlogServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>EditBlogServlet</servlet-name>
-        <servlet-class>Controller.EditBlogServlet</servlet-class>
+        <servlet-class>Controller.Blog.EditBlogServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>CreateBlogServlet</servlet-name>
-        <servlet-class>Controller.CreateBlogServlet</servlet-class>
+        <servlet-class>Controller.Blog.CreateBlogServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>SearchBlogServlet</servlet-name>
-        <servlet-class>Controller.SearchBlogServlet</servlet-class>
+        <servlet-class>Controller.Blog.SearchBlogServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>createProductServlet</servlet-name>
