@@ -13,6 +13,7 @@
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/CSS/login/loginform.css">
         
     </head>
+    <script src="Login_Register/oauthConfig.js"></script>
     
     <body class="overlay" id="overlay">
                
@@ -59,7 +60,7 @@
                 
             
             </form>
-             <button class="gsi-material-button" onclick="window.location.href='https://accounts.google.com/o/oauth2/auth?scope=https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/user.birthday.read https://www.googleapis.com/auth/user.addresses.read https://www.googleapis.com/auth/user.phonenumbers.read https://www.googleapis.com/auth/user.gender.read&access_type=online&redirect_uri=http://localhost:9998/Apotheke/loginGoogle&response_type=code&client_id=281219533244-p3s850ncnfsj1lhkh49vc21nvjmo2tjh.apps.googleusercontent.com'">
+             <button class="gsi-material-button" onclick="window.location.href=googleOAuthURL">
                 <div class="gsi-material-button-state"></div>
                 <div class="gsi-material-button-content-wrapper">
                     <div class="gsi-material-button-icon">
@@ -128,7 +129,7 @@
         <button type="submit" class="submitds2">Register Now</button><br>
         <span id="dwe">or login with google</span>
     </form>
-            <button class="gsi-material-button" onclick="window.location.href='https://accounts.google.com/o/oauth2/auth?scope=https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/user.birthday.read https://www.googleapis.com/auth/user.addresses.read https://www.googleapis.com/auth/user.phonenumbers.read https://www.googleapis.com/auth/user.gender.read&access_type=online&redirect_uri=http://localhost:9998/Apotheke/loginGoogle&response_type=code&client_id=281219533244-p3s850ncnfsj1lhkh49vc21nvjmo2tjh.apps.googleusercontent.com'">
+            <button class="gsi-material-button" onclick="window.location.href=googleOAuthURL">
                 <div class="gsi-material-button-state"></div>
                 <div class="gsi-material-button-content-wrapper">
                     <div class="gsi-material-button-icon">
