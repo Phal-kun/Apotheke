@@ -47,7 +47,7 @@ public class loginGoogle extends HttpServlet {
     throws ServletException, IOException {
          String code = request.getParameter("code");
         if (code == null || code.isEmpty()) {
-           request.getRequestDispatcher("index.html").forward(request,response);
+           request.getRequestDispatcher("/View/Login_Register/activeHome.jsp").forward(request,response);
         }else{
             String accessToken = GoogleLG.getToken(code);
             User user = GoogleLG.getUserInfo(accessToken);
@@ -55,24 +55,24 @@ public class loginGoogle extends HttpServlet {
              try {
                 if(usdao.getUserByEmail(user.getFullname())==null){
                    usdao.saveUser(user);
-                   request.getRequestDispatcher("customerHome.jsp");
+                   request.getRequestDispatcher("/View/Login_Register/customerHome.jsp").forward(request,response);
                 }else{
                     if(user.getFullname()== usdao.getUserByEmail(user.getFullname()).getFullname()){
                         switch (user.getRole().getRoleID()) {
                             case 1:
-                                 request.getRequestDispatcher("/Login_Register/customerHome.jsp");
+                                 request.getRequestDispatcher("/View/Login_Register/customerHome.jsp").forward(request,response);
                                 break;
                             case 2:
-                                request.getRequestDispatcher("/Login_Register/warehouseHome.jsp");
+                                request.getRequestDispatcher("/View/Login_Register/warehouseHome.jsp").forward(request,response);
                                 break;
                             case 3:
-                                request.getRequestDispatcher("/Login_Register/saleHome.jsp");
+                                request.getRequestDispatcher("/View/Login_Register/saleHome.jsp").forward(request,response);
                                 break;   
                             case 4:
-                                request.getRequestDispatcher("/Login_Register/marketingHome.jsp");
+                                request.getRequestDispatcher("/View/Login_Register/marketingHome.jsp").forward(request,response);
                                 break;     
                             default:
-                                request.getRequestDispatcher("/Login_Register/adminHome.jsp");
+                                request.getRequestDispatcher("/View/Login_Register/adminHome.jsp").forward(request,response);
                                 break; 
                         }
                     } 
