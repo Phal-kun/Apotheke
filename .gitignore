@@ -22,3 +22,6 @@ Thumbs.db
 
 # Database configuration
 src/java/DAL/DBContext.java
+
+# Ignore Google login congig
+src/java/Controller/Login/Constants.java
