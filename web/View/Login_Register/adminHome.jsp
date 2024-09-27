@@ -13,8 +13,9 @@
     </head>
     <body>
         <h1>Hello admin</h1>
+        <a href="${pageContext.request.contextPath}/CRUDUserList">
         <a href="${pageContext.request.contextPath}/View/Home.jsp">
-            <button>Logout</button>
+        <button>Logout</button>
         </a>
     </body>
 </html>

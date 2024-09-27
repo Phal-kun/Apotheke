@@ -1,40 +1,74 @@
-/*
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
-*/
-/* 
-    Created on : Sep 22, 2024, 11:12:50 PM
-    Author     : ASUS
-*/
+@import url('https://fonts.googleapis.com/css?family=Abel');
+
+body, html {
+  color: #fff;
+  font-family: 'Abel', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: transparent;
+}
 
 body {
-    font-family: Arial, sans-serif;
+  font-size: 1.2em;
+  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(https://wallpapercave.com/wp/Fdh76FQ.jpg) center no-repeat fixed;
+  background-size: cover;
 }
 
 form {
-    width: 300px;
-    margin: 0 auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 10px;
+  width: 400px;
+  margin: 2em auto;
+  padding: 20px;
+  background-color: rgba(230, 126, 34,0.8);
+  border-radius: 20px;
 }
 
 div {
-    margin-bottom: 15px;
+  margin-bottom: 15px;
 }
 
 label {
-    margin-bottom: 5px;
-    display: block;
+  margin-bottom: 5px;
+  display: block;
+  font-size: 1.2em;
+  color: #fff;
 }
 
 input, select {
-    width: 100%;
-    padding: 8px;
-    box-sizing: border-box;
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+  border: 1px solid #e67e22;
+  border-radius: 4px;
+  font-family: 'Abel', sans-serif;
+  font-size: 1em;
+}
+
+button {
+  width: 100%;
+  background-color: #e67e22;
+  border-radius: 4px;
+  color: white;
+  font-size: 1.2em;
+  padding: 10px 15px;
+  border: 1px solid;
+}
+
+button:hover {
+  background-color: #bf6516;
 }
 
 .error {
-    color: red;
-    font-size: 12px;
+  color: red;
+  font-size: 0.9em;
+}
+
+@media only screen and (max-width: 768px) {
+  body {
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(https://wallpapercave.com/wp/Fdh76FQ.jpg) center no-repeat fixed;
+    background-size: cover;
+  }
+  
+  form {
+    width: 90%;
+  }
 }

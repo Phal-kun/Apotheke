@@ -16,6 +16,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
+import org.mindrot.jbcrypt.BCrypt;
 
 /**
  *
@@ -88,7 +89,7 @@ public class CRUDUserEditStaff extends HttpServlet {
         String address = request.getParameter("address");
         
         Role role = new Role(roleID,"");
-        User user = new User(userID, fullname, phone, username, password, gender, status, role, address);
+        User user = new User(userID, fullname, phone, username, hashPassword(password), gender, status, role, address);
         
         DAOUserList db = DAOUserList.INSTANCE;
         db.updateStaff(user);
@@ -109,4 +110,7 @@ public class CRUDUserEditStaff extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
+    public static String hashPassword(String plainPassword) {
+        return BCrypt.hashpw(plainPassword, BCrypt.gensalt(12)); // 12 là số vòng lặp
+    }
 }

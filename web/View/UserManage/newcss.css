@@ -1,63 +1,132 @@
-table, th, td {
-    border: 1px solid black;
+@import url('https://fonts.googleapis.com/css?family=Abel');
+
+body, html {
+  color: #fff;
+  font-family: 'Abel', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: transparent;
 }
 
-/* Tool bar style */
-/* Toolbar styling to align elements in one line */
+body {
+  font-size: 1.2em;
+  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(https://wallpapercave.com/wp/Fdh76FQ.jpg) center no-repeat fixed;
+  background-size: cover;
+}
+
+h1 {
+  font-size: 2.5em;
+  text-align: center;
+  color: #fff;
+  margin-top: 20px;
+}
+
 .toolbar {
-    display: flex;
-    justify-content: space-between; /* Spread elements across the container */
-    align-items: center; /* Vertically center the content */
-    margin-bottom: 20px; /* Space below the toolbar */
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  width: 90%;
+  margin: 0 auto;
+  background-color: rgba(230, 126, 34, 0.8);
+  border-radius: 10px;
 }
 
 #choserole {
-    display: flex;
-    gap: 10px; /* Space between Customer and Staff */
+  display: flex;
+  align-items: center;
+}
+
+#choserole form {
+  display: inline;
 }
 
 #searchfilter {
-    display: flex;
-    gap: 10px; /* Space between search bar and filter button */
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
-/* Styling the filter button */
-.filter-btn {
-    background-color: #f1f1f1;
-    padding: 5px 10px;
-    border: 1px solid #ccc;
-    cursor: pointer;
+#searchfilter input[type="text"] {
+  padding: 8px;
+  border: 1px solid #e67e22;
+  border-radius: 4px;
 }
 
-/* Popup styling */
+.filter-btn, input[type="submit"], button {
+  background-color: #e67e22;
+  color: white;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+button:hover, input[type="submit"]:hover {
+  background-color: #bf6516;
+}
+
 .popuptext {
-    visibility: hidden;
-    position: fixed;
-    right: 0;
-    top: 20%; /* Adjust according to your screen */
-    width: 250px;
-    background-color: #f1f1f1;
-    padding: 20px;
-    border: 1px solid #ccc;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    z-index: 999;
+  display: none;
+  position: absolute;
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 10px;
+  border-radius: 10px;
+  color: black;
+  z-index: 1;
 }
 
 .popuptext.show {
-    visibility: visible;
-    right: 0;
+  display: block;
 }
 
-/* Pagination Style */
-
-.pagination a.disabled {
-    color: #ccc;
-    cursor: not-allowed;
+table {
+  width: 90%;
+  margin: 20px auto;
+  border-collapse: collapse;
 }
 
-.pagination .active {
-    font-weight: bold;
-    text-decoration: underline;
-    cursor: default;
+table th, table td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+table th {
+  background-color: rgba(230, 126, 34, 0.8);
+  color: white;
+}
+
+table tr:nth-child(even) {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+table tr:hover {
+  background-color: rgba(230, 126, 34, 0.4);
+}
+
+.pagination {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.pagination button {
+  background-color: #e67e22;
+  color: white;
+  border: none;
+  padding: 10px;
+  margin: 0 5px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.pagination button.active, .pagination button[disabled] {
+  background-color: #bf6516;
+  cursor: default;
+}
+
+.message {
+  text-align: center;
+  font-size: 1.2em;
+  margin-top: 20px;
+  color: #f39c12;
 }

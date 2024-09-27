@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import Model.User.*;
+import org.mindrot.jbcrypt.BCrypt;
 
 /**
  *
@@ -285,17 +286,21 @@ public class DAOUserList {
         try {
             String sql = """
         UPDATE [user]
-        SET password = '12345678'
+        SET password = ?
         WHERE userID = ?;
         """;
             PreparedStatement statement = con.prepareStatement(sql);
-
-            statement.setInt(1, userID);  
+            statement.setString(1, hashPassword("12345678"));
+            statement.setInt(2, userID);  
             statement.executeUpdate();
 
         } catch (SQLException ex) {
             Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    public static String hashPassword(String plainPassword) {
+        return BCrypt.hashpw(plainPassword, BCrypt.gensalt(12)); // 12 là số vòng lặp
     }
     
     public void addStaff(User user){
@@ -369,10 +374,9 @@ public class DAOUserList {
 //        for (Object object : userList) {
 //            System.out.println(object);
 //        }
-        User user = new User(3,"Alice Johnson","2223334444","alicejohn","254682","female",true,new Role(3,""),"789 Maple St");
-        System.out.println(INSTANCE.getTotalPages(false, "", null));
-        INSTANCE.updateStaff(user);
-        System.out.println("----");
+        
+        
+        System.out.println(INSTANCE.hashPassword("admin"));
     }
 
 }

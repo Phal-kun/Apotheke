@@ -6,6 +6,8 @@
         <title>User Management</title>
         <link rel="stylesheet" href="/Apotheke/View/UserManage/newcss.css">
         <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+        <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
     </head>
     <body>
         <h1>User Management</h1>
@@ -34,7 +36,7 @@
             <!-- Right section for search and filter -->
             <div id="searchfilter">
                 <form name="search" method="post" action="CRUDUserList" style="display: inline-block;">
-                    <input type="text" name="keyword" placeholder="Search..."/>
+                    <input type="text" name="keyword" placeholder="Search..." value="${sessionScope.keyword}"/>
                     <input type="hidden" name="keywordReset" value="true"/>
                     <input type="submit" value="Search"/>
                 </form>
@@ -50,13 +52,13 @@
                             <h3>Filter By</h3>
                             <form name="filter" method="post" action="CRUDUserList">
                                 <label for="gender">Gender</label><br/>
-                                <input type="checkbox" name="filter" value="male"> Male<br/>
-                                <input type="checkbox" name="filter" value="female"> Female<br/><br/>
+                                <input type="checkbox" name="filter" value="male" ${fn:contains(sessionScope.filter, 'male') ? 'checked' : ''}> Male<br/>
+                                <input type="checkbox" name="filter" value="female" ${fn:contains(sessionScope.filter, 'female') ? 'checked' : ''}> Female<br/><br/>
 
                                 <label for="status">Status</label><br/>
-                                <input type="checkbox" name="filter" value="active"> Active<br/>
-                                <input type="checkbox" name="filter" value="inactive"> Inactive<br/><br/>
-                                
+                                <input type="checkbox" name="filter" value="active" ${fn:contains(sessionScope.filter, 'active') ? 'checked' : ''}> Active<br/>
+                                <input type="checkbox" name="filter" value="inactive" ${fn:contains(sessionScope.filter, 'inactive') ? 'checked' : ''}> Inactive<br/><br/>
+
                                 <input type="hidden" name="filterReset" value="true"/>
 
                                 <button type="submit">Filter</button>
@@ -68,18 +70,19 @@
                             <h3>Filter By</h3>
                             <form name="filter" method="post" action="CRUDUserList">
                                 <label for="gender">Gender</label><br/>
-                                <input type="checkbox" name="filter" value="male"> Male<br/>
-                                <input type="checkbox" name="filter" value="female"> Female<br/><br/>
+                                <input type="checkbox" name="filter" value="male" ${fn:contains(sessionScope.filter, 'male') ? 'checked' : ''}> Male<br/>
+                                <input type="checkbox" name="filter" value="female" ${fn:contains(sessionScope.filter, 'female') ? 'checked' : ''}> Female<br/><br/>
+
 
                                 <label for="status">Status</label><br/>
-                                <input type="checkbox" name="filter" value="active"> Active<br/>
-                                <input type="checkbox" name="filter" value="inactive"> Inactive<br/><br/>
+                                <input type="checkbox" name="filter" value="active" ${fn:contains(sessionScope.filter, 'active') ? 'checked' : ''}> Active<br/>
+                                <input type="checkbox" name="filter" value="inactive" ${fn:contains(sessionScope.filter, 'inactive') ? 'checked' : ''}> Inactive<br/><br/>
 
                                 <label for="role">Role</label><br/>
-                                <input type="checkbox" name="filter" value="warehouse"> Warehouse<br/>
-                                <input type="checkbox" name="filter" value="sale"> Sale<br/>
-                                <input type="checkbox" name="filter" value="marketing"> Marketing<br/><br/>
-                                
+                                <input type="checkbox" name="filter" value="warehouse" ${fn:contains(sessionScope.filter, 'warehouse') ? 'checked' : ''}> Warehouse<br/>
+                                <input type="checkbox" name="filter" value="sale" ${fn:contains(sessionScope.filter, 'sale') ? 'checked' : ''}> Sale<br/>
+                                <input type="checkbox" name="filter" value="marketing" ${fn:contains(sessionScope.filter, 'marketing') ? 'checked' : ''}> Marketing<br/><br/>
+
                                 <input type="hidden" name="filterReset" value="true"/>
 
                                 <button type="submit">Filter</button>
@@ -95,7 +98,7 @@
 
         <div>
             <c:if test="${userList.isEmpty()}">
-                <p class="message">There is no User yet!</p>
+                <p class="message">There is no User!</p>
             </c:if>
         </div>
 

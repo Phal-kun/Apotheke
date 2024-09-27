@@ -12,8 +12,8 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Hello wareHome!</h1>
-        
+        <h1>Hello warehouse!</h1>
+            
             <a href="${pageContext.request.contextPath}/View/Home.jsp">
             <button>Logout</button>
             </a>

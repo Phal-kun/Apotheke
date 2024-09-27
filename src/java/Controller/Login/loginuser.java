@@ -90,8 +90,10 @@ public class loginuser extends HttpServlet {
                     case 4:
                         response.sendRedirect("View/Login_Register/marketingHome.jsp");
                         break;
+                    case 5:
+                        response.sendRedirect(request.getContextPath() + "/CRUDUserList");
+                        break;
                     default:
-                        response.sendRedirect("View/Login_Register/adminHome.jsp");
                         break;    
                 }
             
