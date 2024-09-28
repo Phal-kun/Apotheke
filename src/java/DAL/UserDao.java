@@ -159,7 +159,7 @@ public class UserDao extends DBContext{
     public void saveUserByUsername(User user) {
             String sql = "INSERT INTO [user] (fullname, username, password, gender, role, status, phone, address) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
             try {
-                con = getConnection();
+                con = new DBContext().getConnection();
                 PreparedStatement ps = con.prepareStatement(sql);
 
                 // Set các giá trị cho PreparedStatement
@@ -195,6 +195,45 @@ public class UserDao extends DBContext{
             return BCrypt.hashpw(password, BCrypt.gensalt(12));
         }
 
+        public User getUserByUsernamePassword(String username, String password) throws SQLException, Exception {
+    String sql = "SELECT * FROM [user] WHERE username = ? AND password = ?";
+    User user = null; // Khởi tạo biến user
 
+    try {
+        con = new DBContext().getConnection();
+        ps = con.prepareStatement(sql);
+        ps.setString(1, username); // Gán giá trị cho tham số username
+        ps.setString(2, password); // Gán giá trị cho tham số password
+        rs = ps.executeQuery();
 
+        if (rs.next()) { // Kiểm tra nếu có kết quả
+            user = new User(); // Khởi tạo đối tượng User
+
+            // Gán giá trị từ ResultSet vào đối tượng User
+            user.setUserID(rs.getInt("userID"));
+            user.setFullname(rs.getString("fullname"));
+            user.setUsername(rs.getString("username"));
+            user.setPassword(rs.getString("password")); // Lưu mật khẩu (nếu cần)
+            user.setGender(rs.getString("gender"));
+
+            Role role = new Role(); // Khởi tạo đối tượng Role
+            role.setRoleID(rs.getInt("role"));
+            user.setRole(role);
+
+            user.setStatus(rs.getBoolean("status"));
+            user.setPhone(rs.getString("phone"));
+            user.setAddress(rs.getString("address"));
+        }
+    } catch (SQLException e) {
+        e.printStackTrace(); // In ra thông tin lỗi
+        throw e; // Ném lại ngoại lệ
+    } finally {
+        // Đảm bảo đóng ResultSet, PreparedStatement và Connection
+        closeResultSet(rs);
+        closePreparedStatement(ps);
+        closeConnection(con);
+    }
+
+    return user; // Trả về đối tượng User hoặc null nếu không tìm thấy
+}
 }

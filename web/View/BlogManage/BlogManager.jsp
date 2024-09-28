@@ -92,6 +92,8 @@
             </tbody>
         </table>
         <button onclick="location.href = 'CreateBlog'">Create</button>
-
+        <a href="${pageContext.request.contextPath}/logout">
+            <button>Logout</button>
+        </a>
     </body>
 </html>

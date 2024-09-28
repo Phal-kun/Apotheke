@@ -15,6 +15,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import org.mindrot.jbcrypt.BCrypt;
 
 /**
@@ -76,15 +78,15 @@ public class register extends HttpServlet {
         }else{    
             UserDao us = new UserDao();
             User user = us.getUserByNameUserPass(username, password, fullname);
-            if(user ==null){
+            if(isUserExists(username,request, response)==false&& (isUserExis(username,password,request,response)==false) ){
                 Role role = new Role();
                 role.setRoleID(1);
                 User newuser = new User(fullname, "", username, hashPassword(password), "", true, role, "");
                 us.saveUserByUsername(newuser);
-                response.sendRedirect("View/Login_Register/customerHome.jsp");
+                response.sendRedirect("View/Home.jsp");
             }else{
-                response.sendRedirect("View/Login_Register/customerHome.jsp");
-
+                request.setAttribute("mess2", "The account already exists in the system.");
+                request.getRequestDispatcher("View/Home.jsp").forward(request, response);
             }
         }
     } 
@@ -141,4 +143,30 @@ public class register extends HttpServlet {
      public static String hashPassword(String plainPassword) {
         return BCrypt.hashpw(plainPassword, BCrypt.gensalt(12)); // 12 là số vòng lặp
     }
+    private boolean isUserExists(String username, HttpServletRequest request, HttpServletResponse response) {
+       UserDao us = new UserDao();
+       try {
+           User s = us.getUserByEmail(username);
+           if (s != null) {
+
+               return true; // Tài khoản đã tồn tại
+           }
+       } catch (Exception ex) {
+           System.out.print(ex);
+       }
+       return false; // Tài khoản không tồn tại
+   }
+    private boolean isUserExis(String username,String password, HttpServletRequest request, HttpServletResponse response) {
+       UserDao us = new UserDao();
+       try {
+           User s = us.getUserByUsernamePassword(username,password);
+           if (s != null) {
+
+               return true; // Tài khoản đã tồn tại
+           }
+       } catch (Exception ex) {
+           System.out.print(ex);
+       }
+       return false; // Tài khoản không tồn tại
+   }
 }

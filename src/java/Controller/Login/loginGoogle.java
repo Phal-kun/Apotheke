@@ -53,27 +53,30 @@ public class loginGoogle extends HttpServlet {
             User user = GoogleLG.getUserInfo(accessToken);
             UserDao usdao = new UserDao();
              try {
-                if(usdao.getUserByEmail(user.getFullname())==null){
+                if(usdao.getUserByEmail(user.getUsername())==null){
                    usdao.saveUser(user);
                    request.getRequestDispatcher("/View/Login_Register/customerHome.jsp").forward(request,response);
                 }else{
-                    if(user.getFullname()== usdao.getUserByEmail(user.getFullname()).getFullname()){
+                    
+                    if(user.getUsername().equals(usdao.getUserByEmail(user.getUsername()).getUsername())== true){
                         switch (user.getRole().getRoleID()) {
                             case 1:
-                                 request.getRequestDispatcher("/View/Login_Register/customerHome.jsp").forward(request,response);
-                                break;
-                            case 2:
-                                request.getRequestDispatcher("/View/Login_Register/warehouseHome.jsp").forward(request,response);
-                                break;
-                            case 3:
-                                request.getRequestDispatcher("/View/Login_Register/saleHome.jsp").forward(request,response);
-                                break;   
-                            case 4:
-                                request.getRequestDispatcher("/View/Login_Register/marketingHome.jsp").forward(request,response);
-                                break;     
-                            default:
-                                request.getRequestDispatcher("/View/Login_Register/adminHome.jsp").forward(request,response);
-                                break; 
+                            response.sendRedirect("View/Login_Register/customerHome.jsp");
+                            break; 
+                    case 2:
+                        response.sendRedirect(request.getContextPath() + "/ListProduct");
+                        break;
+                    case 3:
+                            response.sendRedirect("View/Login_Register/saleHome.jsp");
+                        break;
+                    case 4:
+                        response.sendRedirect(request.getContextPath() + "/BlogManager");
+                        break;
+                    case 5:
+                        response.sendRedirect(request.getContextPath() + "/CRUDUserList");
+                        break;
+                    default:
+                        break;    
                         }
                     } 
                 }

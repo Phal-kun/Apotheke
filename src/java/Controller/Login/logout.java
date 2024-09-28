@@ -5,8 +5,6 @@
 
 package Controller.Login;
 
-import DAL.UserDao;
-import Model.User.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -14,16 +12,12 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.mindrot.jbcrypt.BCrypt;
 
 /**
  *
- * @author Dell
+ * @author ASUS
  */
-public class loginuser extends HttpServlet {
+public class logout extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -40,10 +34,10 @@ public class loginuser extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet loginsde</title>");  
+            out.println("<title>Servlet LogoutServlet</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet loginsde at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet LogoutServlet at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -57,54 +51,15 @@ public class loginuser extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    
-   @Override
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        
-        UserDao userd= new UserDao();
-        User user = userd.login(username);
-        if(user ==null){
-            request.setAttribute("mess", "Wrong user or pass");
-            request.getRequestDispatcher("View/Home.jsp").forward(request, response);               
-        }else{
-            if(!BCrypt.checkpw(password, user.getPassword())){
-                request.setAttribute("mess", "Wrong user or pass");
-            request.getRequestDispatcher("View/Home.jsp").forward(request, response);
-            }else{
-            HttpSession session = request.getSession();
-            session.setAttribute("account", user);
-            if(user.isStatus()== true){
-                switch(user.getRole().getRoleID()){
-                    case 1:
-                        response.sendRedirect("View/Login_Register/customerHome.jsp");
-                        break; 
-                    case 2:
-                        response.sendRedirect(request.getContextPath() + "/ListProduct");
-                        break;
-                    case 3:
-                            response.sendRedirect("View/Login_Register/saleHome.jsp");
-                        break;
-                    case 4:
-                        response.sendRedirect(request.getContextPath() + "/BlogManager");
-                        break;
-                    case 5:
-                        response.sendRedirect(request.getContextPath() + "/CRUDUserList");
-                        break;
-                    default:
-                        break;    
-                }
-            
-            
-            }else{
-                response.sendRedirect("View/Login_Register/active.jsp");
-            }
-            
-            
-           }
+        HttpSession session = request.getSession(false); // Get the session, if it exists
+        if (session != null && session.getAttribute("user")!=null) {
+            session.invalidate(); // Invalidate the session if it exists
         }
+        response.sendRedirect(request.getContextPath() + "/View/Home.jsp");
+//        processRequest(request, response);
     } 
 
     /** 
@@ -117,7 +72,7 @@ public class loginuser extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+        doGet(request, response);
     }
 
     /** 
@@ -128,9 +83,5 @@ public class loginuser extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-    public static String hashPassword(String plainPassword) {
-        return BCrypt.hashpw(plainPassword, BCrypt.gensalt(12)); // 12 là số vòng lặp
-    }
-    
 
 }
