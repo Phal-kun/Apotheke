@@ -17,8 +17,7 @@ public class Product {
     String productName;
     Category category;
     Origin origin;
-    Manufacturer manufacturer;
-    Form form;
+    String manufacturer;
     String description;
     ArrayList<Component> component;
     boolean isActive;
@@ -26,17 +25,6 @@ public class Product {
     public Product() {
     }
 
-    public Product(int productID, String productName, Category category, Origin origin, Manufacturer manufacturer, Form form, String description, ArrayList<Component> component, boolean isActive) {
-        this.productID = productID;
-        this.productName = productName;
-        this.category = category;
-        this.origin = origin;
-        this.manufacturer = manufacturer;
-        this.form = form;
-        this.description = description;
-        this.component = component;
-        this.isActive = isActive;
-    }
 
 
 
@@ -73,20 +61,12 @@ public class Product {
         this.origin = origin;
     }
 
-    public Manufacturer getManufacturer() {
+    public String getManufacturer() {
         return manufacturer;
     }
 
-    public void setManufacturer(Manufacturer manufacturer) {
+    public void setManufacturer(String manufacturer) {
         this.manufacturer = manufacturer;
-    }
-
-    public Form getForm() {
-        return form;
-    }
-
-    public void setForm(Form form) {
-        this.form = form;
     }
 
     public String getDescription() {
@@ -121,7 +101,6 @@ public class Product {
         hash = 71 * hash + Objects.hashCode(this.category);
         hash = 71 * hash + Objects.hashCode(this.origin);
         hash = 71 * hash + Objects.hashCode(this.manufacturer);
-        hash = 71 * hash + Objects.hashCode(this.form);
         hash = 71 * hash + Objects.hashCode(this.description);
         hash = 71 * hash + Objects.hashCode(this.component);
         return hash;
@@ -158,15 +137,13 @@ public class Product {
         if (!Objects.equals(this.manufacturer, other.manufacturer)) {
             return false;
         }
-        if (!Objects.equals(this.form, other.form)) {
-            return false;
-        }
+
         return Objects.equals(this.component, other.component);
     }
 
     @Override
     public String toString() {
-        return "Product{" + "productID=" + productID + ", productName=" + productName + ", category=" + category + ", origin=" + origin + ", manufacturer=" + manufacturer + ", form=" + form + ", description=" + description  + ", component=" + component + '}';
+        return "Product{" + "productID=" + productID + ", productName=" + productName + ", category=" + category + ", origin=" + origin + ", manufacturer=" + manufacturer +  ", description=" + description  + ", component=" + component + '}';
     }
 
     
