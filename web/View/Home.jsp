@@ -13,7 +13,7 @@
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/CSS/login/loginform.css">
         
     </head>
-    <script src="Login_Register/oauthConfig.js"></script>
+    <script src="${pageContext.request.contextPath}/Login_Register/oauthConfig.js"></script>
     
     <body class="overlay" id="overlay">
                
@@ -27,12 +27,12 @@
                 <h1 class="titds"> Login</h1>
                 <div class="ds">Vui lòng đăng nhập để hưởng những đặc<br> quyền dành cho thành viên.</div>
         
-                <input class="user" type="text" id="username" name ="username"placeholder="Enter phone number or email " ><br>
+                <input class="user" type="text" id="username" name ="username"placeholder="Enter phone number or email " value="${enteredUsername != null ? enteredUsername : ''}"><br>
                 <span class="user0-icon ">
                     <img src="${pageContext.request.contextPath}/IMAGINE/login/user.png">
                 </span>
                 <div class="password-wrapper">
-                    <input class="pass" type="password" id="password"name="password" placeholder="Enter your password">                   
+                    <input class="pass" type="password" id="password"name="password" placeholder="Enter your password" value="${enteredPassword != null ? enteredPassword : ''}">                   
                 </div>
                 <span class="pass-icon">
                     <img src="${pageContext.request.contextPath}/IMAGINE/login/pass1.png">
@@ -51,7 +51,7 @@
                 
                 <div class="error-message2" style="color: red">
                         ${mess}
-                    </div>
+                </div>
                
 
                 <h3 class="login-separator">
@@ -82,7 +82,7 @@
         <!--   register-->
         
         <div class="register-form" id="register-de">
-    <form action="${pageContext.request.contextPath}/register" method="get" >
+        <form action="${pageContext.request.contextPath}/register" method="get" >
         <span id="close">
             <img src="${pageContext.request.contextPath}/IMAGINE/login/x.png" onclick="closeForm3()"> 
         </span>
@@ -90,28 +90,40 @@
         <div class="ti2">Đăng kí để có trải nghiệm tuyệt vời</div>
 
         <div>
-            <input class="fullname" type="text" id="fullname" name ="fullname" placeholder="Enter your full name"><br>
+            <input class="fullname" type="text" id="fullname" name ="fullname" placeholder="Enter your full name"
+               value="${enteredFullname != null ? enteredFullname : ''}"     ><br>
             <span class="user0-icon">
                 <img src="${pageContext.request.contextPath}/IMAGINE/login/user.png">
             </span>    
         </div>
         <div>
-            <input class="user2" type="email" id="username" name ="username" placeholder="Enter email "><br>
+            <input class="user2" type="email" id="username" name ="username" placeholder="Enter email"
+                   value="${enteredEmail != null ? enteredEmail : ''}"
+                   ><br>
             <span class="user0-icon">
                 <img src="${pageContext.request.contextPath}/IMAGINE/login/user.png">
             </span>    
         </div>
-
+        <div >
+           <input class="user2" type="text" id="codevery" name="codevery" placeholder="Enter your code">   
+        </div>
         <div>
-            <input class="pass2" type="password" id="password" name="password" placeholder="Enter password"><br>
+            <input type="submit" value="|Send Code" id="sendCodebut" class="sendCodebut" name="btAction"/>
+        </div>
+        <div>
+            <input class="pass2" type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm password"
+                    value="${enteredConfirmPassword != null ? enteredConfirmPassword : ''}"
+                   ><br>
             <span class="pass-icon2">
                 <img src="${pageContext.request.contextPath}/IMAGINE/login/pass1.png">
-            </span>
-           
+            </span> 
+            
         </div>
 
         <div>
-            <input class="pass2" type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm password"><br>
+            <input class="pass21" type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm password"
+                    value="${enteredConfirmPassword != null ? enteredConfirmPassword : ''}"
+                   ><br>
             <span class="pass-icon2">
                 <img src="${pageContext.request.contextPath}/IMAGINE/login/pass1.png">
             </span> 
@@ -126,29 +138,30 @@
                 </span>
         </div>  
         
-        <button type="submit" class="submitds2">Register Now</button><br>
-        <span id="dwe">or login with google</span>
-    </form>
-            <button class="gsi-material-button" onclick="window.location.href=googleOAuthURL">
-                <div class="gsi-material-button-state"></div>
-                <div class="gsi-material-button-content-wrapper">
-                    <div class="gsi-material-button-icon">
-                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" xmlns:xlink="http://www.w3.org/1999/xlink" style="display: block;">
-                            <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path>
-                            <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"></path>
-                            <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"></path>
-                            <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"></path>
-                            <path fill="none" d="M0 0h48v48H0z"></path>
-                        </svg>
+        <button type="submit" class="submitds2" name ="btAction" value="register">Register Now</button><br>
+        </form>
+        <span id="dwe">or register with google</span>
+        
+                <button class="gsi-material-button" onclick="window.location.href=googleOAuthURL">
+                    <div class="gsi-material-button-state"></div>
+                    <div class="gsi-material-button-content-wrapper">
+                        <div class="gsi-material-button-icon">
+                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" xmlns:xlink="http://www.w3.org/1999/xlink" style="display: block;">
+                                <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path>
+                                <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"></path>
+                                <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"></path>
+                                <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"></path>
+                                <path fill="none" d="M0 0h48v48H0z"></path>
+                            </svg>
+                        </div>
+                        <span class="gsi-material-button-contents">Regiser with google</span>
+                        <span style="display: none;">Register with google </span>
                     </div>
-                    <span class="gsi-material-button-contents">Regiser with google</span>
-                    <span style="display: none;">Register with google </span>
-                </div>
-            </button>
+                </button>
 
 
         </div>
-                
+<!--        <div> $verificationCode </div>  -->
                 
     </body>
     
@@ -203,8 +216,11 @@
                 }
             }
 
-       
         
-         
+
+            
+        
+          
+    
         </script>
 </html>

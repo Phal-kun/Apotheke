@@ -17,6 +17,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
+import java.util.Random;
+import java.util.regex.Pattern;
 import org.mindrot.jbcrypt.BCrypt;
 
 /**
@@ -24,7 +26,8 @@ import org.mindrot.jbcrypt.BCrypt;
  * @author Dell
  */
 public class register extends HttpServlet {
-   
+    private static final String EMAIL_REGEX = "^[a-zA-Z0-9._%+-]+@gmail\\.com$";
+
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
@@ -34,19 +37,7 @@ public class register extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet register</title>");  
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet register at " + request.getContextPath () + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
+        
     } 
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -64,31 +55,110 @@ public class register extends HttpServlet {
         String username = request.getParameter("username");
         String password= request.getParameter("password");
         String confirm = request.getParameter("confirmPassword");
+       // khong can lam  String enteredCode = request.getParameter("verificationCode"); 
+        String enteredCode = request.getParameter("codevery");
+        String button = request.getParameter("btAction");
         System.out.print(password);
-        if (fullname == null || username == null || password == null || confirm == null ||
-            fullname.isEmpty() || username.isEmpty() || password.isEmpty() || confirm.isEmpty()) {
-            request.setAttribute("mess2", "Please fill in all the blanks.");
-            request.getRequestDispatcher("View/Home.jsp").forward(request, response);
-        }else if(isValidPassword(password)!= true || isValidPassword(confirm)!= true){
-             request.setAttribute("mess2", "password must have UpperCase,LowerCase,SpecialChar ");
+        String checkCode = "";
+        String firstMail="";
+        if(button.equals("|Send Code")){
+            // check email is null or empty
+            if(username.isEmpty()|| username == null){
+                request.setAttribute("mess2", "please input your mail");
+                setRequestAttributes(request, fullname, username, password, confirm);
                 request.getRequestDispatcher("View/Home.jsp").forward(request, response);
-        }else if(password.equals(confirm)!=true ){
-            request.setAttribute("mess2", "password must have to match ");
-              request.getRequestDispatcher("View/Home.jsp").forward(request, response);
-        }else{    
-            UserDao us = new UserDao();
-            User user = us.getUserByNameUserPass(username, password, fullname);
-            if(isUserExists(username,request, response)==false&& (isUserExis(username,password,request,response)==false) ){
-                Role role = new Role();
-                role.setRoleID(1);
-                User newuser = new User(fullname, "", username, hashPassword(password), "", true, role, "");
-                us.saveUserByUsername(newuser);
-                response.sendRedirect("View/Home.jsp");
+            }else if(isValidEmail(username)== false ){
+                 // check mail before send code 
+                request.setAttribute("mess2", "invalid mail  ");
+                setRequestAttributes(request, fullname, username, password, confirm);
+                request.getRequestDispatcher("View/Home.jsp").forward(request, response);
             }else{
-                request.setAttribute("mess2", "The account already exists in the system.");
-                request.getRequestDispatcher("View/Home.jsp").forward(request, response);
+            // send code to mail and save mail which is sended code     
+                checkCode= generateVerificationCode();
+                Email sendedCode = new Email();
+                sendedCode.sendMail("hieppdhe171309@fpt.edu.vn", "fzemcszwnyicwxad", checkCode, username);
+                firstMail = username;
             }
+        }else if(button.equals("register")){
+            // check register
+            // check empty null
+                    if (fullname == null || username == null || password == null || confirm == null ||
+                        fullname.isEmpty() || username.isEmpty() || password.isEmpty() || confirm.isEmpty()) {
+                        request.setAttribute("mess2", "Please fill in all the blanks.");
+                        request.setAttribute("enteredFullname", fullname);
+                        request.setAttribute("enteredEmail", username);
+                        request.setAttribute("enteredPassword", password);
+                        request.setAttribute("enteredConfirmPassword", confirm);
+                        request.getRequestDispatcher("View/Home.jsp").forward(request, response);
+                    }else if(isValidPassword(password)!= true || isValidPassword(confirm)!= true){
+            // check valid password            
+                        request.setAttribute("mess2", "password must have UpperCase,LowerCase,SpecialChar ");
+                        request.setAttribute("enteredFullname", fullname);
+                        request.setAttribute("enteredEmail", username);
+                        request.setAttribute("enteredPassword", password);
+                        request.setAttribute("enteredConfirmPassword", confirm);
+                        request.getRequestDispatcher("View/Home.jsp").forward(request, response);
+                    }else if(password.equals(confirm)!=true ){
+            // check confirm password look likes password            
+                        request.setAttribute("mess2", "password must have to match ");
+                        request.setAttribute("enteredFullname", fullname);
+                        request.setAttribute("enteredEmail", username);
+                        request.setAttribute("enteredPassword", password);
+                        request.setAttribute("enteredConfirmPassword", confirm);
+                          request.getRequestDispatcher("View/Home.jsp").forward(request, response);
+                    }else if(isValidEmail(username)== false ){
+            // check valid mail             
+                        request.setAttribute("mess2", "invalid mail  ");
+                        request.setAttribute("enteredFullname", fullname);
+                        request.setAttribute("enteredEmail", username);
+                        request.setAttribute("enteredPassword", password);
+                        request.setAttribute("enteredConfirmPassword", confirm);
+                        request.getRequestDispatcher("View/Home.jsp").forward(request, response);
+
+                    }else if(enteredCode== null || enteredCode.isEmpty()) {
+                      // check enteredCode is null or not 
+                        request.setAttribute("mess2", "please verify email by enter code");
+                        request.setAttribute("enteredFullname", fullname);
+                        request.setAttribute("enteredEmail", username);
+                        request.setAttribute("enteredPassword", password);
+                        request.setAttribute("enteredConfirmPassword", confirm);
+                        request.getRequestDispatcher("View/Home.jsp").forward(request, response);
+                    }else{                       
+                            // check giong mail da gui khong hay da thay doi mail roi 
+                            if(username.equals(firstMail)!=true){
+                                request.setAttribute("mess2", "please input your mail is receive code");
+                                setRequestAttributes(request, fullname, username, password, confirm);
+                                request.getRequestDispatcher("View/Home.jsp").forward(request, response);                
+                            }else{
+                                // check code enteredCode: code nhap, checkCode: code gui 
+                                if(enteredCode.equals(checkCode)== false){
+                                    request.setAttribute("mess2", "Code is invalid, please input again");
+                                    setRequestAttributes(request, fullname, username, password, confirm);
+                                    request.getRequestDispatcher("View/Home.jsp").forward(request, response);                       
+                                }else{
+                                    UserDao us = new UserDao();
+                                    User user = us.getUserByNameUserPass(username, password, fullname);
+                                    if(isUserExists(username,request, response)==false&& (isUserExis(username,password,request,response)==false) ){
+                                       Role role = new Role();
+                                       role.setRoleID(1);
+                                       User newuser = new User(fullname, "", username, hashPassword(password), "", true, role, "");
+                                       us.saveUserByUsername(newuser);
+                                       response.sendRedirect("View/Home.jsp");
+                                    }else{
+                                       request.setAttribute("mess2", "The account already exists in the system.");
+                                       request.getRequestDispatcher("View/Home.jsp").forward(request, response);
+                                    }
+                                }
+                                
+                                
+
+                            }
+                    
+                    }
+   
+        
         }
+     
     } 
 
     /** 
@@ -169,4 +239,23 @@ public class register extends HttpServlet {
        }
        return false; // Tài khoản không tồn tại
    }
+     private boolean isValidEmail(String email) {
+        // Sử dụng Pattern để kiểm tra theo regex
+        Pattern pattern = Pattern.compile(EMAIL_REGEX);
+        return pattern.matcher(email).matches();
+    }
+     
+    public static String generateVerificationCode() {
+        Random random = new Random();
+        // Sinh số từ 100000 đến 999999
+        int code = random.nextInt(899999) + 100000;
+        return String.valueOf(code);
+    } 
+    public void setRequestAttributes(HttpServletRequest request, String fullname, String username, String password, String confirm) {
+        request.setAttribute("enteredFullname", fullname);
+        request.setAttribute("enteredEmail", username);
+        request.setAttribute("enteredPassword", password);
+        request.setAttribute("enteredConfirmPassword", confirm);
+    }
+
 }
