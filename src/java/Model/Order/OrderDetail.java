@@ -6,6 +6,7 @@ package Model.Order;
 
 import Model.Product.Product;
 import Model.Product.ProductDetail;
+import Model.Product.ProductUnit;
 
 /**
  *
@@ -15,7 +16,7 @@ public class OrderDetail {
     int orderDetailID;
     Product product;
     ProductDetail productDetail;
-    Unit unit;
+    ProductUnit unit;
     double soldPrice;
     int quantity;
     double totalProductPrice;
