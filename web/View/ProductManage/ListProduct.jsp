@@ -26,6 +26,11 @@
                     <tr>
                         <th>Product ID</th>
                         <th>Product Name</th>
+                        <th>Category</th>
+                        <th>Origin</th>
+                        <th>Manufacturer</th>
+                        <th>Base Unit</th>
+                        <th>Active Status</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -34,6 +39,16 @@
                         <tr>
                             <td>${product.getProductID()}</td>
                             <td>${product.getProductName()}</td>
+                            <td>${product.getCategory().getCategoryName()}</td>
+                            <td>${product.getOrigin().getOriginName()}</td>
+                            <td>${product.getManufacturer()}</td>
+                            <td>${product.getBaseUnit().getUnitName()}</td>
+                            <td>
+                                <c:choose>
+                                    <c:when test="${product.isActive()}">Active</c:when>
+                                    <c:otherwise>Inactive</c:otherwise>
+                                </c:choose>
+                            </td>
                             <td>
                                 <form action="UpdateProduct" method="get" style="display:inline-block;">
                                     <input type="hidden" name="productID" value="${product.getProductID()}" />
@@ -51,7 +66,7 @@
                 </a>
             </div>
         </div>
-        <a href="{pageContext.request.contextPath}/logout">
+        <a href="${pageContext.request.contextPath}/logout">
             <button>Logout</button>
         </a>
     </body>

@@ -12,29 +12,27 @@ import java.util.logging.Logger;
  * @author ASUS
  */
 public class Unit {
-    int unit;
+    int unitID;
     String unitName;
-    int baseUnitID;
     int convertToBaseRate;
 
     public Unit() {
     }
 
-    public Unit(int unit, String productUnitName, int baseUnitID, int convertToBaseRate) {
-        this.unit = unit;
+    public Unit(int unit, String productUnitName, int convertToBaseRate) {
+        this.unitID = unit;
         this.unitName = productUnitName;
-        this.baseUnitID = baseUnitID;
         this.convertToBaseRate = convertToBaseRate;
     }
     
     private static final Logger LOG = Logger.getLogger(Unit.class.getName());
 
-    public int getUnit() {
-        return unit;
+    public int getUnitID() {
+        return unitID;
     }
 
-    public void setUnit(int unit) {
-        this.unit = unit;
+    public void setUnitID(int unitID) {
+        this.unitID = unitID;
     }
 
     public String getUnitName() {
@@ -50,7 +48,7 @@ public class Unit {
     @Override
     public int hashCode() {
         int hash = 5;
-        hash = 83 * hash + this.unit;
+        hash = 83 * hash + this.unitID;
         hash = 83 * hash + Objects.hashCode(this.unitName);
         return hash;
     }
@@ -67,7 +65,7 @@ public class Unit {
             return false;
         }
         final Unit other = (Unit) obj;
-        if (this.unit != other.unit) {
+        if (this.unitID != other.unitID) {
             return false;
         }
         return Objects.equals(this.unitName, other.unitName);
@@ -75,7 +73,7 @@ public class Unit {
 
     @Override
     public String toString() {
-        return "ProductUnit{" + "productUnitID=" + unit + ", productUnitName=" + unitName + '}';
+        return "ProductUnit{" + "productUnitID=" + unitID + ", productUnitName=" + unitName + '}';
     }
        
 }

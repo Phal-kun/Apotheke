@@ -18,16 +18,37 @@ public class Product {
     Category category;
     Origin origin;
     String manufacturer;
+    String componentDescription;
     String description;
+    Unit baseUnit;
+    ArrayList<Unit> unit;
     ArrayList<Component> component;
     boolean isActive;
 
     public Product() {
     }
 
+    public Product(int productID, String productName, Category category, Origin origin, String manufacturer, String componentDescription, String description, Unit baseUnit, ArrayList<Unit> unit, ArrayList<Component> component, boolean isActive) {
+        this.productID = productID;
+        this.productName = productName;
+        this.category = category;
+        this.origin = origin;
+        this.manufacturer = manufacturer;
+        this.componentDescription = componentDescription;
+        this.description = description;
+        this.baseUnit = baseUnit;
+        this.unit = unit;
+        this.component = component;
+        this.isActive = isActive;
+    }
 
+    public Unit getBaseUnit() {
+        return baseUnit;
+    }
 
-
+    public void setBaseUnit(Unit baseUnit) {
+        this.baseUnit = baseUnit;
+    }
 
     public int getProductID() {
         return productID;
@@ -85,7 +106,7 @@ public class Product {
         this.component = component;
     }
 
-    public boolean isIsActive() {
+    public boolean isActive() {
         return isActive;
     }
 
@@ -143,9 +164,7 @@ public class Product {
 
     @Override
     public String toString() {
-        return "Product{" + "productID=" + productID + ", productName=" + productName + ", category=" + category + ", origin=" + origin + ", manufacturer=" + manufacturer +  ", description=" + description  + ", component=" + component + '}';
+        return "Product{" + "productID=" + productID + ", productName=" + productName + ", category=" + category + ", origin=" + origin + ", manufacturer=" + manufacturer + ", componentDescription=" + componentDescription + ", description=" + description + ", baseUnit=" + baseUnit + ", unit=" + unit + ", component=" + component + ", isActive=" + isActive + '}';
     }
 
-    
-    
 }

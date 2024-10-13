@@ -16,6 +16,12 @@ public class Component {
     private String componentMeasureUnit;
     private int quantity;
 
+    public Component(String componentName, String componentMeasureUnit, int quantity) {
+        this.componentName = componentName;
+        this.componentMeasureUnit = componentMeasureUnit;
+        this.quantity = quantity;
+    }
+
  
 
     private static final Logger LOG = Logger.getLogger(Component.class.getName());

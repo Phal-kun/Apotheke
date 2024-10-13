@@ -76,6 +76,10 @@
         <servlet-name>logout</servlet-name>
         <servlet-class>Controller.Login.logout</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ImportProductServlet</servlet-name>
+        <servlet-class>Controller.Product.ImportProductServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>CRUDUserList</servlet-name>
         <url-pattern>/CRUDUserList</url-pattern>
@@ -151,5 +155,9 @@
     <servlet-mapping>
         <servlet-name>logout</servlet-name>
         <url-pattern>/logout</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ImportProductServlet</servlet-name>
+        <url-pattern>/ImportProduct</url-pattern>
     </servlet-mapping>
 </web-app>

@@ -57,27 +57,18 @@ public class UpdateProductServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        try {
-            int updateProductID = Integer.parseInt(request.getParameter("productID"));
-            Product updateProduct = ProductDAO.INSTANCE.findProductByID(updateProductID);
-            request.setAttribute("updateProduct", updateProduct);
-        } catch (Exception e){
-            response.sendRedirect("ListProduct");
-        }
+//        try {
+//            int updateProductID = Integer.parseInt(request.getParameter("productID"));
+//            Product updateProduct = ProductDAO.INSTANCE.findProductByID(updateProductID);
+//            request.setAttribute("updateProduct", updateProduct);
+//        } catch (Exception e){
+//            response.sendRedirect("ListProduct");
+//        }
         ArrayList<Category> categoryList = ProductDAO.INSTANCE.loadCategoryList();
         request.setAttribute("categoryList", categoryList);
 
         ArrayList<Origin> originList = ProductDAO.INSTANCE.loadOriginList();
         request.setAttribute("originList", originList);
-
-        ArrayList<Manufacturer> manufacturerList = ProductDAO.INSTANCE.loadManufacturerList();
-        request.setAttribute("manufacturerList", manufacturerList);
-
-        ArrayList<Form> formList = ProductDAO.INSTANCE.loadFormList();
-        request.setAttribute("formList", formList);
-
-        ArrayList<Component> componentList = ProductDAO.INSTANCE.loadComponentList();
-        request.setAttribute("componentList", componentList);
        
         RequestDispatcher rd = request.getRequestDispatcher("View/ProductManage/UpdateProduct.jsp");
         rd.forward(request, response);
@@ -93,77 +84,77 @@ public class UpdateProductServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        String productIDStr = request.getParameter("productID");
-        String productName = request.getParameter("productName");
-        String description = request.getParameter("description");
-        String categoryIDStr = request.getParameter("categoryID");
-        String originIDStr = request.getParameter("originID");
-        String manufacturerIDStr = request.getParameter("manufacturerID");
-        String formIDStr = request.getParameter("formID");
-        String[] componentIDs = request.getParameterValues("componentID");
-        String[] quantities = request.getParameterValues("quantity");
-
-        boolean hasError = false;
-        StringBuilder errorMsg = new StringBuilder("Please fill in the following fields: ");
-
-        if (productName == null || productName.trim().isEmpty()) {
-            hasError = true;
-            errorMsg.append("Product Name ");
-        }
-        int productID = 0 ,categoryID = 0, originID = 0, manufacturerID = 0, formID = 0;
-
-        try {
-            if (productIDStr != null) {
-                productID = Integer.parseInt(productIDStr);
-            }
-            
-            if (categoryIDStr != null) {
-                categoryID = Integer.parseInt(categoryIDStr);
-            }
-            if (originIDStr != null) {
-                originID = Integer.parseInt(originIDStr);
-            }
-            if (manufacturerIDStr != null) {
-                manufacturerID = Integer.parseInt(manufacturerIDStr);
-            }
-            if (formIDStr != null) {
-                formID = Integer.parseInt(formIDStr);
-            }
-        } catch (NumberFormatException e) {
-            hasError = true;
-            errorMsg.append("Invalid ID format ");
-        }
-
-        if (componentIDs == null || componentIDs.length == 0) {
-            hasError = true;
-            errorMsg.append("Components ");
-        }
-
-        if (hasError) {
-            request.setAttribute("errorMsg", errorMsg.toString());
-            request.setAttribute("productName", productName);
-            request.setAttribute("description", description);
-            request.setAttribute("categoryID", categoryID);
-            request.setAttribute("originID", originID);
-            request.setAttribute("manufacturerID", manufacturerID);
-            request.setAttribute("formID", formID);
-            request.setAttribute("componentIDs", componentIDs);
-            request.setAttribute("quantities", quantities);
-            request.setAttribute("createMsg", false);
+//        String productIDStr = request.getParameter("productID");
+//        String productName = request.getParameter("productName");
+//        String description = request.getParameter("description");
+//        String categoryIDStr = request.getParameter("categoryID");
+//        String originIDStr = request.getParameter("originID");
+//        String manufacturerIDStr = request.getParameter("manufacturerID");
+//        String formIDStr = request.getParameter("formID");
+//        String[] componentIDs = request.getParameterValues("componentID");
+//        String[] quantities = request.getParameterValues("quantity");
+//
+//        boolean hasError = false;
+//        StringBuilder errorMsg = new StringBuilder("Please fill in the following fields: ");
+//
+//        if (productName == null || productName.trim().isEmpty()) {
+//            hasError = true;
+//            errorMsg.append("Product Name ");
+//        }
+//        int productID = 0 ,categoryID = 0, originID = 0, manufacturerID = 0, formID = 0;
+//
+//        try {
+//            if (productIDStr != null) {
+//                productID = Integer.parseInt(productIDStr);
+//            }
+//            
+//            if (categoryIDStr != null) {
+//                categoryID = Integer.parseInt(categoryIDStr);
+//            }
+//            if (originIDStr != null) {
+//                originID = Integer.parseInt(originIDStr);
+//            }
+//            if (manufacturerIDStr != null) {
+//                manufacturerID = Integer.parseInt(manufacturerIDStr);
+//            }
+//            if (formIDStr != null) {
+//                formID = Integer.parseInt(formIDStr);
+//            }
+//        } catch (NumberFormatException e) {
+//            hasError = true;
+//            errorMsg.append("Invalid ID format ");
+//        }
+//
+//        if (componentIDs == null || componentIDs.length == 0) {
+//            hasError = true;
+//            errorMsg.append("Components ");
+//        }
+//
+//        if (hasError) {
+//            request.setAttribute("errorMsg", errorMsg.toString());
+//            request.setAttribute("productName", productName);
+//            request.setAttribute("description", description);
+//            request.setAttribute("categoryID", categoryID);
+//            request.setAttribute("originID", originID);
+//            request.setAttribute("manufacturerID", manufacturerID);
+//            request.setAttribute("formID", formID);
+//            request.setAttribute("componentIDs", componentIDs);
+//            request.setAttribute("quantities", quantities);
+//            request.setAttribute("createMsg", false);
+//            doGet(request, response);
+//        } else {
+//
+//            ArrayList<Component> components = new ArrayList<>();
+//            for (int i = 0; i < componentIDs.length; i++) {
+//                int componentID = Integer.parseInt(componentIDs[i]);
+//                int quantity = Integer.parseInt(quantities[i]);
+//                components.add(new Component(componentID, null, null, quantity));
+//            }
+//
+//            ProductDAO.INSTANCE.updateProduct(productID, productName, categoryID, originID, manufacturerID, formID, description, components);
+//            request.setAttribute("createMsg", "Create successful!");
             doGet(request, response);
-        } else {
-
-            ArrayList<Component> components = new ArrayList<>();
-            for (int i = 0; i < componentIDs.length; i++) {
-                int componentID = Integer.parseInt(componentIDs[i]);
-                int quantity = Integer.parseInt(quantities[i]);
-                components.add(new Component(componentID, null, null, quantity));
-            }
-
-            ProductDAO.INSTANCE.updateProduct(productID, productName, categoryID, originID, manufacturerID, formID, description, components);
-            request.setAttribute("createMsg", "Create successful!");
-            doGet(request, response);
-        }
+//        }
     }
 
     /** 
