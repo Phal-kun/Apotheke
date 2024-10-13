@@ -77,12 +77,11 @@ public class loginuser extends HttpServlet {
                 request.setAttribute("enteredPassword", password); // Lưu password đã nhập
                 request.getRequestDispatcher("View/Home.jsp").forward(request, response);
             }else{
-                 HttpSession session = request.getSession();
+                HttpSession session = request.getSession();
                 session.setAttribute("account", user);
             if(user.isStatus()== true){
                 switch(user.getRole().getRoleID()){
-                    case 1:
-                        
+                    case 1:                       
                         request.getRequestDispatcher("View/Login_Register/customerHome.jsp").forward(request, response);
                         break; 
                     case 2:

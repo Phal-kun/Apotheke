@@ -55,7 +55,7 @@ public class logout extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         HttpSession session = request.getSession(false); // Get the session, if it exists
-        if (session != null && session.getAttribute("user")!=null) {
+        if (session != null && session.getAttribute("account")!=null) {
             session.invalidate(); // Invalidate the session if it exists
         }
         response.sendRedirect(request.getContextPath() + "/View/Home.jsp");
