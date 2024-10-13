@@ -69,5 +69,9 @@
         <a href="${pageContext.request.contextPath}/logout">
             <button>Logout</button>
         </a>
+        <a href="ImportProduct">
+            <button type="button">Import product</button>
+        </a>
+
     </body>
 </html>
