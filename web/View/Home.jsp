@@ -13,7 +13,7 @@
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/CSS/login/loginform.css">
         
     </head>
-    <script src="${pageContext.request.contextPath}/Login_Register/oauthConfig.js"></script>
+    <script src="Login_Register/oauthConfig.js"></script>
     
     <body class="overlay" id="overlay">
                
@@ -88,10 +88,10 @@
         </span>
         <h1 class="ti">Register</h1>
         <div class="ti2">Đăng kí để có trải nghiệm tuyệt vời</div>
-
         <div>
             <input class="fullname" type="text" id="fullname" name ="fullname" placeholder="Enter your full name"
-               value="${enteredFullname != null ? enteredFullname : ''}"     ><br>
+              value="${enteredFullname != null ? enteredFullname : ''}"   ><br>
+
             <span class="user0-icon">
                 <img src="${pageContext.request.contextPath}/IMAGINE/login/user.png">
             </span>    
@@ -107,12 +107,12 @@
         <div >
            <input class="user2" type="text" id="codevery" name="codevery" placeholder="Enter your code">   
         </div>
-        <div>
+        <div >
             <input type="submit" value="|Send Code" id="sendCodebut" class="sendCodebut" name="btAction"/>
         </div>
         <div>
-            <input class="pass2" type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm password"
-                    value="${enteredConfirmPassword != null ? enteredConfirmPassword : ''}"
+            <input class="pass2" type="password" id="password" name="password" placeholder="Enter password"
+                    value="${enteredPassword != null ? enteredPassword : ''}"
                    ><br>
             <span class="pass-icon2">
                 <img src="${pageContext.request.contextPath}/IMAGINE/login/pass1.png">

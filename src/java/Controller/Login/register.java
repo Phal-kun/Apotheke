@@ -10,13 +10,13 @@ import Model.User.Role;
 import Model.User.User;
 
 import java.io.IOException;
-import java.io.PrintWriter;
+import Controller.Login.Emailsw;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.lang.System.Logger;
-import java.lang.System.Logger.Level;
+import java.io.PrintWriter;
+
 import java.util.Random;
 import java.util.regex.Pattern;
 import org.mindrot.jbcrypt.BCrypt;
@@ -27,41 +27,25 @@ import org.mindrot.jbcrypt.BCrypt;
  */
 public class register extends HttpServlet {
     private static final String EMAIL_REGEX = "^[a-zA-Z0-9._%+-]+@gmail\\.com$";
-
-    /** 
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+    private static String checkCode="";
+    private static String firstMail="";
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        
     } 
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
-     * Handles the HTTP <code>GET</code> method.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        String fullname = request.getParameter("fullname");
-        String username = request.getParameter("username");
-        String password= request.getParameter("password");
-        String confirm = request.getParameter("confirmPassword");
-       // khong can lam  String enteredCode = request.getParameter("verificationCode"); 
-        String enteredCode = request.getParameter("codevery");
         String button = request.getParameter("btAction");
-        System.out.print(password);
-        String checkCode = "";
-        String firstMail="";
         if(button.equals("|Send Code")){
+            String fullname = request.getParameter("fullname");
+            String username = request.getParameter("username");
+            String password= request.getParameter("password");
+            String confirm = request.getParameter("confirmPassword");
+           // khong can lam  String enteredCode = request.getParameter("verificationCode"); 
+            String enteredCode = request.getParameter("codevery");
+            checkCode="";
+            firstMail="";
             // check email is null or empty
             if(username.isEmpty()|| username == null){
                 request.setAttribute("mess2", "please input your mail");
@@ -75,15 +59,27 @@ public class register extends HttpServlet {
             }else{
             // send code to mail and save mail which is sended code     
                 checkCode= generateVerificationCode();
-                Email sendedCode = new Email();
+                Emailsw sendedCode = new Emailsw();
                 sendedCode.sendMail("hieppdhe171309@fpt.edu.vn", "fzemcszwnyicwxad", checkCode, username);
                 firstMail = username;
+                request.setAttribute("mess2", "code sent successfull");
+                setRequestAttributes(request, fullname, username, password, confirm);
+                request.getRequestDispatcher("View/Home.jsp").forward(request, response);
             }
-        }else if(button.equals("register")){
+        }
+        if(button.equals("register")){
+             String fullname = request.getParameter("fullname");
+                String username = request.getParameter("username");
+                String password= request.getParameter("password");
+                String confirm = request.getParameter("confirmPassword");
+               // khong can lam  String enteredCode = request.getParameter("verificationCode"); 
+                String enteredCode = request.getParameter("codevery");
+                System.out.println(fullname+username+password+confirm+enteredCode);
+                System.out.println(firstMail +checkCode);
             // check register
             // check empty null
-                    if (fullname == null || username == null || password == null || confirm == null ||
-                        fullname.isEmpty() || username.isEmpty() || password.isEmpty() || confirm.isEmpty()) {
+                    if (fullname == null|| username == null || password == null || confirm == null ||  fullname.isEmpty() || username.isEmpty() || password.isEmpty() || confirm.isEmpty()){
+//              || username == null || password == null || confirm == null     ||  fullname.isEmpty() || username.isEmpty() || password.isEmpty() || confirm.isEmpty()) {
                         request.setAttribute("mess2", "Please fill in all the blanks.");
                         request.setAttribute("enteredFullname", fullname);
                         request.setAttribute("enteredEmail", username);
@@ -115,7 +111,7 @@ public class register extends HttpServlet {
                         request.setAttribute("enteredConfirmPassword", confirm);
                         request.getRequestDispatcher("View/Home.jsp").forward(request, response);
 
-                    }else if(enteredCode== null || enteredCode.isEmpty()) {
+                    }else if(enteredCode== null || enteredCode.isEmpty()){
                       // check enteredCode is null or not 
                         request.setAttribute("mess2", "please verify email by enter code");
                         request.setAttribute("enteredFullname", fullname);
@@ -158,7 +154,7 @@ public class register extends HttpServlet {
    
         
         }
-     
+        
     } 
 
     /** 

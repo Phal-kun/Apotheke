@@ -18,7 +18,7 @@ import java.util.Properties;
  *
  * @author Dell
  */
-public class Email {
+public class Emailsw {
     final String from = "hieppdhe171309@fpt.edu.vn";
     final String passwordw = "fzemcszwnyicwxad";
     final String to = "trungthanh26148@gmail.com";

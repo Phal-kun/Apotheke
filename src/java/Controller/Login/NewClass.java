@@ -11,11 +11,11 @@ package Controller.Login;
 public class NewClass {
        
       public static void main(String[] args) {
-          String ks = "hieppdhe171309@fpt.edu.vn";
-          String p = "fzemcszwnyicwxad";
-          String ds ="456132";
-          String s ="hiepduy192893@gmail.com";
-        Email newem = new Email();
-        newem.sendMail(ks,p,ds,s);
+//          String ks = "hieppdhe171309@fpt.edu.vn";
+//          String p = "fzemcszwnyicwxad";
+//          String ds ="456132";
+//          String s ="hiepduy192893@gmail.com";
+//            Emailsw newem = new Emailsw();
+//            newem.sendMail(ks,p,ds,s);
     }
 }
