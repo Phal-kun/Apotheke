@@ -66,27 +66,29 @@ public class register extends HttpServlet {
                 }else{
                 // send code to mail and save mail which is sended code     
                 checkCode= generateVerificationCode();
-                Emailsw sendedCode = new Emailsw();
-                sendedCode.sendMail("hieppdhe171309@fpt.edu.vn", "fzemcszwnyicwxad", checkCode, username);
-                firstMail = username;
-                request.setAttribute("checkCode", checkCode);
-                request.setAttribute("firstMail", firstMail);
-                
-                request.setAttribute("mess2", "code sent successfull");
-                setRequestAttributes(request, fullname, username, password, confirm);
-                request.getRequestDispatcher("View/Home.jsp").forward(request, response);
+                    Emailsw sendedCode = new Emailsw();
+                    sendedCode.sendMail("hieppdhe171309@fpt.edu.vn", "fzemcszwnyicwxad", checkCode, username);
+                    firstMail = username;
+                    request.getSession().setAttribute("checkCode", checkCode);
+              
+                    request.getSession().setAttribute("firstMail", firstMail);
+                    
+
+                    request.setAttribute("mess2", "code sent successfull");
+                    setRequestAttributes(request, fullname, username, password, confirm);
+                    request.getRequestDispatcher("View/Home.jsp").forward(request, response);
                  }    
              }
         }
         if(button.equals("register")){
-             String fullname = request.getParameter("fullname");
+                String fullname = request.getParameter("fullname");
                 String username = request.getParameter("username");
                 String password= request.getParameter("password");
                 String confirm = request.getParameter("confirmPassword");
                // khong can lam  String enteredCode = request.getParameter("verificationCode"); 
                 String enteredCode = request.getParameter("codevery");
-                String kds= request.getParameter("checkCode");
-                String fisMial = request.getParameter("firstMail");
+                String kds= (String) request.getSession().getAttribute("checkCode");
+                String fisMial = (String) request.getSession().getAttribute("firstMail"); 
                 System.out.println(fullname+username+password+confirm+enteredCode);
                 System.out.println(firstMail +checkCode);
             // check register
@@ -126,6 +128,7 @@ public class register extends HttpServlet {
 
                     }else if(enteredCode== null || enteredCode.isEmpty()){
                       // check enteredCode is null or not 
+                        
                         request.setAttribute("mess2", "please verify email by enter code");
                         request.setAttribute("enteredFullname", fullname);
                         request.setAttribute("enteredEmail", username);
@@ -139,7 +142,12 @@ public class register extends HttpServlet {
                     } else{                       
                             // check giong mail da gui khong hay da thay doi mail roi 
                             if(username.equals(fisMial)!=true){
-                                request.setAttribute("mess2", "please input your mail is receive code");
+                                System.out.println(fisMial);
+                                
+                                
+                                request.getSession().setAttribute("mess2", "please input your mail is receive code");
+                                String se = (String) request.getSession().getAttribute("mess2");
+                                System.out.println(se);
                                 setRequestAttributes(request, fullname, username, password, confirm);
                                 request.getRequestDispatcher("View/Home.jsp").forward(request, response);                
                             }else{
