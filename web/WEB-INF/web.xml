@@ -92,14 +92,17 @@
     <servlet>
         <servlet-name>CreateCategoryServlet</servlet-name>
         <servlet-class>Controller.Category.CreateCategoryServlet</servlet-class>
-
+</servlet>
+<servlet>
         <servlet-name>sendCode</servlet-name>
         <servlet-class>Controller.Login.sendCode</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>forgotPass</servlet-name>
         <servlet-class>Controller.Login.forgotPass</servlet-class>
-
+        
+    </servlet>
+<servlet>
         <servlet-name>ImportProductServlet</servlet-name>
         <servlet-class>Controller.Product.ImportProductServlet</servlet-class>
 
@@ -198,14 +201,16 @@
     <servlet-mapping>
         <servlet-name>CreateCategoryServlet</servlet-name>
         <url-pattern>/CreateCategory</url-pattern>
-
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>sendCode</servlet-name>
-        <url-pattern>/sendCode</url-pattern>
+            <url-pattern>/sendCode</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>forgotPass</servlet-name>
         <url-pattern>/forgotPass</url-pattern>
-
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>ImportProductServlet</servlet-name>
         <url-pattern>/ImportProduct</url-pattern>
 
