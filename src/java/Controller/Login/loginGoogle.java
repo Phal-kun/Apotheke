@@ -14,6 +14,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -55,30 +56,36 @@ public class loginGoogle extends HttpServlet {
              try {
                 if(usdao.getUserByEmail(user.getUsername())==null){
                    usdao.saveUser(user);
-                   request.getRequestDispatcher("/View/Login_Register/customerHome.jsp").forward(request,response);
+                   // Mật khẩu đúng, thiết lập session
+                    HttpSession session = request.getSession();
+                    session.setAttribute("account", user);
+                    request.getRequestDispatcher("/View/Login_Register/customerHome.jsp").forward(request,response);
                 }else{
                     
                     if(user.getUsername().equals(usdao.getUserByEmail(user.getUsername()).getUsername())== true){
+                        
+                        HttpSession session = request.getSession();
+                        session.setAttribute("account", usdao.getUserByEmail(user.getUsername()).getUsername());
                         switch (user.getRole().getRoleID()) {
                             case 1:
-                            response.sendRedirect("View/Login_Register/customerHome.jsp");
-                            break; 
-                    case 2:
-                        response.sendRedirect(request.getContextPath() + "/ListProduct");
-                        break;
-                    case 3:
-                            response.sendRedirect("View/Login_Register/saleHome.jsp");
-                        break;
-                    case 4:
-                        response.sendRedirect(request.getContextPath() + "/BlogManager");
-                        break;
-                    case 5:
-                        response.sendRedirect(request.getContextPath() + "/CRUDUserList");
-                        break;
-                    default:
-                        break;    
-                        }
-                    } 
+                                response.sendRedirect("View/Login_Register/customerHome.jsp");
+                                break; 
+                            case 2:
+                                response.sendRedirect(request.getContextPath() + "/ListProduct");
+                                break;
+                            case 3:
+                                    response.sendRedirect("View/Login_Register/saleHome.jsp");
+                                break;
+                            case 4:
+                                response.sendRedirect(request.getContextPath() + "/BlogManager");
+                                break;
+                            case 5:
+                                response.sendRedirect(request.getContextPath() + "/CRUDUserList");
+                                break;
+                            default:
+                                break;    
+                                }
+                            } 
                 }
              } catch (Exception ex) {
                  Logger.getLogger(loginGoogle.class.getName()).log(Level.SEVERE, null, ex);

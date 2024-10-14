@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -12,10 +13,35 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Hello customer!</h1>
-        <a href="${pageContext.request.contextPath}/View/Home.jsp">
-            <button>Logout</button>
-        </a>
-
+        <c:if test="${not empty sessionScope.account}">
+            <c:choose>
+                <c:when test="${sessionScope.account.role.roleID == 1}">
+                    <h1>Welcome Customer</h1>
+                    <a href="${pageContext.request.contextPath}/logout">
+                        <button>Logout</button>
+                    </a>
+                </c:when>
+                <c:otherwise>
+                    <h1>You are not authorized to access this page!</h1>
+                    <script>
+                        window.location.href = '${pageContext.request.contextPath}/View/Login_Register/active.jsp';
+                    </script>
+                </c:otherwise>
+            </c:choose>
+           
+        </c:if>
+        <c:if test="${empty sessionScope.account}">
+            <h1>You are not logged in!</h1>
+            <script>
+                window.location.href = '${pageContext.request.contextPath}/View/Login_Register/active.jsp';
+            </script>
+        </c:if>        
+       
     </body>
+    <script>
+        window.addEventListener('beforeunload', function (e) {
+            navigator.sendBeacon('<%= request.getContextPath() %>/Logout'); 
+        });
+    </script>
+
 </html>
