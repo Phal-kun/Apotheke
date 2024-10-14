@@ -77,12 +77,17 @@
         <servlet-class>Controller.Login.logout</servlet-class>
     </servlet>
     <servlet>
+
         <servlet-name>sendCode</servlet-name>
         <servlet-class>Controller.Login.sendCode</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>forgotPass</servlet-name>
         <servlet-class>Controller.Login.forgotPass</servlet-class>
+
+        <servlet-name>ImportProductServlet</servlet-name>
+        <servlet-class>Controller.Product.ImportProductServlet</servlet-class>
+
     </servlet>
     <servlet-mapping>
         <servlet-name>CRUDUserList</servlet-name>
@@ -161,11 +166,15 @@
         <url-pattern>/logout</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+
         <servlet-name>sendCode</servlet-name>
         <url-pattern>/sendCode</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>forgotPass</servlet-name>
         <url-pattern>/forgotPass</url-pattern>
+
+        <servlet-name>ImportProductServlet</servlet-name>
+        <url-pattern>/ImportProduct</url-pattern>
     </servlet-mapping>
 </web-app>
