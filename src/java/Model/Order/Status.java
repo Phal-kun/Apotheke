@@ -17,6 +17,14 @@ public class Status {
 
     public Status() {
     }
+
+    public Status(int statusID, String statusName, String description) {
+        this.statusID = statusID;
+        this.statusName = statusName;
+        this.description = description;
+    }
+    
+    
     private static final Logger LOG = Logger.getLogger(Status.class.getName());
 
     public int getStatusID() {
