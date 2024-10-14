@@ -78,6 +78,21 @@
     </servlet>
     <servlet>
 
+        <servlet-name>CategoryServlet</servlet-name>
+        <servlet-class>Controller.Category.CategoryServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteCategoryServlet</servlet-name>
+        <servlet-class>Controller.Category.DeleteCategoryServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EditCategoryServlet</servlet-name>
+        <servlet-class>Controller.Category.EditCategoryServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CreateCategoryServlet</servlet-name>
+        <servlet-class>Controller.Category.CreateCategoryServlet</servlet-class>
+
         <servlet-name>sendCode</servlet-name>
         <servlet-class>Controller.Login.sendCode</servlet-class>
     </servlet>
@@ -87,6 +102,7 @@
 
         <servlet-name>ImportProductServlet</servlet-name>
         <servlet-class>Controller.Product.ImportProductServlet</servlet-class>
+
 
     </servlet>
     <servlet-mapping>
@@ -166,6 +182,20 @@
         <url-pattern>/logout</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>CategoryServlet</servlet-name>
+        <url-pattern>/CategoryManager</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteCategoryServlet</servlet-name>
+        <url-pattern>/DeleteCategory</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EditCategoryServlet</servlet-name>
+        <url-pattern>/EditCategory</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreateCategoryServlet</servlet-name>
+        <url-pattern>/CreateCategory</url-pattern>
 
         <servlet-name>sendCode</servlet-name>
         <url-pattern>/sendCode</url-pattern>
@@ -176,5 +206,6 @@
 
         <servlet-name>ImportProductServlet</servlet-name>
         <url-pattern>/ImportProduct</url-pattern>
+
     </servlet-mapping>
 </web-app>
