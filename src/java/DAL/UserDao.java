@@ -24,7 +24,7 @@ public class UserDao extends DBContext{
      public User getUserByEmail(String email) throws SQLException, Exception {
         String sql = "SELECT * FROM [user] WHERE username = ?";
             try {
-                con = getConnection();
+                con = getConnection(    );
                 ps = con.prepareStatement(sql);
                 ps.setString(1,email);
                 rs =ps.executeQuery();

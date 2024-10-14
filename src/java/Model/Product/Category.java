@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 public class Category {
     private int categoryID;
     private Category parentCategory;
-    private String categoryName;
+    private String categoryName;    
     private String description;
 
     public Category() {

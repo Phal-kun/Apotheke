@@ -85,11 +85,13 @@ public class GoogleLG {
         user.setPassword(hashPassword(ds));
         
         // genders
-        JsonArray genders = jsonObject.getAsJsonArray("genders");
-        if(genders!=null && genders.size()>0){
-            JsonObject genderObject = genders.get(0).getAsJsonObject();
-            user.setGender(genderObject.get("value").getAsString());
-        }
+//        JsonArray genders = jsonObject.getAsJsonArray("genders");
+//        if(genders!=null && genders.size()>0){
+//            JsonObject genderObject = genders.get(0).getAsJsonObject();
+//            user.setGender(genderObject.get("value").getAsString());
+//        }
+         user.setGender("");
+
         //status 
         user.setStatus(true);
         //role
@@ -97,7 +99,7 @@ public class GoogleLG {
         role.setRoleID(1);  
         user.setRole(role);
         // address
-        user.setAddress("null");
+        user.setAddress("");
         return user;
    }
     
