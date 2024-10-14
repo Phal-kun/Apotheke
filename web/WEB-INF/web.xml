@@ -91,10 +91,18 @@
     <servlet>
         <servlet-name>CreateCategoryServlet</servlet-name>
         <servlet-class>Controller.Category.CreateCategoryServlet</servlet-class>
+
+        <servlet-name>sendCode</servlet-name>
+        <servlet-class>Controller.Login.sendCode</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>forgotPass</servlet-name>
+        <servlet-class>Controller.Login.forgotPass</servlet-class>
+
         <servlet-name>ImportProductServlet</servlet-name>
         <servlet-class>Controller.Product.ImportProductServlet</servlet-class>
+
+
     </servlet>
     <servlet-mapping>
         <servlet-name>CRUDUserList</servlet-name>
@@ -171,5 +179,32 @@
     <servlet-mapping>
         <servlet-name>logout</servlet-name>
         <url-pattern>/logout</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CategoryServlet</servlet-name>
+        <url-pattern>/CategoryManager</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteCategoryServlet</servlet-name>
+        <url-pattern>/DeleteCategory</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EditCategoryServlet</servlet-name>
+        <url-pattern>/EditCategory</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreateCategoryServlet</servlet-name>
+        <url-pattern>/CreateCategory</url-pattern>
+
+        <servlet-name>sendCode</servlet-name>
+        <url-pattern>/sendCode</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>forgotPass</servlet-name>
+        <url-pattern>/forgotPass</url-pattern>
+
+        <servlet-name>ImportProductServlet</servlet-name>
+        <url-pattern>/ImportProduct</url-pattern>
+
     </servlet-mapping>
 </web-app>

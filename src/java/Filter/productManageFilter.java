@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/AdvancedFilter.java to edit this template
  */
-package Filter.ProductFilter;
+package Filter;
 
 import java.io.IOException;
 import java.io.PrintStream;
@@ -157,15 +157,13 @@ public class productManageFilter implements Filter {
                 System.out.println("Session ID: " + session.getId());
                 System.out.println("User: " + session.getAttribute("user"));
 //                int roleId = (Integer) session.getAttribute("roleId");
-                int roleId = 3; //assung user have roleId = 3 a.k.a warehouse staff
+                int roleId = 2; //assung user have roleId = 3 a.k.a warehouse staff
                 System.out.println("Role id: " + roleId);
 
                 // Check if the roleId allows access
-                if (roleId == 3) {
-                    // Proceed with the chain if access is allowed
+                if (roleId == 2) {
                     chain.doFilter(wrappedRequest, wrappedResponse);
                 } else {
-                    // Redirect to Main if access is denied
                     res.sendRedirect("index.html");
                 }
             } else {
