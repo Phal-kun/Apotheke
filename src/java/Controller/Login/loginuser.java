@@ -14,10 +14,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.mindrot.jbcrypt.BCrypt;
+
 
 /**
  *
@@ -68,30 +66,39 @@ public class loginuser extends HttpServlet {
         User user = userd.login(username);
         if(user ==null){
             request.setAttribute("mess", "Wrong user or pass");
-            request.getRequestDispatcher("View/Home.jsp").forward(request, response);               
+            request.setAttribute("enteredUsername", username); // Lưu username đã nhập
+            request.setAttribute("enteredPassword", password); // Lưu password đã nhập
+            request.getRequestDispatcher("View/Home.jsp").forward(request, response);  
+            
         }else{
             if(!BCrypt.checkpw(password, user.getPassword())){
                 request.setAttribute("mess", "Wrong user or pass");
-            request.getRequestDispatcher("View/Home.jsp").forward(request, response);
+                request.setAttribute("enteredUsername", username); // Lưu username đã nhập
+                request.setAttribute("enteredPassword", password); // Lưu password đã nhập
+                request.getRequestDispatcher("View/Home.jsp").forward(request, response);
             }else{
-            HttpSession session = request.getSession();
-            session.setAttribute("account", user);
+                HttpSession session = request.getSession();
+                session.setAttribute("account", user);
             if(user.isStatus()== true){
                 switch(user.getRole().getRoleID()){
-                    case 1:
-                        response.sendRedirect("View/Login_Register/customerHome.jsp");
+                    case 1:                       
+                        request.getRequestDispatcher("View/Login_Register/customerHome.jsp").forward(request, response);
                         break; 
                     case 2:
-                        response.sendRedirect(request.getContextPath() + "/ListProduct");
+                        
+                        request.getRequestDispatcher(request.getContextPath() + "/ListProduct").forward(request, response);
                         break;
                     case 3:
-                            response.sendRedirect("View/Login_Register/saleHome.jsp");
+                        
+                            request.getRequestDispatcher("View/Login_Register/saleHome.jsp").forward(request, response);
                         break;
                     case 4:
-                        response.sendRedirect(request.getContextPath() + "/BlogManager");
+                        
+                       request.getRequestDispatcher(request.getContextPath() + "/BlogManager").forward(request, response);
                         break;
                     case 5:
-                        response.sendRedirect(request.getContextPath() + "/CRUDUserList");
+                        
+                        request.getRequestDispatcher(request.getContextPath() + "/CRUDUserList").forward(request, response);
                         break;
                     default:
                         break;    
@@ -131,6 +138,9 @@ public class loginuser extends HttpServlet {
     public static String hashPassword(String plainPassword) {
         return BCrypt.hashpw(plainPassword, BCrypt.gensalt(12)); // 12 là số vòng lặp
     }
-    
+    public boolean checkPassword(String plainPassword, String hashedPassword) {
+        return BCrypt.checkpw(plainPassword, hashedPassword);
+    }
 
+    //f z e m c s z w n y i c w x a d
 }

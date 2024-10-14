@@ -283,7 +283,7 @@ transform: translate(-50%, -50%);
 .register-form{
       border: 1px solid black;
       width: 420px;
-      height: 540px;
+      height: 600px;
       text-align: center;
       display: none;
       border-radius: 10px;
@@ -316,17 +316,25 @@ transform: translate(-50%, -50%);
   text-indent: 45px;
 }
 .pass2 {
-  
   border-radius: 16px;
   border: 2px solid black;
   width: 334px;
   height: 48px;
   font-size: 16px;
   font-family: Inter_6493b6 - 400;
-  margin-top: 10px;
+  margin-top: 24px;
   text-indent: 45px;
 }
-
+.pass21{
+  border-radius: 16px;
+  border: 2px solid black;
+  width: 334px;
+  height: 48px;
+  font-size: 16px;
+  font-family: Inter_6493b6 - 400;
+  margin-top: 5px;
+  text-indent: 45px;
+}
 .submitds2{
   width: 334px;
     height: 48px;
@@ -387,4 +395,18 @@ transform: translate(-50%, -50%);
 .dsweq{
     margin-top: 10px;
     
+}
+.sendCodebut{
+    display: flex;
+    font-size: 14px;
+    margin-top: -36.5px;
+    text-align: right;
+    margin-left: 290px; 
+    cursor: pointer; /* Hiển thị con trỏ hình bàn tay */
+    background-color: initial; /* Màu nền ban đầu */
+}
+
+.sendCodebut:hover {
+    background-color: blue; /* Màu nền khi di chuột vào */
+    color: blue; /* Màu chữ khi di chuột vào */
 }
