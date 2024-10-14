@@ -44,8 +44,7 @@
                     ${errorPassword}
                 </div> 
             </c:if>
-             <c:if test="${showVerificationForm == '2' }"> 
-                
+             <c:if test="${showVerificationForm == '3' }"> 
                 <div >
                     ${mail}
                     ${codeSent} 

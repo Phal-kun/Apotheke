@@ -81,7 +81,9 @@ public class forgotPass extends HttpServlet {
                     request.setAttribute("showVerificationForm", "1"); 
                     // send code and mail 
                     request.setAttribute("codeSent", codeSent);
-                    request.setAttribute("email", email);
+                    request.getSession().setAttribute("codeSent", codeSent);
+                    request.getSession().setAttribute("email1", email);
+                    
                     request.getRequestDispatcher("/View/Login_Register/forgotPassword.jsp").forward(request, response);
                 }
             } 
@@ -90,8 +92,8 @@ public class forgotPass extends HttpServlet {
             // code nguoi dung nhap 
             String codeReceive = request.getParameter("verificationCode");
              // code system send  
-            String checkCode = request.getParameter("codeSent");
-            String email = request.getParameter("mail");
+            String checkCode =  (String) request.getSession().getAttribute("codeSent");
+            String email = (String) request.getSession().getAttribute("email1");
             // check valid code 
             if(codeReceive == null || codeReceive.isEmpty()){
                 /// form 1
@@ -125,7 +127,7 @@ public class forgotPass extends HttpServlet {
         }else if(btAction.equals("Hoàn thành")){
             String password = request.getParameter("password");
             String confirmPassword = request.getParameter("confirmPassword");
-            String email = request.getParameter("username"); 
+            String email =  (String) request.getSession().getAttribute("mess2");
             if(password == null || password.isEmpty()||confirmPassword ==null||confirmPassword.isEmpty()){
                 request.setAttribute("showVerificationForm", "2");
                 request.setAttribute("email", email);  
