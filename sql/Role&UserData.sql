@@ -1,6 +1,6 @@
 insert into role(roleName) values ('customer'),('warehouse'),('sale'),('marketing')
 
-INSERT INTO [User] (fullname, phone, username, password, gender, status, roleID, address)
+INSERT INTO [User] (fullname, phone, username, password, gender, status, role, address)
 VALUES 
 ('John Doe', '1234567890', 'johndoe', 'password123', 'male', 1, 1, '123 Main St'),
 ('Jane Smith', '0987654321', 'janesmith', 'password123', 'female', 1, 2, '456 Oak St'),

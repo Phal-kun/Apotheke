@@ -66,6 +66,15 @@ public class CreateProductServlet extends HttpServlet {
         ArrayList<Origin> originList = ProductDAO.INSTANCE.loadOriginList();
         request.setAttribute("originList", originList);
 
+        ArrayList<Manufacturer> manufacturerList = ProductDAO.INSTANCE.loadManufacturerList();
+        request.setAttribute("manufacturerList", manufacturerList);
+
+        ArrayList<Form> formList = ProductDAO.INSTANCE.loadFormList();
+        request.setAttribute("formList", formList);
+
+        ArrayList<Component> componentList = ProductDAO.INSTANCE.loadComponentList();
+        request.setAttribute("componentList", componentList);
+
         RequestDispatcher rd = request.getRequestDispatcher("View/ProductManage/CreateProduct.jsp");
         rd.forward(request, response);
     }
@@ -81,19 +90,15 @@ public class CreateProductServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        String productIDStr = request.getParameter("productID");
+
         String productName = request.getParameter("productName");
         String description = request.getParameter("description");
-        String componentDescription = request.getParameter("componentDescription");
         String categoryIDStr = request.getParameter("categoryID");
         String originIDStr = request.getParameter("originID");
-        String manufacturer = request.getParameter("manufacturer");
-        String[] unitNames = request.getParameterValues("unitName");
-        String[] convertRates = request.getParameterValues("convertRate");
-        String[] componentNames = request.getParameterValues("componentName");
+        String manufacturerIDStr = request.getParameter("manufacturerID");
+        String formIDStr = request.getParameter("formID");
+        String[] componentIDs = request.getParameterValues("componentID");
         String[] quantities = request.getParameterValues("quantity");
-        String[] componentUnits = request.getParameterValues("componentUnit");
 
         boolean hasError = false;
         StringBuilder errorMsg = new StringBuilder("Please fill in the following fields: ");
@@ -102,25 +107,27 @@ public class CreateProductServlet extends HttpServlet {
             hasError = true;
             errorMsg.append("Product Name ");
         }
-
-        int productID=0,categoryID = 0, originID = 0;
+        int categoryID = 0, originID = 0, manufacturerID = 0, formID = 0;
 
         try {
-            if (productIDStr != null) {
-                productID = Integer.parseInt(productIDStr);
-            }
             if (categoryIDStr != null) {
                 categoryID = Integer.parseInt(categoryIDStr);
             }
             if (originIDStr != null) {
                 originID = Integer.parseInt(originIDStr);
             }
+            if (manufacturerIDStr != null) {
+                manufacturerID = Integer.parseInt(manufacturerIDStr);
+            }
+            if (formIDStr != null) {
+                formID = Integer.parseInt(formIDStr);
+            }
         } catch (NumberFormatException e) {
             hasError = true;
             errorMsg.append("Invalid ID format ");
         }
 
-        if (componentNames == null || componentNames.length == 0) {
+        if (componentIDs == null || componentIDs.length == 0) {
             hasError = true;
             errorMsg.append("Components ");
         }
@@ -131,33 +138,26 @@ public class CreateProductServlet extends HttpServlet {
             request.setAttribute("description", description);
             request.setAttribute("categoryID", categoryID);
             request.setAttribute("originID", originID);
-            request.setAttribute("componentNames", componentNames);
+            request.setAttribute("manufacturerID", manufacturerID);
+            request.setAttribute("formID", formID);
+            request.setAttribute("componentIDs", componentIDs);
             request.setAttribute("quantities", quantities);
             request.setAttribute("createMsg", false);
+            doGet(request, response);
         } else {
-            StringBuilder unitString = new StringBuilder();
-            for (int i = 0; i < unitNames.length; i++) {
-                unitString.append(unitNames[i])
-                        .append(",")
-                        .append(convertRates[i]+".00")
-                        .append(";");
+
+            ArrayList<Component> components = new ArrayList<>();
+            for (int i = 0; i < componentIDs.length; i++) {
+                int componentID = Integer.parseInt(componentIDs[i]);
+                int quantity = Integer.parseInt(quantities[i]);
+                components.add(new Component(componentID, null, null, quantity));
             }
 
-            StringBuilder componentString = new StringBuilder();
-            for (int i = 0; i < componentNames.length; i++) {
-                componentString.append(componentNames[i])
-                        .append(",")
-                        .append(quantities[i])
-                        .append(",")
-                        .append(componentUnits[i])
-                        .append(";");
-            }
-
-            ProductDAO.INSTANCE.insertProduct(productID, productName, categoryID, originID, manufacturer, description, componentDescription, unitString.toString(), componentString.toString());
-
+            ProductDAO.INSTANCE.addProduct(productName, categoryID, originID, manufacturerID, formID, description, components);
+            request.setAttribute("createMsg", "Create successful!");
+            doGet(request, response);
         }
 
-        doGet(request, response);
     }
 
     /**
