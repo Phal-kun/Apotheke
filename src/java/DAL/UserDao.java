@@ -236,4 +236,30 @@ public class UserDao extends DBContext{
 
     return user; // Trả về đối tượng User hoặc null nếu không tìm thấy
 }
+        // update pasword
+        public void updatePassword(String email, String newPassword) throws SQLException, Exception {
+            String sql = "UPDATE [user] SET password = ? WHERE username = ?";
+            try {
+                con = getConnection();
+                ps = con.prepareStatement(sql);
+                ps.setString(1, newPassword);  
+                ps.setString(2, email);        
+                int rowsUpdated = ps.executeUpdate();
+
+                if (rowsUpdated > 0) {
+                    System.out.println("Password updated successfully!");
+                } else {
+                    System.out.println("User not found.");
+                }
+            } catch (Exception e) {
+                throw e;
+            } finally {
+                closePreparedStatement(ps);
+                closeConnection(con);
+            }
+        }
+        
+        
+        
+        
 }

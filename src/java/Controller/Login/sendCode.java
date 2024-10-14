@@ -5,19 +5,20 @@
 
 package Controller.Login;
 
+import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import java.util.Random;
 
 /**
  *
- * @author ASUS
+ * @author Dell
  */
-public class logout extends HttpServlet {
+public class sendCode extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -34,10 +35,10 @@ public class logout extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet LogoutServlet</title>");  
+            out.println("<title>Servlet sendCode</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet LogoutServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet sendCode at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -54,12 +55,20 @@ public class logout extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        HttpSession session = request.getSession(false); // Get the session, if it exists
-        if (session != null && session.getAttribute("account")!=null) {
-            session.invalidate(); // Invalidate the session if it exists
-        }
-        response.sendRedirect(request.getContextPath() + "/View/Home.jsp");
-//        processRequest(request, response);
+            processRequest(request, response);
+//        String email = request.getParameter("email");
+//        Email sendCodeVeryMail = new Email();
+//        String codeV= generateVerificationCode();
+//        if (email != null && !email.isEmpty()) {
+//            sendCodeVeryMail.sendMail("hieppdhe171309@fpt.edu.vn", "fzemcszwnyicwxad", ""+codeV+"", ""+email+"");
+//            request.getSession().setAttribute("verificationCode", codeV);
+//            
+//            request.getRequestDispatcher("View/Home.jsp").forward(request, response);
+//            response.getWriter().write("Code sent");
+//        } else {
+//            response.getWriter().write("Email is required");
+//        }
+        
     } 
 
     /** 
@@ -72,7 +81,7 @@ public class logout extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        doGet(request, response);
+        processRequest(request, response);
     }
 
     /** 
@@ -83,5 +92,10 @@ public class logout extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
+    public static String generateVerificationCode() {
+        Random random = new Random();
+        // Sinh số từ 100000 đến 999999
+        int code = random.nextInt(899999) + 100000;
+        return String.valueOf(code);
+    }
 }
