@@ -42,9 +42,10 @@
                 </span> 
 
                 <span class="forgot-password">
+                   <!-- register -->
+                    <a onclick="openForm3()" class="link2">Register</a>                
+                    <a href="Login_Register/forgotPassword.jsp" class="link1">Forgot Password?</a>
                     
-                    <a onclick="openForm3()" class="link2">Register</a>
-<!--                    <a href="forgot-password.jsp" class="link1">Forgot Password?</a>-->
                 </span>
                 <button type="submit" class ="submitds" >Login Now </button><br>
                

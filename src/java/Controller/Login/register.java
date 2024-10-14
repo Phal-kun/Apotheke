@@ -57,15 +57,26 @@ public class register extends HttpServlet {
                 setRequestAttributes(request, fullname, username, password, confirm);
                 request.getRequestDispatcher("View/Home.jsp").forward(request, response);
             }else{
-            // send code to mail and save mail which is sended code     
+                 UserDao us = new UserDao();
+                User newus= us.login(username);
+                 if(newus!=null){
+                    System.out.println("da ton tai ");   
+                    request.setAttribute("mess2", "Your account is exist in system");
+                     request.getRequestDispatcher("View/Home.jsp").forward(request, response);
+                }else{
+                // send code to mail and save mail which is sended code     
                 checkCode= generateVerificationCode();
                 Emailsw sendedCode = new Emailsw();
                 sendedCode.sendMail("hieppdhe171309@fpt.edu.vn", "fzemcszwnyicwxad", checkCode, username);
                 firstMail = username;
+                request.setAttribute("checkCode", checkCode);
+                request.setAttribute("firstMail", firstMail);
+                
                 request.setAttribute("mess2", "code sent successfull");
                 setRequestAttributes(request, fullname, username, password, confirm);
                 request.getRequestDispatcher("View/Home.jsp").forward(request, response);
-            }
+                 }    
+             }
         }
         if(button.equals("register")){
              String fullname = request.getParameter("fullname");
@@ -74,6 +85,8 @@ public class register extends HttpServlet {
                 String confirm = request.getParameter("confirmPassword");
                // khong can lam  String enteredCode = request.getParameter("verificationCode"); 
                 String enteredCode = request.getParameter("codevery");
+                String kds= request.getParameter("checkCode");
+                String fisMial = request.getParameter("firstMail");
                 System.out.println(fullname+username+password+confirm+enteredCode);
                 System.out.println(firstMail +checkCode);
             // check register
@@ -119,30 +132,31 @@ public class register extends HttpServlet {
                         request.setAttribute("enteredPassword", password);
                         request.setAttribute("enteredConfirmPassword", confirm);
                         request.getRequestDispatcher("View/Home.jsp").forward(request, response);
-                    }else{                       
+                    }else if(isUserExists(username)== true){
+                        request.setAttribute("mess2", "The account already exists in the system. Please login or forgot password");
+                        request.getRequestDispatcher("View/Home.jsp").forward(request, response);
+                    
+                    } else{                       
                             // check giong mail da gui khong hay da thay doi mail roi 
-                            if(username.equals(firstMail)!=true){
+                            if(username.equals(fisMial)!=true){
                                 request.setAttribute("mess2", "please input your mail is receive code");
                                 setRequestAttributes(request, fullname, username, password, confirm);
                                 request.getRequestDispatcher("View/Home.jsp").forward(request, response);                
                             }else{
                                 // check code enteredCode: code nhap, checkCode: code gui 
-                                if(enteredCode.equals(checkCode)== false){
+                                if(enteredCode.equals(kds)== false){
                                     request.setAttribute("mess2", "Code is invalid, please input again");
                                     setRequestAttributes(request, fullname, username, password, confirm);
                                     request.getRequestDispatcher("View/Home.jsp").forward(request, response);                       
                                 }else{
                                     UserDao us = new UserDao();
                                     User user = us.getUserByNameUserPass(username, password, fullname);
-                                    if(isUserExists(username,request, response)==false&& (isUserExis(username,password,request,response)==false) ){
+                                    if(isUserExists(username)==false&& (isUserExis(username,password)==false) ){
                                        Role role = new Role();
                                        role.setRoleID(1);
                                        User newuser = new User(fullname, "", username, hashPassword(password), "", true, role, "");
                                        us.saveUserByUsername(newuser);
                                        response.sendRedirect("View/Home.jsp");
-                                    }else{
-                                       request.setAttribute("mess2", "The account already exists in the system.");
-                                       request.getRequestDispatcher("View/Home.jsp").forward(request, response);
                                     }
                                 }
                                 
@@ -209,7 +223,7 @@ public class register extends HttpServlet {
      public static String hashPassword(String plainPassword) {
         return BCrypt.hashpw(plainPassword, BCrypt.gensalt(12)); // 12 là số vòng lặp
     }
-    private boolean isUserExists(String username, HttpServletRequest request, HttpServletResponse response) {
+    private boolean isUserExists(String username) {
        UserDao us = new UserDao();
        try {
            User s = us.getUserByEmail(username);
@@ -222,7 +236,7 @@ public class register extends HttpServlet {
        }
        return false; // Tài khoản không tồn tại
    }
-    private boolean isUserExis(String username,String password, HttpServletRequest request, HttpServletResponse response) {
+    private boolean isUserExis(String username,String password) {
        UserDao us = new UserDao();
        try {
            User s = us.getUserByUsernamePassword(username,password);

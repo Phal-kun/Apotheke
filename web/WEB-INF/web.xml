@@ -80,6 +80,10 @@
         <servlet-name>sendCode</servlet-name>
         <servlet-class>Controller.Login.sendCode</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>forgotPass</servlet-name>
+        <servlet-class>Controller.Login.forgotPass</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>CRUDUserList</servlet-name>
         <url-pattern>/CRUDUserList</url-pattern>
@@ -159,5 +163,9 @@
     <servlet-mapping>
         <servlet-name>sendCode</servlet-name>
         <url-pattern>/sendCode</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>forgotPass</servlet-name>
+        <url-pattern>/forgotPass</url-pattern>
     </servlet-mapping>
 </web-app>
