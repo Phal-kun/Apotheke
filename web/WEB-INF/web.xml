@@ -76,6 +76,22 @@
         <servlet-name>logout</servlet-name>
         <servlet-class>Controller.Login.logout</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CategoryServlet</servlet-name>
+        <servlet-class>Controller.Category.CategoryServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteCategoryServlet</servlet-name>
+        <servlet-class>Controller.Category.DeleteCategoryServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EditCategoryServlet</servlet-name>
+        <servlet-class>Controller.Category.EditCategoryServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CreateCategoryServlet</servlet-name>
+        <servlet-class>Controller.Category.CreateCategoryServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>CRUDUserList</servlet-name>
         <url-pattern>/CRUDUserList</url-pattern>
@@ -151,5 +167,21 @@
     <servlet-mapping>
         <servlet-name>logout</servlet-name>
         <url-pattern>/logout</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CategoryServlet</servlet-name>
+        <url-pattern>/CategoryManager</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteCategoryServlet</servlet-name>
+        <url-pattern>/DeleteCategory</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EditCategoryServlet</servlet-name>
+        <url-pattern>/EditCategory</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreateCategoryServlet</servlet-name>
+        <url-pattern>/CreateCategory</url-pattern>
     </servlet-mapping>
 </web-app>
