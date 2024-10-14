@@ -14,21 +14,20 @@
     </head>
     <body>
         <c:if test="${not empty sessionScope.account}">
-            <c:choose>
-                <c:when test="${sessionScope.account.role.roleID == 1}">
+            
+                <c:if test="${sessionScope.account.role.roleID == 1}">
                     <h1>Welcome Customer</h1>
                     <a href="${pageContext.request.contextPath}/logout">
                         <button>Logout</button>
                     </a>
-                </c:when>
-                <c:otherwise>
+                </c:if>
+                <c:if test="${sessionScope.account.role.roleID != 1}">
                     <h1>You are not authorized to access this page!</h1>
                     <script>
                         window.location.href = '${pageContext.request.contextPath}/View/Login_Register/active.jsp';
                     </script>
-                </c:otherwise>
-            </c:choose>
-           
+                </c:if>
+            
         </c:if>
         <c:if test="${empty sessionScope.account}">
             <h1>You are not logged in!</h1>

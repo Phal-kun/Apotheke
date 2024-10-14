@@ -53,20 +53,25 @@ public class loginGoogle extends HttpServlet {
             String accessToken = GoogleLG.getToken(code);
             User user = GoogleLG.getUserInfo(accessToken);
             UserDao usdao = new UserDao();
-             try {
-                if(usdao.getUserByEmail(user.getUsername())==null){
-                   usdao.saveUser(user);
+            System.out.println(user.toString());
+            try {
+                // check if ton tai chuyen huong luon 
+                String email = user.getUsername();
+                // khong ton tai thi luu cai moi 
+                if(usdao.getUserByEmail(email)==null){
+                    System.out.print("ko co user ");
+                    usdao.saveUser(user);
                    // Mật khẩu đúng, thiết lập session
                     HttpSession session = request.getSession();
                     session.setAttribute("account", user);
                     request.getRequestDispatcher("/View/Login_Register/customerHome.jsp").forward(request,response);
-                }else{
-                    
-                    if(user.getUsername().equals(usdao.getUserByEmail(user.getUsername()).getUsername())== true){
-                        
+                }else{  
+
                         HttpSession session = request.getSession();
-                        session.setAttribute("account", usdao.getUserByEmail(user.getUsername()).getUsername());
-                        switch (user.getRole().getRoleID()) {
+                        User checkuser = usdao.getUserByEmail(email);
+                        System.out.println("sai roi ");
+                        session.setAttribute("account", checkuser);
+                        switch (checkuser.getRole().getRoleID()) {
                             case 1:
                                 response.sendRedirect("View/Login_Register/customerHome.jsp");
                                 break; 
@@ -86,11 +91,12 @@ public class loginGoogle extends HttpServlet {
                                 break;    
                                 }
                             } 
-                }
+                
              } catch (Exception ex) {
                  Logger.getLogger(loginGoogle.class.getName()).log(Level.SEVERE, null, ex);
              }
         }
+
     } 
 
     /** 

@@ -23,12 +23,12 @@
         </c:if>
 
         <c:if test="${empty sessionScope.account or sessionScope.account.role.roleID != 5}">
-        <h1>Access Denied!</h1>
+                <h1>Access Denied!</h1>
         
-         <c:redirect url="View/Login_Register/accessDenied.jsp">
-            <c:param name="roleName" value="admin"/>
-        </c:redirect>
-    </c:if>
+                <c:redirect url="View/Login_Register/accessDenied.jsp">
+                   <c:param name="roleName" value="admin"/>
+               </c:redirect>
+        </c:if>
     </body>
 </html>
 
