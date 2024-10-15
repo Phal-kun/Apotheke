@@ -1,0 +1,85 @@
+@import url('https://fonts.googleapis.com/css?family=Abel');
+
+body, html {
+  color: #fff;
+  font-family: 'Abel', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #40e0d0; /* Turquoise background */
+}
+
+body {
+  font-size: 1.2em;
+}
+
+h1 {
+  font-size: 2.5em;
+  text-align: center;
+  color: #2c3e50; /* Darker text for better contrast */
+  margin-top: 20px;
+}
+
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  width: 90%;
+  margin: 0 auto;
+  background-color: rgba(26, 188, 156, 0.8); /* Darker turquoise for toolbar */
+  border-radius: 10px;
+}
+
+.info-section {
+  width: 90%;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.8); /* Bright white with some transparency */
+  border-radius: 10px;
+  color: #2c3e50; /* Darker color for text */
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Two columns layout */
+  grid-gap: 10px;
+}
+
+.info-section div {
+  margin-bottom: 10px;
+}
+
+.order-details {
+  width: 90%;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.8); /* Consistent background */
+  border-radius: 10px;
+}
+
+.order-details table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.order-details th, .order-details td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.order-details th {
+  background-color: rgba(26, 188, 156, 0.9); /* Turquoise for table header */
+  color: white;
+}
+
+.order-details tr:nth-child(even) {
+  background-color: rgba(0, 0, 0, 0.05); /* Light gray for even rows */
+}
+
+.order-details tr:hover {
+  background-color: rgba(26, 188, 156, 0.3); /* Light turquoise on hover */
+}
+
+.message {
+  text-align: center;
+  font-size: 1.2em;
+  margin-top: 20px;
+  color: #f39c12;
+}
