@@ -70,8 +70,6 @@ public class showProductDAO extends DBContext {
                 product.setComponent(myList);
                 
                 product.setDescription(rs.getString("description"));
-                product.setBaseUnitID(rs.getInt("baseUnitID"));
-                product.setActive(rs.getBoolean("isActive")); // Giả sử bạn có phương thức này
 
                 products.add(product);
             }
