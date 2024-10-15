@@ -334,7 +334,7 @@ public class ProductDAO {
                 int categoryID = rsProduct.getInt("CategoryID");
                 String categoryName = rsProduct.getString("CategoryName");
                 String categoryDescription = rsProduct.getString("categoryDescription");
-                Category category = new Category(categoryID, null, categoryName, categoryDescription); // Assuming no parentCategory
+                Category category = new Category(categoryID, null, categoryName, description, isActive); // Assuming no parentCategory
 
                 // Get Origin object
                 int originID = rsProduct.getInt("originID");

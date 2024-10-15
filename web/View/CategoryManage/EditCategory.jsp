@@ -42,7 +42,13 @@
                     </c:forEach>
                 </select><br>
 
-                <button type="submit">Save Changes</button>
+                <!-- Status Radio Buttons -->
+                <label>Status:</label><br>
+                <input type="radio" id="active" name="status" value="true" ${category.status ? 'checked' : ''}>
+                <label for="active">Active</label><br>
+
+                <input type="radio" id="inactive" name="status" value="false" ${!category.status ? 'checked' : ''}>
+                <label for="inactive">Inactive</label><br>                <button type="submit">Save Changes</button>
             </form>
         </c:if>
 
