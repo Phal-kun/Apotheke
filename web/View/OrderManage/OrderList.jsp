@@ -1,20 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Order List</title>
-        <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/CSS/OrderCSS/OrderListCSS.css"> 
-    </head>
-    <body>
-        <h1>Order List</h1>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order List</title>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/CSS/OrderCSS/OrderListCSS.css">
+</head>
+<body>
+    <div class="container">
+        
         <div>
-            <a href="${pageContext.request.contextPath}/logout" class ="logout">
-                <button>Logout</button>
-            </a>
+            <h1>Order List</h1>
+            <div class="logout">
+                <a href="${pageContext.request.contextPath}/logout">
+                    <button>Logout</button>
+                </a>
+            </div>
         </div>
-                
+
         <div>Status ID: ${sessionScope.statusID != null ? sessionScope.statusID : 'Not set'}</div>
 
         <div class="toolbar">
@@ -23,7 +27,7 @@
                 <select name="statusID" id="statusID" onchange="this.form.submit()">
                     <option value="0" ${sessionScope.statusID == 0 ? 'selected' : ''}>All Order</option>
                     <c:forEach var="status" items="${statusList}">
-                        <option name="statusID" value="${status.statusID}" ${sessionScope.statusID == status.statusID ? 'selected' : ''}>${status.statusName}</option>
+                        <option value="${status.statusID}" ${sessionScope.statusID == status.statusID ? 'selected' : ''}>${status.statusName}</option>
                     </c:forEach>
                 </select>
             </form>
@@ -57,9 +61,10 @@
                         <td>${order.totalPrice}</td>
                         <td>${order.shipAddress}</td>
                         <td>
-                            <a href="${pageContext.request.contextPath}/CRUDOrderDetail?orderID=${order.orderID}">
-                                <button class="view-btn">View</button>
-                            </a>
+                            <form action="${pageContext.request.contextPath}/CRUDOrderDetail" method="get">
+                                <input type="hidden" name="orderID" value="${order.orderID}">
+                                <button type="submit" class="view-btn">View</button>
+                            </form>
                         </td>
                     </tr>
                 </c:forEach>
@@ -85,6 +90,6 @@
                 <button type="submit" ${indexNowCo == endPageCo ? 'disabled' : ''}>&raquo;</button>
             </form>
         </div>
-
-    </body>
+    </div>
+</body>
 </html>

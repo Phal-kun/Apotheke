@@ -5,8 +5,6 @@
 
 package Controller.Order;
 
-import DAL.DAOOrderManage;
-import Model.Order.Order;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -19,8 +17,8 @@ import jakarta.servlet.http.HttpServletResponse;
  *
  * @author ASUS
  */
-@WebServlet(name="CRUDOrderDetail", urlPatterns={"/CRUDOrderDetail"})
-public class CRUDOrderDetail extends HttpServlet {
+@WebServlet(name="CRUDOrderReject", urlPatterns={"/CRUDOrderReject"})
+public class CRUDOrderReject extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -37,10 +35,10 @@ public class CRUDOrderDetail extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet CRUDOrderDetail</title>");  
+            out.println("<title>Servlet CRUDOrderReject</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet CRUDOrderDetail at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet CRUDOrderReject at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -57,12 +55,7 @@ public class CRUDOrderDetail extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        DAOOrderManage db = DAOOrderManage.INSTANCE;
-        int orderID = Integer.parseInt(request.getParameter("orderID"));
-
-        request.setAttribute("order", db.getOrderDetail(orderID));
-        
-        request.getRequestDispatcher("/View/OrderManage/OrderDetail.jsp").forward(request, response);
+        processRequest(request, response);
     } 
 
     /** 

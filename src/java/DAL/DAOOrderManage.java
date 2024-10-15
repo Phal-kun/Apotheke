@@ -374,8 +374,7 @@ public class DAOOrderManage {
 //            System.out.println(object);
 //        }
         
-        Order order = new Order(1);
-        INSTANCE.insertOrderDetail(order);
-        System.out.println(order);
+
+        System.out.println(INSTANCE.getOrderDetail(1));
     }
 }

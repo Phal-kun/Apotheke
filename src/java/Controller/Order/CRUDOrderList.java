@@ -64,7 +64,7 @@ public class CRUDOrderList extends HttpServlet {
         HttpSession session = request.getSession();      
         int indexNowCo = 1;
         
-        ArrayList<Order> orderList = db.getOrder(1, false, "orderDate", "", 0);
+        ArrayList<Order> orderList = db.getOrder(indexNowCo, false, "orderDate", "", 0);
         ArrayList<Status> statusList = db.getStatus();
         
         request.setAttribute("orderList", orderList);
@@ -109,7 +109,7 @@ public class CRUDOrderList extends HttpServlet {
         
         
         int endPageCo = db.getTotalPages((String)session.getAttribute("keyword"), (int)session.getAttribute("statusID"));
-        ArrayList<Order> orderList = db.getOrder(indexNowCo, true, "orderDate", (String) session.getAttribute("keyword"), (int)session.getAttribute("statusID"));
+        ArrayList<Order> orderList = db.getOrder(indexNowCo, false, "orderDate", (String) session.getAttribute("keyword"), (int)session.getAttribute("statusID"));
         ArrayList<Status> statusList = db.getStatus();
         
         request.setAttribute("orderList", orderList);
