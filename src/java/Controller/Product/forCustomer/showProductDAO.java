@@ -75,6 +75,7 @@ public class showProductDAO extends DBContext {
 //                product.setBaseUnitID(rs.getInt("baseUnitID"));
 //                product.setActive(rs.getBoolean("isActive")); // Giả sử bạn có phương thức này
 
+
                 products.add(product);
             }
         } catch (Exception e) {

@@ -1,157 +1,167 @@
 --create database SWP391
--- drop database SWP391
+--drop database SWP391
 
-CREATE TABLE [user] (
-  [userID] INT PRIMARY KEY IDENTITY(1,1),
-  [fullname] NVARCHAR(255),
-  [phone] NVARCHAR(255),
-  [username] NVARCHAR(255),
-  [password] NVARCHAR(255),
-  [gender] NVARCHAR(255),
-  [status] BIT,
-  [role] INT,
-  [address] NVARCHAR(255)
-);
-GO
-
+-- Role Table
 CREATE TABLE [role] (
-  [roleID] INT PRIMARY KEY IDENTITY(1,1),
-  [roleName] NVARCHAR(255)
+  roleID INTEGER IDENTITY(1,1) PRIMARY KEY, -- Auto-increment for roleID
+  roleName VARCHAR(100)
 );
-GO
 
-CREATE TABLE [product] (
-  [productID] INT PRIMARY KEY IDENTITY(1,1),
-  [productName] NVARCHAR(255),
-  [CategoryID] INT,
-  [originID] INT,
-  [MeasureUnitID] INT,
-  [ManufacturerID] INT,
-  [FormID] INT,
-  [Description] NVARCHAR(255),
-  [ImportDate] DATE,
-  [ExpiredDate] DATE,
+-- User Table
+CREATE TABLE [user] (
+  userID INTEGER IDENTITY(1,1) PRIMARY KEY, -- Auto-increment for userID
+  fullname VARCHAR(255),
+  phone NVARCHAR(20),
+  username VARCHAR(255),
+  password VARCHAR(255), 
+  gender VARCHAR(10),
+  status BIT,
+  roleID INTEGER,
+  address VARCHAR(255),
+  FOREIGN KEY (roleID) REFERENCES role(roleID)
 );
-GO
 
-CREATE TABLE [Component] (
-  [componentID] INT PRIMARY KEY IDENTITY(1,1),
-  [componentName] NVARCHAR(255)
+-- Origin Table
+CREATE TABLE origin (
+  originID INTEGER IDENTITY(1,1) PRIMARY KEY, -- Auto-increment for originID
+  originName NVARCHAR(255)
 );
-GO
 
-CREATE TABLE [ComponentProduct] (
-  [componentID] INT,
-  [productID] INT,
-  [quantity] INT,
-  PRIMARY KEY ([componentID], [productID])
+-- Category Table
+CREATE TABLE category (
+  categoryID INTEGER IDENTITY(1,1) PRIMARY KEY, -- Auto-increment for categoryID
+  parentCategoryID INTEGER,
+  categoryName VARCHAR(255),
+  description VARCHAR(1000),
+  FOREIGN KEY (parentCategoryID) REFERENCES category(categoryID)
 );
-GO
 
-CREATE TABLE [Origin] (
-  [originID] INT PRIMARY KEY IDENTITY(1,1),
-  [originName] NVARCHAR(255)
+-- Product Unit Table (Moved before Product Table)
+CREATE TABLE productUnit (
+  unitID INTEGER IDENTITY(1,1) PRIMARY KEY, -- Auto-increment for unitID
+  productID INTEGER,
+  unitName VARCHAR(50),
+  unitToBaseConvertRate DECIMAL(10, 4),
 );
-GO
 
-CREATE TABLE [ProductUnit] (
-  [productUnitID] INT PRIMARY KEY IDENTITY(1,1),
-  [productUnitName] NVARCHAR(255)
+-- Product Table (no IDENTITY for productID)
+CREATE TABLE product (
+  productID INTEGER PRIMARY KEY, -- No IDENTITY for productID
+  productName VARCHAR(255),
+  categoryID INTEGER,
+  originID INTEGER,
+  manufacturer NVARCHAR(255),
+  componentDescription NVARCHAR(255),
+  description VARCHAR(1000),
+  baseUnitID INTEGER NULL, -- Initially NULL
+  isActive BIT,
+  FOREIGN KEY (categoryID) REFERENCES category(categoryID),
+  FOREIGN KEY (originID) REFERENCES origin(originID),
+  FOREIGN KEY (baseUnitID) REFERENCES productUnit(unitID)
 );
-GO
 
-CREATE TABLE [Form] (
-  [formID] INT PRIMARY KEY IDENTITY(1,1),
-  [formName] NVARCHAR(255)
+-- Adding foreign key
+ALTER TABLE productUnit
+ADD CONSTRAINT FK_productUnit_product
+FOREIGN KEY (productID) REFERENCES product(productID);
+
+-- Product Detail Table
+CREATE TABLE productDetail (
+  productDetailID INTEGER IDENTITY(1,1) PRIMARY KEY, -- Auto-increment for productDetailID
+  unitID INTEGER,
+  avgImportPrice DECIMAL(10, 2),
+  stock DECIMAL(10, 2),
+  baseSoldPrice DECIMAL(10, 2),
+  batchNo INTEGER,
+  manufactureDate DATE,
+  expiredDate DATE,
+  isActive BIT,
+  FOREIGN KEY (unitID) REFERENCES productUnit(unitID)
 );
-GO
 
-CREATE TABLE [Manufacturer] (
-  [manufacturerID] INT PRIMARY KEY IDENTITY(1,1),
-  [manufacturerName] NVARCHAR(255)
+-- Blog Table
+CREATE TABLE blog (
+  blogID INTEGER IDENTITY(1,1) PRIMARY KEY, -- Auto-increment for blogID
+  title NVARCHAR(255),
+  content NVARCHAR(1000),
+  publicDate DATE,
+  userID INTEGER,
+  status BIT,
+  FOREIGN KEY (userID) REFERENCES [user](userID)
 );
-GO
 
-CREATE TABLE [Category] (
-  [CategoryID] INT PRIMARY KEY IDENTITY(1,1),
-  [ParentCategoryID] INT,
-  [CategoryName] NVARCHAR(255),
-  [Description] NVARCHAR(255)
+-- Tag Table
+CREATE TABLE tag (
+  tagID INTEGER IDENTITY(1,1) PRIMARY KEY, -- Auto-increment for tagID
+  tagName NVARCHAR(100)
 );
-GO
 
-CREATE TABLE [productDetail] (
-  [productDetailID] INT PRIMARY KEY IDENTITY(1,1),
-  [productID] INT,
-  [productUnitID] INT,
-  [volume] INT,
-  [stock] INT,
-  [price] INT,
-
+-- BlogTag Table (Composite Key, no need for auto-increment)
+CREATE TABLE blogTag (
+  blogID INTEGER,
+  tagID INTEGER,
+  PRIMARY KEY (blogID, tagID),
+  FOREIGN KEY (blogID) REFERENCES blog(blogID),
+  FOREIGN KEY (tagID) REFERENCES tag(tagID)
 );
-GO
 
-CREATE TABLE [blog] (
-  [blogID] INT PRIMARY KEY IDENTITY(1,1),
-  [title] NVARCHAR(255),
-  [content] NVARCHAR(MAX),
-  [publicDate] DATE,
-  [userID] INT,
-  [status] BIT
+
+-- Order Status Table
+CREATE TABLE orderStatus (
+statusID INTEGER IDENTITY(1,1) PRIMARY KEY, -- Auto-increment for statusID
+  statusName NVARCHAR(50),
+  description NVARCHAR(255)
 );
-GO
 
-CREATE TABLE [tag] (
-  [tagID] INT PRIMARY KEY IDENTITY(1,1),
-  [tagName] NVARCHAR(255)
+-- Order Table
+CREATE TABLE [order] (
+  orderID INTEGER IDENTITY(1,1) PRIMARY KEY, -- Auto-increment for orderID
+  userID INTEGER,
+  orderDate DATE,
+  orderCompleted date,
+  statusID INTEGER,
+  totalPrice DECIMAL(10, 2),
+  shipName NVARCHAR(255),
+  shipAddress NVARCHAR(255),
+  shipPhone NVARCHAR(20),
+  shipNote NVARCHAR(550),
+  rejectReason NVARCHAR(255),
+  FOREIGN KEY (userID) REFERENCES [user](userID),
+  FOREIGN KEY (statusID) REFERENCES orderStatus(statusID)
 );
-GO
 
-CREATE TABLE [blogTag] (
-  [blogID] INT,
-  [tagID] INT,
-  PRIMARY KEY ([blogID], [tagID])
+-- Order Detail Table
+CREATE TABLE orderDetail (
+  orderDetailID INTEGER IDENTITY(1,1) PRIMARY KEY, -- Auto-increment for orderDetailID
+  orderID INTEGER,
+  productID INTEGER,
+  productDetailID INTEGER,
+  unitID INTEGER,
+  soldPrice DECIMAL(10, 2),
+  quantity INTEGER,
+  totalProductPrice AS soldPrice * quantity, -- Automatically calculates total price
+  FOREIGN KEY (orderID) REFERENCES [order](orderID),
+  FOREIGN KEY (productID) REFERENCES product(productID),
+  FOREIGN KEY (productDetailID) REFERENCES productDetail(productDetailID),
+  FOREIGN KEY (unitID) REFERENCES productUnit(unitID)
 );
-GO
 
--- Adding foreign keys
-ALTER TABLE [user] ADD FOREIGN KEY ([role]) REFERENCES [role] ([roleID]);
-GO
+-- Product Import Table
+CREATE TABLE productImport (
+  orderImportID INTEGER IDENTITY(1,1) PRIMARY KEY, -- Auto-increment for orderImportID
+  unitID INTEGER,
+  importPrice DECIMAL(10, 2),
+  quantity INTEGER,
+  batchNo INTEGER,
+  manufactureDate DATE,
+  expiredDate DATE,
+  FOREIGN KEY (unitID) REFERENCES productUnit(unitID)
+);
 
-ALTER TABLE [product] ADD FOREIGN KEY ([originID]) REFERENCES [Origin] ([originID]);
-GO
-
-ALTER TABLE [product] ADD FOREIGN KEY ([ManufacturerID]) REFERENCES [Manufacturer] ([manufacturerID]);
-GO
-
-ALTER TABLE [Category] ADD FOREIGN KEY ([ParentCategoryID]) REFERENCES [Category] ([CategoryID]);
-GO
-
-ALTER TABLE [product] ADD FOREIGN KEY ([CategoryID]) REFERENCES [Category] ([CategoryID]);
-GO
-
-ALTER TABLE [product] ADD FOREIGN KEY ([FormID]) REFERENCES [Form] ([formID]);
-GO
-
-ALTER TABLE [productDetail] ADD FOREIGN KEY ([productID]) REFERENCES [product]([productID]);
-GO
-
-ALTER TABLE [productDetail] ADD FOREIGN KEY ([productUnitID]) REFERENCES [productUnit]([productUnitID]);
-GO
-
--- Component-Product relations
-ALTER TABLE [ComponentProduct] ADD FOREIGN KEY ([componentID]) REFERENCES [Component] ([componentID]);
-GO
-
-ALTER TABLE [ComponentProduct] ADD FOREIGN KEY ([productID]) REFERENCES [product] ([productID]);
-GO
-
--- Blog relations
-ALTER TABLE [blog] ADD FOREIGN KEY ([userID]) REFERENCES [user] ([userID]);
-GO
-
-ALTER TABLE [blogTag] ADD FOREIGN KEY ([blogID]) REFERENCES [blog] ([blogID]);
-GO
-
-ALTER TABLE [blogTag] ADD FOREIGN KEY ([tagID]) REFERENCES [tag] ([tagID]);
-GO
+CREATE TABLE componentProduct(
+	componentName NVARCHAR(255),
+	productID INTEGER,
+	quantity DECIMAL(10,2),
+	componentUnit NVARCHAR(31),
+	FOREIGN KEY (productID) REFERENCES product(productID)
+)

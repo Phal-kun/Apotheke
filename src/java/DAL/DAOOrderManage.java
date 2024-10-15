@@ -16,6 +16,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -52,7 +54,103 @@ public class DAOOrderManage {
             System.out.println(status);
         }
     }
-    
+
+    public ArrayList<Order> getOrder(int page, boolean sort, String sortCol, String keyword, int statusID) {
+        try {
+            String sql = """
+        SELECT 
+            *
+        FROM [order] o
+            JOIN [user] u ON o.userID = u.userID
+            JOIN orderStatus s ON o.statusID = s.statusID
+        WHERE
+            %s
+        ORDER BY
+            %s
+        OFFSET ? ROWS
+        FETCH NEXT 10 ROWS ONLY;
+        """;
+
+            // Set up the base WHERE clause
+            StringBuilder condition = new StringBuilder("1=1");  // Base condition that always evaluates to true (to simplify appending)
+
+            // Add search condition for keyword
+            if (keyword != null && !keyword.isEmpty()) {
+                condition.append(" AND (CAST(o.orderID AS NVARCHAR) LIKE ? OR u.fullname LIKE ? OR u.address LIKE ? OR CAST(o.totalPrice AS NVARCHAR) LIKE ?)");
+            }
+
+            // Add filter for statusID (if it's greater than 0)
+            if (statusID > 0) {
+                condition.append(" AND o.statusID = ?");
+            }
+
+            // Set up sort order
+            String order = sortCol + (sort ? " ASC" : " DESC");
+
+            // Format the SQL string
+            sql = String.format(sql, condition.toString(), order);
+
+            PreparedStatement statement = con.prepareStatement(sql);
+
+            // Set the search parameters if keyword exists
+            int paramIndex = 1;
+            if (keyword != null && !keyword.isEmpty()) {
+                String keywordPattern = "%" + keyword + "%";
+                statement.setString(paramIndex++, keywordPattern);
+                statement.setString(paramIndex++, keywordPattern);
+                statement.setString(paramIndex++, keywordPattern);
+                statement.setString(paramIndex++, keywordPattern);
+            }
+
+            // Set the statusID parameter if it's greater than 0
+            if (statusID > 0) {
+                statement.setInt(paramIndex++, statusID);
+            }
+
+            // Set pagination offset
+            statement.setInt(paramIndex, (page - 1) * 10);
+
+            // Execute the query and return the result list
+            ResultSet rs = statement.executeQuery();
+            return orderToList(rs);
+        } catch (SQLException ex) {
+            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+
+    public Order getOrderDetail(int orderID) {
+        Order order = null;
+        try {
+            String sql = """
+                     SELECT o.orderID, o.orderDate, o.orderCompleted, o.totalPrice, 
+                            o.shipName, o.shipAddress, o.shipPhone, o.shipNote, o.rejectReason, 
+                            u.userID, u.fullname, u.username, u.phone, u.gender, u.address,
+                            s.statusID, s.statusName, s.description
+                     FROM [order] o
+                     JOIN [user] u ON o.userID = u.userID
+                     JOIN orderStatus s ON o.statusID = s.statusID
+                     WHERE o.orderID = ?
+                     """;
+
+            PreparedStatement statement = con.prepareStatement(sql);
+            statement.setInt(1, orderID); // Set the orderID parameter
+            ResultSet rs = statement.executeQuery();
+
+            // Convert the result set to an Order object
+            order = orderToSingleOrder(rs);
+
+            // Fetch the order details and add them to the order
+            if (order != null) {
+                insertOrderDetail(order);
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return order;
+    }
+
     private ArrayList orderToList(ResultSet rs){
         ArrayList<Order> orderList = new ArrayList<Order>();
         try{
@@ -91,7 +189,72 @@ public class DAOOrderManage {
         }
         return orderList;
     }
-    
+   
+    private Order orderToSingleOrder(ResultSet rs) {
+        Order order = null;
+        try {
+            if (rs.next()) { 
+                Status status = new Status();
+                status.setStatusID(rs.getInt("statusID"));
+                status.setStatusName(rs.getString("statusName"));
+                status.setDescription(rs.getString("description"));
+
+                User user = new User();
+                user.setUserID(rs.getInt("userID"));
+                user.setFullname(rs.getString("fullname"));
+                user.setUsername(rs.getString("username"));
+                user.setPhone(rs.getString("phone"));
+                user.setGender(rs.getString("gender"));
+                user.setAddress(rs.getString("address"));
+
+                order = new Order(); // Create an Order instance
+                order.setOrderID(rs.getInt("orderID"));
+                order.setUser(user);
+                order.setOrderDate(rs.getDate("orderDate"));
+                order.setOrderCompleted(rs.getDate("orderCompleted"));
+                order.setOrderDetail(new ArrayList<OrderDetail>());
+                order.setStatus(status);
+                order.setTotalPrice(rs.getDouble("totalPrice"));
+                order.setShipName(rs.getString("shipName"));
+                order.setShipAddress(rs.getString("shipAddress"));
+                order.setShipPhone(rs.getString("shipPhone"));
+                order.setShipNote(rs.getString("shipNote"));
+                order.setRejectReason(rs.getString("rejectReason"));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return order; // Return the single order
+    }
+ 
+    private void insertOrderDetail(Order order) {
+        try {
+            // SQL query to select the order details for the given order
+            String sql = """
+             SELECT od.orderDetailID, od.soldPrice, od.quantity, 
+                    od.totalProductPrice,
+                    p.productID, p.productName, 
+                    pd.productDetailID, pd.size, pd.color,
+                    pu.unitID, pu.unitName
+             FROM orderDetail od
+             JOIN product p ON od.productID = p.productID
+             JOIN productDetail pd ON od.productDetailID = pd.productDetailID
+             JOIN productUnit pu ON od.unitID = pu.unitID
+             WHERE od.orderID = ?
+             """;
+
+            PreparedStatement statement = con.prepareStatement(sql);
+            statement.setInt(1, order.getOrderID()); // Set the order ID in the query
+            ResultSet rs = statement.executeQuery();
+
+            // Populating the order with its details
+            insertDetail(rs, order);
+
+        } catch (SQLException e) {
+            System.out.println("Error inserting order detail: " + e.getMessage());
+        }
+    }
+
     private Order insertDetail(ResultSet rs, Order order){
         try{
             ArrayList<OrderDetail> orderDetailList = new ArrayList<>();
@@ -127,5 +290,9 @@ public class DAOOrderManage {
     
     public static void main(String[] args) {
         INSTANCE.loadDB();
+        ArrayList<Order> list = INSTANCE.getOrder(1, true, "orderID", "", 0);
+        for (Order order : list) {
+            System.out.println(order);
+        }
     }
 }
