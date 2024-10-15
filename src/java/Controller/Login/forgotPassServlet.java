@@ -157,9 +157,9 @@ public class forgotPassServlet extends HttpServlet {
                     us.updatePassword(email, hashPassword(password));
                     System.out.println("fotgot pass");
                     System.out.println(email);
-                     System.out.println(password);
-                      System.out.println(hashPassword(password));
-                    request.setAttribute("mess", "");
+                    System.out.println(password);
+                    System.out.println(hashPassword(password));
+                    
                     request.getRequestDispatcher("View/Home.jsp").forward(request, response);
                 } catch (Exception ex) {
                     Logger.getLogger(forgotPassServlet.class.getName()).log(Level.SEVERE, null, ex);

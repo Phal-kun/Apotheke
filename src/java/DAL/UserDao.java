@@ -36,7 +36,7 @@ public class UserDao extends DBContext{
                 user.setPassword(rs.getString("password"));
                 user.setGender(rs.getString("gender"));
                     Role role = new Role();
-                    role.setRoleID(rs.getInt("role"));
+                    role.setRoleID(rs.getInt("roleID"));
                 user.setRole(role);
                 user.setStatus(rs.getBoolean("status"));
                 user.setPhone(rs.getString("phone"));
@@ -217,7 +217,7 @@ public class UserDao extends DBContext{
             user.setGender(rs.getString("gender"));
 
             Role role = new Role(); // Khởi tạo đối tượng Role
-            role.setRoleID(rs.getInt("role"));
+            role.setRoleID(rs.getInt("roleID"));
             user.setRole(role);
 
             user.setStatus(rs.getBoolean("status"));
