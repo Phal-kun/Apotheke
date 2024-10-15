@@ -7,6 +7,7 @@ package DAL;
 import Model.Order.Order;
 import Model.Order.OrderDetail;
 import Model.Order.Status;
+import Model.Product.Manufacturer;
 import Model.Product.Product;
 import Model.Product.ProductDetail;
 import Model.Product.ProductUnit;
@@ -117,6 +118,85 @@ public class DAOOrderManage {
             Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
+    }
+
+    public int getTotalPages(String keyword, int statusID) {
+        try {
+            String countSql = """
+        SELECT COUNT(*)
+        FROM [order] o
+            JOIN [user] u ON o.userID = u.userID
+            JOIN orderStatus s ON o.statusID = s.statusID
+        WHERE %s
+        """;
+
+            // Start with a base condition that always evaluates to true (for easy appending)
+            StringBuilder condition = new StringBuilder("1=1");
+
+            // Add search condition if a keyword is provided
+            if (keyword != null && !keyword.isEmpty()) {
+                condition.append(" AND (CAST(o.orderID AS NVARCHAR) LIKE ? OR u.fullname LIKE ? OR u.address LIKE ? OR CAST(o.totalPrice AS NVARCHAR) LIKE ?)");
+            }
+
+            // Add filter for statusID (if it's greater than 0)
+            if (statusID > 0) {
+                condition.append(" AND o.statusID = ?");
+            }
+
+            // Format the SQL query with the dynamic conditions
+            countSql = String.format(countSql, condition.toString());
+
+            PreparedStatement statement = con.prepareStatement(countSql);
+
+            // Set the search parameters for the keyword if it exists
+            int paramIndex = 1;
+            if (keyword != null && !keyword.isEmpty()) {
+                String keywordPattern = "%" + keyword + "%";
+                statement.setString(paramIndex++, keywordPattern);
+                statement.setString(paramIndex++, keywordPattern);
+                statement.setString(paramIndex++, keywordPattern);
+                statement.setString(paramIndex++, keywordPattern);
+            }
+
+            // Set the statusID parameter if it's greater than 0
+            if (statusID > 0) {
+                statement.setInt(paramIndex++, statusID);
+            }
+
+            // Execute the query to get the total record count
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                int totalRecords = rs.getInt(1); // Get the total count of orders
+                int recordsPerPage = 10; // Assuming 10 records per page
+                return (int) Math.ceil(totalRecords / (double) recordsPerPage);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0; // Default return if an exception occurs or no results are found
+    }
+
+    public ArrayList<Status> getStatus() {
+        ArrayList<Status> statusList = new ArrayList<>();
+        try {
+            String countSql = """
+        SELECT * FROM orderStatus
+        """;
+
+            PreparedStatement statement = con.prepareStatement(countSql);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                int statusID = rs.getInt("statusID");
+                String statusName = rs.getString("statusName");
+                String description = rs.getString("description");
+
+                Status status = new Status(statusID, statusName, description);
+                statusList.add(status);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return statusList;
     }
 
     public Order getOrderDetail(int orderID) {
@@ -231,11 +311,7 @@ public class DAOOrderManage {
         try {
             // SQL query to select the order details for the given order
             String sql = """
-             SELECT od.orderDetailID, od.soldPrice, od.quantity, 
-                    od.totalProductPrice,
-                    p.productID, p.productName, 
-                    pd.productDetailID, pd.size, pd.color,
-                    pu.unitID, pu.unitName
+             SELECT *
              FROM orderDetail od
              JOIN product p ON od.productID = p.productID
              JOIN productDetail pd ON od.productDetailID = pd.productDetailID
@@ -261,11 +337,14 @@ public class DAOOrderManage {
             while(rs.next()){
                 
                 Product product = new Product();
-                
+                product.setProductName(rs.getString("productName"));
+                product.setManufacturer(new Manufacturer(rs.getString("manufacturer")));
                 
                 ProductDetail productDetail = new ProductDetail();
+                productDetail.setBatchNo(rs.getInt("batchNo"));
                 
                 ProductUnit productUnit = new ProductUnit();
+                productUnit.setProductUnitName(rs.getString("unitName"));
                 
                 OrderDetail orderDetail = new OrderDetail();
                 orderDetail.setOrderDetailID(rs.getInt("orderDetailID"));
@@ -290,9 +369,13 @@ public class DAOOrderManage {
     
     public static void main(String[] args) {
         INSTANCE.loadDB();
-        ArrayList<Order> list = INSTANCE.getOrder(1, true, "orderID", "", 0);
-        for (Order order : list) {
-            System.out.println(order);
-        }
+//        ArrayList list = INSTANCE.getOrder(1, false, "orderDate", "", 0);
+//        for (Object object : list) {
+//            System.out.println(object);
+//        }
+        
+        Order order = new Order(1);
+        INSTANCE.insertOrderDetail(order);
+        System.out.println(order);
     }
 }

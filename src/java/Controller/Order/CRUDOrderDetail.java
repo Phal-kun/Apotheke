@@ -5,6 +5,8 @@
 
 package Controller.Order;
 
+import DAL.DAOOrderManage;
+import Model.Order.Order;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -55,7 +57,10 @@ public class CRUDOrderDetail extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+        DAOOrderManage db = DAOOrderManage.INSTANCE;
+        int orderID = Integer.parseInt(request.getParameter("orderID"));
+        
+        Order order = db.getOrderDetail(orderID);
     } 
 
     /** 

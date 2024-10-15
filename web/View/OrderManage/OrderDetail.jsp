@@ -46,7 +46,6 @@
                     <th>Total Product Price</th>
                     <th>Manufacturer</th>
                     <th>Batch No.</th>
-                    <th>Manufacture Date</th>
                 </tr>
             </thead>
             <tbody>

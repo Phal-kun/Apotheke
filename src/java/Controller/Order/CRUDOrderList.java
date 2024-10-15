@@ -6,6 +6,8 @@
 package Controller.Order;
 
 import DAL.DAOOrderManage;
+import Model.Order.Order;
+import Model.Order.Status;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -14,6 +16,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.util.ArrayList;
 
 /**
  *
@@ -61,7 +64,14 @@ public class CRUDOrderList extends HttpServlet {
         HttpSession session = request.getSession();      
         int indexNowCo = 1;
         
+        ArrayList<Order> orderList = db.getOrder(1, false, "orderDate", "", 0);
+        ArrayList<Status> statusList = db.getStatus();
         
+        request.setAttribute("orderList", orderList);
+        request.setAttribute("statusList", statusList);
+        session.setAttribute("indexNowCo", indexNowCo);
+        request.setAttribute("endPageCo", db.getTotalPages("", 0));
+        session.setAttribute("statusID", 0);
         
         request.getRequestDispatcher("/View/OrderManage/OrderList.jsp").forward(request, response);
     } 
@@ -76,9 +86,42 @@ public class CRUDOrderList extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-         
-    }
+        DAOOrderManage db = DAOOrderManage.INSTANCE;
+        HttpSession session = request.getSession(false);  
+        int indexNowCo;
+        
+        if(request.getParameter("indexCo") != null){
+            indexNowCo = Integer.parseInt(request.getParameter("indexCo"));
+        } else {
+            indexNowCo = 1;
+        }
+                
+        String keyword = request.getParameter("keyword");
+        if (request.getParameter("keywordReset") != null && request.getParameter("keywordReset").equals("true")) {
+            session.setAttribute("keyword", keyword);
+        }
+        
+        String statusIDString = request.getParameter("statusID");
+        if (statusIDString!=null&&!statusIDString.isEmpty()){
+            int statusID = Integer.parseInt(statusIDString);
+            session.setAttribute("statusID", statusID);
+        }
+        
+        
+        int endPageCo = db.getTotalPages((String)session.getAttribute("keyword"), (int)session.getAttribute("statusID"));
+        ArrayList<Order> orderList = db.getOrder(indexNowCo, true, "orderDate", (String) session.getAttribute("keyword"), (int)session.getAttribute("statusID"));
+        ArrayList<Status> statusList = db.getStatus();
+        
+        request.setAttribute("orderList", orderList);
+        request.setAttribute("indexNowCo", indexNowCo);
+        request.setAttribute("endPageCo", endPageCo);
+        request.setAttribute("statusList", statusList);
+        
+ 
 
+        request.getRequestDispatcher("/View/OrderManage/OrderList.jsp").forward(request, response);
+    }
+    
     /** 
      * Returns a short description of the servlet.
      * @return a String containing servlet description

@@ -79,29 +79,25 @@ public class loginuser extends HttpServlet {
             }else{
                 HttpSession session = request.getSession();
                 session.setAttribute("account", user);
-            if(user.isStatus()== true){
-                switch(user.getRole().getRoleID()){
-                    case 1:                       
+            if(user.isStatus() == true) {
+                switch (user.getRole().getRoleID()) {
+                    case 1:
                         request.getRequestDispatcher("View/Login_Register/customerHome.jsp").forward(request, response);
-                        break; 
+                        break;
                     case 2:
-                        
                         request.getRequestDispatcher(request.getContextPath() + "/ListProduct").forward(request, response);
                         break;
                     case 3:
-                        
-                            request.getRequestDispatcher("View/Login_Register/saleHome.jsp").forward(request, response);
+                        request.getRequestDispatcher(request.getContextPath() + "/CRUDOrderList").forward(request, response);
                         break;
                     case 4:
-                        
-                       request.getRequestDispatcher(request.getContextPath() + "/BlogManager").forward(request, response);
+                        request.getRequestDispatcher(request.getContextPath() + "/BlogManager").forward(request, response);
                         break;
                     case 5:
-                        
                         request.getRequestDispatcher(request.getContextPath() + "/CRUDUserList").forward(request, response);
                         break;
                     default:
-                        break;    
+                        break;
                 }
             
             
