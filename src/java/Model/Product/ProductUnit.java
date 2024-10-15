@@ -12,12 +12,21 @@ import java.util.logging.Logger;
  * @author ASUS
  */
 public class ProductUnit {
-    int productUnitID;
-    String productUnitName;
-
+    private int productUnitID;
+    private String productUnitName;
+    private double unitToBaseConvertRate;
     public ProductUnit() {
     }
 
+    public ProductUnit(int productUnitID, String productUnitName, double unitToBaseConvertRate) {
+        this.productUnitID = productUnitID;
+        this.productUnitName = productUnitName;
+        this.unitToBaseConvertRate = unitToBaseConvertRate;
+    }
+
+    
+    
+    
     public ProductUnit(int productUnitID, String productUnitName) {
         this.productUnitID = productUnitID;
         this.productUnitName = productUnitName;
@@ -25,6 +34,14 @@ public class ProductUnit {
     
     private static final Logger LOG = Logger.getLogger(ProductUnit.class.getName());
 
+    public double getUnitToBaseConvertRate() {
+        return unitToBaseConvertRate;
+    }
+
+    public void setUnitToBaseConvertRate(double unitToBaseConvertRate) {
+        this.unitToBaseConvertRate = unitToBaseConvertRate;
+    }
+    
     public int getProductUnitID() {
         return productUnitID;
     }
@@ -69,7 +86,9 @@ public class ProductUnit {
 
     @Override
     public String toString() {
-        return "ProductUnit{" + "productUnitID=" + productUnitID + ", productUnitName=" + productUnitName + '}';
+        return "ProductUnit{" + "productUnitID=" + productUnitID + ", productUnitName=" + productUnitName + ", unitToBaseConvertRate=" + unitToBaseConvertRate + '}';
     }
+
+    
        
 }

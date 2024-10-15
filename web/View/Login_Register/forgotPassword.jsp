@@ -36,9 +36,9 @@
             <c:if test="${showVerificationForm == '2' }"> 
                 <h1>Thiết lập mật khẩu </h1>
                 <label for="password">New Password: </label>
-                <input type="password" id="password" name="password" required value="${passcode != null ? passcode : ''}" >
+                <input type="password" id="passwordte" name="passwordte" required value="${passcode != null ? passcode : ''}" >
                 <label for="password">Confirm Password: </label>
-                <input type="confirmpassword" id="confirmPassword" name="confirmPassword" required value="${confirmcode != null ? confirmcode : ''}">
+                <input type="password" id="confirmPassword" name="confirmPassword" required value="${confirmcode != null ? confirmcode : ''}">
                 <input type="submit" value="Hoàn thành" name ="btAction">
                 <div class="error-message" style="color: red">
                     ${errorPassword}

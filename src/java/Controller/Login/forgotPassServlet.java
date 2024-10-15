@@ -24,7 +24,7 @@ import org.mindrot.jbcrypt.BCrypt;
  *
  * @author Dell
  */
-public class forgotPass extends HttpServlet {
+public class forgotPassServlet extends HttpServlet {
     private static final String EMAIL_REGEX = "^[a-zA-Z0-9._%+-]+@gmail\\.com$";
     private static String codeSent = "";
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -125,9 +125,9 @@ public class forgotPass extends HttpServlet {
             
         
         }else if(btAction.equals("Hoàn thành")){
-            String password = request.getParameter("password");
+            String password = request.getParameter("passwordte");
             String confirmPassword = request.getParameter("confirmPassword");
-            String email =  (String) request.getSession().getAttribute("mess2");
+            String email =  (String) request.getSession().getAttribute("email1");
             if(password == null || password.isEmpty()||confirmPassword ==null||confirmPassword.isEmpty()){
                 request.setAttribute("showVerificationForm", "2");
                 request.setAttribute("email", email);  
@@ -154,11 +154,15 @@ public class forgotPass extends HttpServlet {
             }else{
                 UserDao us = new UserDao();
                 try {
-                    us.updatePassword(email, password);
+                    us.updatePassword(email, hashPassword(password));
+                    System.out.println("fotgot pass");
+                    System.out.println(email);
+                     System.out.println(password);
+                      System.out.println(hashPassword(password));
                     request.setAttribute("mess", "");
                     request.getRequestDispatcher("View/Home.jsp").forward(request, response);
                 } catch (Exception ex) {
-                    Logger.getLogger(forgotPass.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(forgotPassServlet.class.getName()).log(Level.SEVERE, null, ex);
                 }
             
             

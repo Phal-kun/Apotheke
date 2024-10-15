@@ -17,6 +17,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import Model.Product.Component;
+import Model.Product.ProductDetail;
+import Model.Product.ProductUnit;
 import com.oracle.wls.shaded.org.apache.bcel.generic.AALOAD;
 
 /**
@@ -70,8 +72,8 @@ public class showProductDAO extends DBContext {
                 product.setComponent(myList);
                 
                 product.setDescription(rs.getString("description"));
-                product.setBaseUnitID(rs.getInt("baseUnitID"));
-                product.setActive(rs.getBoolean("isActive")); // Giả sử bạn có phương thức này
+//                product.setBaseUnitID(rs.getInt("baseUnitID"));
+//                product.setActive(rs.getBoolean("isActive")); // Giả sử bạn có phương thức này
 
                 products.add(product);
             }
@@ -87,5 +89,60 @@ public class showProductDAO extends DBContext {
         return products;
     }
     
+    public List<ProductUnit> myListProductUnit(int productID) throws Exception{
+        List<ProductUnit> productUnits = new ArrayList<>();
+        // Câu lệnh SQL để lấy các ProductUnit dựa trên ProductID
+        String sql = "SELECT unitID, unitName, unitToBaseConvertRate FROM productUnit WHERE productID = ?";
+
+        // Kết nối tới cơ sở dữ liệu và thực hiện truy vấn
+        try {
+                con = new DBContext().getConnection();
+                ps = con.prepareStatement(sql);
+                ps.setInt(1, productID);
+                rs = ps.executeQuery();
+                while (rs.next()) {
+                    // Tạo đối tượng ProductUnit
+                    ProductUnit productUnit = new ProductUnit();
+                    productUnit.setProductUnitID(rs.getInt("unitID"));
+                    productUnit.setProductUnitName(rs.getString("unitName"));
+                    productUnit.setUnitToBaseConvertRate(rs.getDouble("unitToBaseConvertRate"));
+
+                    // Thêm vào danh sách
+                    productUnits.add(productUnit);
+                }
+                
+            } catch (SQLException e) {
+                e.printStackTrace();
+                throw e;  // Quăng lỗi nếu có vấn đề xảy ra
+            }
+
+            // Trả về danh sách ProductUnit
+            return productUnits;
+
+    }
+     
+    public ProductDetail getProductDetailByUnitId(int unitId) throws Exception{
+        ProductDetail productDetail = null;
+    String sql = "SELECT productDetailID, baseSoldPrice, unitID " +
+                 "FROM dbo.productDetail " +
+                 "WHERE unitID = ?"; 
+    try{
+                con = new DBContext().getConnection();
+                ps = con.prepareStatement(sql);
+                ps.setInt(1, unitId);
+                rs = ps.executeQuery();
+                if (rs.next()) {
+                    // Tạo đối tượng ProductDetail và gán giá trị từ ResultSet
+                    productDetail = new ProductDetail();
+                    productDetail.setProductDetailID(rs.getInt("productDetailID"));
+                    productDetail.setPrice(rs.getInt("baseSoldPrice"));
+                }
+         } catch (SQLException e) {
+                e.printStackTrace();
+                throw e;  
+            }   
+        return productDetail;
+        
+    }
     
 }
