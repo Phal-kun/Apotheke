@@ -1,85 +1,222 @@
-@import url('https://fonts.googleapis.com/css?family=Abel');
+/* style.css */
+
+@font-face {
+    font-family: 'Abel';
+    font-style: normal;
+    font-weight: 400;
+    src: url(https://fonts.gstatic.com/s/abel/v18/MwQ5bhbm2POE2V9BOA.ttf) format('truetype');
+}
 
 body, html {
-  color: #fff;
-  font-family: 'Abel', sans-serif;
-  margin: 0;
-  padding: 0;
-  background-color: #40e0d0; /* Turquoise background */
+    color: #fff;
+    font-family: 'Abel', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: transparent;
 }
 
 body {
-  font-size: 1.2em;
+    font-size: 1.2em;
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(https://wallpapercave.com/wp/Fdh76FQ.jpg) center no-repeat fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -ms-background-size: cover;
+    background-size: cover;
+}
+
+.text-box {
+    background-color: rgba(230, 126, 34,0.8);
+    border-radius: 20px;
+    margin: 2em auto;
+    padding: 20px;
+    width: 90%;
 }
 
 h1 {
-  font-size: 2.5em;
-  text-align: center;
-  color: #2c3e50; /* Darker text for better contrast */
-  margin-top: 20px;
+    margin: 0;
+    padding: 0;
+    font-size: 2.8em;
+    color: #fff;
+    text-align: center;
+    letter-spacing: 2px;
+    word-spacing: 5px;
+    line-height: 1em;
+    font-weight: bold;
 }
 
-.toolbar {
-  display: flex;
-  justify-content: space-between;
-  padding: 20px;
-  width: 90%;
-  margin: 0 auto;
-  background-color: rgba(26, 188, 156, 0.8); /* Darker turquoise for toolbar */
-  border-radius: 10px;
+p {
+    display: block;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    font-size: 1.2em;
+    line-height: 1.2em;
 }
 
-.info-section {
-  width: 90%;
-  margin: 20px auto;
-  padding: 20px;
-  background-color: rgba(255, 255, 255, 0.8); /* Bright white with some transparency */
-  border-radius: 10px;
-  color: #2c3e50; /* Darker color for text */
-  display: grid;
-  grid-template-columns: 1fr 1fr; /* Two columns layout */
-  grid-gap: 10px;
+hr {
+    width: 70%;
+    margin: 10px auto;
 }
 
-.info-section div {
-  margin-bottom: 10px;
+.container {
+    background-color: rgba(22, 160, 133,0.7);
+    border-radius: 20px;
+    margin: auto;
+    width: 90%;
+    padding: 1em;
 }
 
-.order-details {
-  width: 90%;
-  margin: 20px auto;
-  padding: 20px;
-  background-color: rgba(255, 255, 255, 0.8); /* Consistent background */
-  border-radius: 10px;
+.approve-btn, .reject-btn, .back-btn {
+    width: 100%;
+    text-align: center;
+    margin: 20px;
 }
 
-.order-details table {
-  width: 100%;
-  border-collapse: collapse;
+.approve-btn, .reject-btn, .back-btn {
+    background-color: #e67e22;
+    border-radius: 4px;
+    color: white;
+    font-size: 1em;
+    font-weight: bold;
+    font-family: inherit;
+    padding: 10px 15px;
+    border: 1px solid;
 }
 
-.order-details th, .order-details td {
-  padding: 10px;
-  text-align: left;
-  border-bottom: 1px solid #ddd;
+.approve-btn:hover, .reject-btn:hover, .back-btn:hover {
+    background-color: #bf6516;
 }
 
-.order-details th {
-  background-color: rgba(26, 188, 156, 0.9); /* Turquoise for table header */
-  color: white;
+footer {
+    text-align: center;
+    font-size: 17px;
+    margin: 20px;
 }
 
-.order-details tr:nth-child(even) {
-  background-color: rgba(0, 0, 0, 0.05); /* Light gray for even rows */
+footer a {
+    color: #f39c12;
+    position: relative;
+    text-decoration: none;
+    font-weight: bold;
 }
 
-.order-details tr:hover {
-  background-color: rgba(26, 188, 156, 0.3); /* Light turquoise on hover */
+footer a:hover {
+    color: #f1c40f;
 }
 
-.message {
-  text-align: center;
-  font-size: 1.2em;
-  margin-top: 20px;
-  color: #f39c12;
+footer p {
+    margin: 0;
+    font-size: 17px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+th, td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #e67e22;
+    color: #fff;
+    font-weight: bold;
+}
+
+td {
+    color: #333;
+}
+
+tr:nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+tr:hover {
+    background-color: rgba(255, 255, 255, 0.7);
+}
+
+.view-btn {
+    background-color: #16a085;
+    border-radius: 4px;
+    color: white;
+    font-size: 1em;
+    font-weight: bold;
+    font-family: inherit;
+    padding: 10px 15px;
+    border: 1px solid;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.view-btn:hover {
+    background-color: #138a72;
+}
+
+.logout {
+    display: block;
+    text-align: right;
+    margin-bottom: 20px;
+}
+
+.logout button {
+    background-color: #e74c3c;
+    border-radius: 4px;
+    color: white;
+    font-size: 1em;
+    font-weight: bold;
+    font-family: inherit;
+    padding: 10px 15px;
+    border: 1px solid;
+    text-decoration: none;
+}
+
+.logout button:hover {
+    background-color: #c0392b;
+}
+
+
+@media only screen and (max-width: 768px) {
+    body{
+        background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(https://wallpapercave.com/wp/Fdh76FQ.jpg) center no-repeat fixed;
+        background-size: cover;
+    }
+
+    h1 {
+        font-size: 2em;
+    }
+
+    .approve-btn, .reject-btn, .back-btn {
+        width: 100%;
+        margin: auto;
+    }
+
+
+    table {
+        font-size: 0.9em;
+    }
+
+    th, td {
+        padding: 10px;
+    }
+
+    .view-btn {
+        font-size: 0.9em;
+        padding: 8px 12px;
+    }
+
+    .logout {
+        text-align: center;
+    }
+
+    .logout button {
+        font-size: 0.9em;
+        padding: 8px 12px;
+    }
 }

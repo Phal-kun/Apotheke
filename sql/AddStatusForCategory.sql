@@ -1,0 +1,1 @@
+ALTER TABLE category ADD status BIT DEFAULT 1;

@@ -25,6 +25,11 @@ public class Order {
     public Order() {
     }
 
+    public Order(int orderID) {
+        this.orderID = orderID;
+    }
+    
+
     public Order(int orderID, User user, Date orderDate, Date orderCompleted, ArrayList<OrderDetail> orderDetail, Status status, double totalPrice, String shipName, String shipAddress, String shipPhone, String shipNote, String rejectReason) {
         this.orderID = orderID;
         this.user = user;

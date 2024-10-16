@@ -377,6 +377,8 @@ public class DAOUserList {
         
         
         System.out.println(INSTANCE.hashPassword("admin"));
+        System.out.println(BCrypt.checkpw("admin", "$2a$12$0QN5zTK2THT.2j4lNpmyjelJwvhsuN1Y942/Q7P1r8Ttu2/jSwmnC"));
+
     }
 
 }

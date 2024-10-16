@@ -18,6 +18,10 @@ public class Manufacturer {
     public Manufacturer() {
     }
 
+    public Manufacturer(String manufacturerName) {
+        this.manufacturerName = manufacturerName;
+    }
+
     public Manufacturer(int manufacturerID, String manufacturerName) {
         this.manufacturerID = manufacturerID;
         this.manufacturerName = manufacturerName;
