@@ -25,7 +25,7 @@ import org.mindrot.jbcrypt.BCrypt;
  *
  * @author Dell
  */
-public class register extends HttpServlet {
+public class registerServlet extends HttpServlet {
     private static final String EMAIL_REGEX = "^[a-zA-Z0-9._%+-]+@gmail\\.com$";
     private static String checkCode="";
     private static String firstMail="";
@@ -157,6 +157,7 @@ public class register extends HttpServlet {
                                     setRequestAttributes(request, fullname, username, password, confirm);
                                     request.getRequestDispatcher("View/Home.jsp").forward(request, response);                       
                                 }else{
+                                    System.out.println("deo on roi");
                                     UserDao us = new UserDao();
                                     User user = us.getUserByNameUserPass(username, password, fullname);
                                     if(isUserExists(username)==false&& (isUserExis(username,password)==false) ){
@@ -164,6 +165,7 @@ public class register extends HttpServlet {
                                        role.setRoleID(1);
                                        User newuser = new User(fullname, "", username, hashPassword(password), "", true, role, "");
                                        us.saveUserByUsername(newuser);
+                                       System.out.println(newuser.toString() );
                                        response.sendRedirect("View/Home.jsp");
                                     }
                                 }
