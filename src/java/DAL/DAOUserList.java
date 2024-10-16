@@ -71,7 +71,7 @@ public class DAOUserList {
         SELECT 
             *
         FROM 
-            [User] u JOIN [role] r ON u.role = r.roleID
+            [User] u JOIN [role] r ON u.roleID = r.roleID
         WHERE
             %s
         ORDER BY
@@ -81,7 +81,7 @@ public class DAOUserList {
         """;
 
             // Set up the base WHERE clause
-            StringBuilder condition = new StringBuilder(isCustomer ? "u.role = 1" : "u.role != 1");
+            StringBuilder condition = new StringBuilder(isCustomer ? "u.roleID = 1" : "u.roleID != 1");
 
             // Add search condition
             if (keyword != null && !keyword.isEmpty()) {
@@ -146,11 +146,11 @@ public class DAOUserList {
         try {
             String countSql = """
             SELECT COUNT(*)
-            FROM [User] u JOIN [role] r ON u.role = r.roleID
+            FROM [User] u JOIN [role] r ON u.roleID = r.roleID
             WHERE %s
         """;
 
-            StringBuilder condition = new StringBuilder(isCustomer ? "u.role = 1" : "u.role != 1");
+            StringBuilder condition = new StringBuilder(isCustomer ? "u.roleID = 1" : "u.roleID != 1");
 
             if (keyword != null && !keyword.isEmpty()) {
                 condition.append(" AND (u.fullname LIKE ? OR u.username LIKE ? OR u.address LIKE ? OR u.phone LIKE ?)");

@@ -11,6 +11,9 @@
     </head>
     <body>
         <h1>User Management
+        <a href ="${pageContext.request.contextPath}/CategoryManager" >    
+                        <button>Category Manager</button>
+        <a>     
         <div>
             <a href="${pageContext.request.contextPath}/logout" class ="dsdawe">
             <button>Logout</button>

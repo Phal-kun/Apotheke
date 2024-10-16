@@ -77,5 +77,8 @@
     </table>
 
     <button class="select-btn" onclick="location.href = 'CreateCategory'">Create</button>
+    <a href="${pageContext.request.contextPath}/View/Home.jsp">
+                <button>Logout</button>
+    </a>
 </body>
 </html>

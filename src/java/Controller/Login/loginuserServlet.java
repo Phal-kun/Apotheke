@@ -72,7 +72,7 @@ public class loginuserServlet extends HttpServlet {
             
         }else{
             if(!BCrypt.checkpw(password, user.getPassword())){
-                request.setAttribute("mess", "Wrong user or pass");
+                request.setAttribute("mess", "Wrong email or password");
                 request.setAttribute("enteredUsername", username); // Lưu username đã nhập
                 request.setAttribute("enteredPassword", password); // Lưu password đã nhập
                 request.getRequestDispatcher("View/Home.jsp").forward(request, response);
