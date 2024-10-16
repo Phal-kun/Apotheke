@@ -4,6 +4,7 @@
  */
 package Model.Product;
 
+import java.util.Date;
 import java.util.Objects;
 import java.util.logging.Logger;
 
@@ -14,20 +15,26 @@ import java.util.logging.Logger;
 public class ProductDetail {
     int productDetailID;
     Product product;
-    ProductUnit productUnit;
-    int volume, stock, price;
-    int batchNo;
+    Unit unit;
+    int stock;
+    double importPrice, soldPrice;
+    Date manufactureDate, expiredDate;
+    boolean isActive;
+        int batchNo;
 
     public ProductDetail() {
     }
 
-    public ProductDetail(int productDetailID, Product product, ProductUnit productUnit, int volume, int stock, int price) {
+    public ProductDetail(int productDetailID, Product product, Unit productUnit, int stock, double importPrice, double soldPrice, Date manufactureDate, Date expiredDate, boolean isActive) {
         this.productDetailID = productDetailID;
         this.product = product;
-        this.productUnit = productUnit;
-        this.volume = volume;
+        this.unit = productUnit;
         this.stock = stock;
-        this.price = price;
+        this.importPrice = importPrice;
+        this.soldPrice = soldPrice;
+        this.manufactureDate = manufactureDate;
+        this.expiredDate = expiredDate;
+        this.isActive = isActive;
     }
 
     public ProductDetail(int productDetailID, Product product, ProductUnit productUnit, int volume, int stock, int price, int batchNo) {
@@ -62,20 +69,12 @@ public class ProductDetail {
         this.product = product;
     }
 
-    public ProductUnit getProductUnit() {
-        return productUnit;
+    public Unit getUnit() {
+        return unit;
     }
 
-    public void setProductUnit(ProductUnit productUnit) {
-        this.productUnit = productUnit;
-    }
-
-    public int getVolume() {
-        return volume;
-    }
-
-    public void setVolume(int volume) {
-        this.volume = volume;
+    public void setUnit(Unit unit) {
+        this.unit = unit;
     }
 
     public int getStock() {
@@ -84,14 +83,6 @@ public class ProductDetail {
 
     public void setStock(int stock) {
         this.stock = stock;
-    }
-
-    public int getPrice() {
-        return price;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
     }
 
     public int getBatchNo() {
@@ -107,12 +98,15 @@ public class ProductDetail {
     @Override
     public int hashCode() {
         int hash = 3;
-        hash = 11 * hash + this.productDetailID;
-        hash = 11 * hash + Objects.hashCode(this.product);
-        hash = 11 * hash + Objects.hashCode(this.productUnit);
-        hash = 11 * hash + this.volume;
-        hash = 11 * hash + this.stock;
-        hash = 11 * hash + this.price;
+        hash = 41 * hash + this.productDetailID;
+        hash = 41 * hash + Objects.hashCode(this.product);
+        hash = 41 * hash + Objects.hashCode(this.unit);
+        hash = 41 * hash + this.stock;
+        hash = 41 * hash + (int) (Double.doubleToLongBits(this.importPrice) ^ (Double.doubleToLongBits(this.importPrice) >>> 32));
+        hash = 41 * hash + (int) (Double.doubleToLongBits(this.soldPrice) ^ (Double.doubleToLongBits(this.soldPrice) >>> 32));
+        hash = 41 * hash + Objects.hashCode(this.manufactureDate);
+        hash = 41 * hash + Objects.hashCode(this.expiredDate);
+        hash = 41 * hash + (this.isActive ? 1 : 0);
         return hash;
     }
 
@@ -131,25 +125,32 @@ public class ProductDetail {
         if (this.productDetailID != other.productDetailID) {
             return false;
         }
-        if (this.volume != other.volume) {
-            return false;
-        }
         if (this.stock != other.stock) {
             return false;
         }
-        if (this.price != other.price) {
+        if (Double.doubleToLongBits(this.importPrice) != Double.doubleToLongBits(other.importPrice)) {
+            return false;
+        }
+        if (Double.doubleToLongBits(this.soldPrice) != Double.doubleToLongBits(other.soldPrice)) {
+            return false;
+        }
+        if (this.isActive != other.isActive) {
             return false;
         }
         if (!Objects.equals(this.product, other.product)) {
             return false;
         }
-        return Objects.equals(this.productUnit, other.productUnit);
+        if (!Objects.equals(this.unit, other.unit)) {
+            return false;
+        }
+        if (!Objects.equals(this.manufactureDate, other.manufactureDate)) {
+            return false;
+        }
+        return Objects.equals(this.expiredDate, other.expiredDate);
     }
 
     @Override
     public String toString() {
-        return "ProductDetail{" + "productDetailID=" + productDetailID + ", product=" + product + ", productUnit=" + productUnit + ", volume=" + volume + ", stock=" + stock + ", price=" + price + '}';
+        return "ProductDetail{" + "productDetailID=" + productDetailID + ", product=" + product + ", productUnit=" + unit + ", stock=" + stock + ", importPrice=" + importPrice + ", soldPrice=" + soldPrice + ", manufactureDate=" + manufactureDate + ", expiredDate=" + expiredDate + ", isActive=" + isActive + '}';
     }
-       
-    
 }
