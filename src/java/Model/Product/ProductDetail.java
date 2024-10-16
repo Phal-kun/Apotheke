@@ -16,6 +16,7 @@ public class ProductDetail {
     Product product;
     ProductUnit productUnit;
     int volume, stock, price;
+    int batchNo;
 
     public ProductDetail() {
     }
@@ -27,6 +28,20 @@ public class ProductDetail {
         this.volume = volume;
         this.stock = stock;
         this.price = price;
+    }
+
+    public ProductDetail(int productDetailID, Product product, ProductUnit productUnit, int volume, int stock, int price, int batchNo) {
+        this.productDetailID = productDetailID;
+        this.product = product;
+        this.productUnit = productUnit;
+        this.volume = volume;
+        this.stock = stock;
+        this.price = price;
+        this.batchNo = batchNo;
+    }
+
+    public ProductDetail(int batchNo) {
+        this.batchNo = batchNo;
     }
     
     private static final Logger LOG = Logger.getLogger(ProductDetail.class.getName());
@@ -78,6 +93,16 @@ public class ProductDetail {
     public void setPrice(int price) {
         this.price = price;
     }
+
+    public int getBatchNo() {
+        return batchNo;
+    }
+
+    public void setBatchNo(int batchNo) {
+        this.batchNo = batchNo;
+    }
+    
+    
 
     @Override
     public int hashCode() {
