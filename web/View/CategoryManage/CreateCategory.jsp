@@ -30,13 +30,19 @@
 
             <label for="parentCategoryID">Parent Category (optional):</label>
             <select id="parentCategoryID" name="parentCategoryID">
-                <option value="">None</option> <!-- No parent category option -->
+                <option value="">None</option>
                 <c:forEach var="c" items="${categories}">
                     <option value="${c.categoryID}">
                         ${c.categoryName}
                     </option>
                 </c:forEach>
             </select><br>
+
+            <label>Status:</label><br>
+            <input type="radio" id="active" name="status" value="active" checked>
+            <label for="active">Active</label><br>
+            <input type="radio" id="inactive" name="status" value="inactive">
+            <label for="inactive">Inactive</label><br><br>
 
             <button type="submit">Create Category</button>
         </form>

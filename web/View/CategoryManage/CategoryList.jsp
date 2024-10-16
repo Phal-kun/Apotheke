@@ -33,9 +33,9 @@
                 <th>Category ID</th>
                 <th>Category Name</th>
                 <th>Description</th>
+                <th>Status</th>
                 <th>Parent Category</th>
-                <th>Option</th>
-                <th>Option</th>
+                <th>Option</th>                
             </tr>
         </thead>
         <tbody>
@@ -44,6 +44,16 @@
                     <td>${category.categoryID}</td>
                     <td>${category.categoryName}</td>
                     <td>${category.description}</td>
+                    <td>
+                            <c:choose>
+                                <c:when test="${category.status}">
+                                    Active
+                                </c:when>
+                                <c:otherwise>
+                                    Inactive
+                                </c:otherwise>
+                            </c:choose>
+                        </td> <!-- Status column -->
                     <td>
                         <c:choose>
                             <c:when test="${category.parentCategory != null}">
@@ -59,13 +69,6 @@
                         <form action="EditCategory" method="GET">
                             <input type="hidden" name="categoryID" value="${category.categoryID}" />
                             <button type="submit" class="select-btn">Edit</button>
-                        </form>
-                    </td>
-                    <td>
-                        <!-- Delete Button with Form Submission -->
-                        <form action="DeleteCategory" method="POST">
-                            <input type="hidden" name="categoryID" value="${category.categoryID}" />
-                            <button type="submit" class="select-btn" onclick="return confirm('Are you sure to delete this Category?')">Delete</button>
                         </form>
                     </td>
                 </tr>
