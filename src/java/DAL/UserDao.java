@@ -36,7 +36,7 @@ public class UserDao extends DBContext{
                 user.setPassword(rs.getString("password"));
                 user.setGender(rs.getString("gender"));
                     Role role = new Role();
-                    role.setRoleID(rs.getInt("role"));
+                    role.setRoleID(rs.getInt("roleID"));
                 user.setRole(role);
                 user.setStatus(rs.getBoolean("status"));
                 user.setPhone(rs.getString("phone"));
@@ -55,7 +55,7 @@ public class UserDao extends DBContext{
        }
 
     public void saveUser(User user) {
-         String sql = "INSERT INTO [user] (fullname, username, gender, role, status, phone, address) VALUES (?, ?, ?, ?, ?, ?, ?)";
+         String sql = "INSERT INTO [user] (fullname, username, gender, roleID, status, phone, address) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try {
             con = getConnection();
             PreparedStatement ps = con.prepareStatement(sql);
@@ -84,7 +84,7 @@ public class UserDao extends DBContext{
         if (rs.next()) {
            
             Role role = new Role();
-            role.setRoleID(rs.getInt("role"));
+            role.setRoleID(rs.getInt("roleID"));
 
            
             User user = new User();
@@ -157,7 +157,7 @@ public class UserDao extends DBContext{
     }
     
     public void saveUserByUsername(User user) {
-            String sql = "INSERT INTO [user] (fullname, username, password, gender, role, status, phone, address) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO [user] (fullname, username, password, gender, roleID, status, phone, address) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
             try {
                 con = new DBContext().getConnection();
                 PreparedStatement ps = con.prepareStatement(sql);
@@ -196,8 +196,8 @@ public class UserDao extends DBContext{
         }
 
         public User getUserByUsernamePassword(String username, String password) throws SQLException, Exception {
-    String sql = "SELECT * FROM [user] WHERE username = ? AND password = ?";
-    User user = null; // Khởi tạo biến user
+        String sql = "SELECT * FROM [user] WHERE username = ? AND password = ?";
+        User user = null; // Khởi tạo biến user
 
     try {
         con = new DBContext().getConnection();
@@ -217,7 +217,7 @@ public class UserDao extends DBContext{
             user.setGender(rs.getString("gender"));
 
             Role role = new Role(); // Khởi tạo đối tượng Role
-            role.setRoleID(rs.getInt("role"));
+            role.setRoleID(rs.getInt("roleID"));
             user.setRole(role);
 
             user.setStatus(rs.getBoolean("status"));
@@ -237,20 +237,23 @@ public class UserDao extends DBContext{
     return user; // Trả về đối tượng User hoặc null nếu không tìm thấy
 }
         // update pasword
-        public void updatePassword(String email, String newPassword) throws SQLException, Exception {
+        public void updatePassword(String email,String password) throws SQLException, Exception {
             String sql = "UPDATE [user] SET password = ? WHERE username = ?";
             try {
                 con = getConnection();
                 ps = con.prepareStatement(sql);
-                ps.setString(1, newPassword);  
-                ps.setString(2, email);        
-                int rowsUpdated = ps.executeUpdate();
+                
+                ps.setString(1, password);  // Đặt mật khẩu vào tham số thứ 1
+                ps.setString(2, email);     // Đặt email (hoặc tên đăng nhập) vào tham số thứ 2
 
-                if (rowsUpdated > 0) {
-                    System.out.println("Password updated successfully!");
+                int rowsAffected = ps.executeUpdate(); // Thực thi lệnh UPDATE
+
+                if (rowsAffected > 0) {
+                    System.out.println("Password updated successfully.");
                 } else {
-                    System.out.println("User not found.");
+                    System.out.println("No user found with the given email.");
                 }
+                
             } catch (Exception e) {
                 throw e;
             } finally {

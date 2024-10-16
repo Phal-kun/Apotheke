@@ -3,22 +3,24 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
-package Controller.Login;
+package Controller.Order;
 
-import jakarta.servlet.RequestDispatcher;
+import DAL.DAOOrderManage;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.Random;
+import jakarta.servlet.http.HttpSession;
 
 /**
  *
- * @author Dell
+ * @author ASUS
  */
-public class sendCode extends HttpServlet {
+@WebServlet(name="CRUDOrderList", urlPatterns={"/CRUDOrderList"})
+public class CRUDOrderList extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -35,10 +37,10 @@ public class sendCode extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet sendCode</title>");  
+            out.println("<title>Servlet CRUDOrderList</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet sendCode at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet CRUDOrderList at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -55,20 +57,13 @@ public class sendCode extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-            processRequest(request, response);
-//        String email = request.getParameter("email");
-//        Email sendCodeVeryMail = new Email();
-//        String codeV= generateVerificationCode();
-//        if (email != null && !email.isEmpty()) {
-//            sendCodeVeryMail.sendMail("hieppdhe171309@fpt.edu.vn", "fzemcszwnyicwxad", ""+codeV+"", ""+email+"");
-//            request.getSession().setAttribute("verificationCode", codeV);
-//            
-//            request.getRequestDispatcher("View/Home.jsp").forward(request, response);
-//            response.getWriter().write("Code sent");
-//        } else {
-//            response.getWriter().write("Email is required");
-//        }
+        DAOOrderManage db = DAOOrderManage.INSTANCE;
+        HttpSession session = request.getSession();      
+        int indexNowCo = 1;
         
+        
+        
+        request.getRequestDispatcher("/View/OrderManage/OrderList.jsp").forward(request, response);
     } 
 
     /** 
@@ -81,7 +76,7 @@ public class sendCode extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+         
     }
 
     /** 
@@ -92,10 +87,5 @@ public class sendCode extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-    public static String generateVerificationCode() {
-        Random random = new Random();
-        // Sinh số từ 100000 đến 999999
-        int code = random.nextInt(899999) + 100000;
-        return String.valueOf(code);
-    }
+
 }

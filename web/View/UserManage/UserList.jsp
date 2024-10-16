@@ -4,7 +4,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>User Management</title>
-        <link rel="stylesheet" href="/Apotheke/View/UserManage/newcss.css">
+        <link rel="stylesheet" href="/Apotheke/View/UserManage/userlist.css">
         <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
         <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
