@@ -25,7 +25,7 @@
                 <div class="detail-row"><span>Order Date:</span> ${order.orderDate}</div>
                 <div class="detail-row"><span>Order Completed:</span> ${order.orderCompleted}</div>
                 <div class="detail-row"><span>Total Price:</span> $${order.totalPrice}</div>
-                <div class="detail-row"><span>Order Status:</span> ${order.status}</div>
+                <div class="detail-row"><span>Order Status:</span> ${order.status.statusName}</div>
                 <div class="detail-row"><span>Reject Reason:</span> ${order.rejectReason != null ? order.rejectReason : 'N/A'}</div>
                 <br/><br/>
 
