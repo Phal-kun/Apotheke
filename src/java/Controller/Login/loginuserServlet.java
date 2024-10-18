@@ -21,7 +21,7 @@ import org.mindrot.jbcrypt.BCrypt;
  *
  * @author Dell
  */
-public class loginuser extends HttpServlet {
+public class loginuserServlet extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.

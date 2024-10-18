@@ -17,7 +17,7 @@ import jakarta.servlet.http.HttpSession;
  *
  * @author ASUS
  */
-public class logout extends HttpServlet {
+public class logoutServlet extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.

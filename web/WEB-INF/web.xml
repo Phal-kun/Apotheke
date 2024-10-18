@@ -61,22 +61,21 @@
         <servlet-class>Controller.Product.ListProductServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>loginGoogle</servlet-name>
-        <servlet-class>Controller.Login.loginGoogle</servlet-class>
+        <servlet-name>loginGoogleServlet</servlet-name>
+        <servlet-class>Controller.Login.loginGoogleServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>loginuser</servlet-name>
-        <servlet-class>Controller.Login.loginuser</servlet-class>
+        <servlet-name>loginuserServlet</servlet-name>
+        <servlet-class>Controller.Login.loginuserServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>register</servlet-name>
-        <servlet-class>Controller.Login.register</servlet-class>
+        <servlet-name>registerServlet</servlet-name>
+        <servlet-class>Controller.Login.registerServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>logout</servlet-name>
-        <servlet-class>Controller.Login.logout</servlet-class>
+        <servlet-name>logoutServlet</servlet-name>
+        <servlet-class>Controller.Login.logoutServlet</servlet-class>
     </servlet>
-
     <servlet>
         <servlet-name>CategoryServlet</servlet-name>
         <servlet-class>Controller.Category.CategoryServlet</servlet-class>
@@ -92,23 +91,23 @@
     <servlet>
         <servlet-name>CreateCategoryServlet</servlet-name>
         <servlet-class>Controller.Category.CreateCategoryServlet</servlet-class>
-</servlet>
-<servlet>
-        <servlet-name>sendCode</servlet-name>
-        <servlet-class>Controller.Login.sendCode</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>forgotPass</servlet-name>
-        <servlet-class>Controller.Login.forgotPass</servlet-class>
-        
+        <servlet-name>sendCodeServlet</servlet-name>
+        <servlet-class>Controller.Login.sendCodeServlet</servlet-class>
     </servlet>
-<servlet>
+    <servlet>
+        <servlet-name>forgotPassServlet</servlet-name>
+        <servlet-class>Controller.Login.forgotPassServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>ImportProductServlet</servlet-name>
         <servlet-class>Controller.Product.ImportProductServlet</servlet-class>
-
-
     </servlet>
-
+    <servlet>
+        <servlet-name>ShowProductHomeServerlet</servlet-name>
+        <servlet-class>Controller.Product.forCustomer.ShowProductHomeServerlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>CRUDUserList</servlet-name>
         <url-pattern>/CRUDUserList</url-pattern>
@@ -170,22 +169,21 @@
         <url-pattern>/ListProduct</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>loginGoogle</servlet-name>
+        <servlet-name>loginGoogleServlet</servlet-name>
         <url-pattern>/loginGoogle</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>loginuser</servlet-name>
+        <servlet-name>loginuserServlet</servlet-name>
         <url-pattern>/loginuser</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>register</servlet-name>
+        <servlet-name>registerServlet</servlet-name>
         <url-pattern>/register</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>logout</servlet-name>
+        <servlet-name>logoutServlet</servlet-name>
         <url-pattern>/logout</url-pattern>
     </servlet-mapping>
-
     <servlet-mapping>
         <servlet-name>CategoryServlet</servlet-name>
         <url-pattern>/CategoryManager</url-pattern>
@@ -203,17 +201,19 @@
         <url-pattern>/CreateCategory</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>sendCode</servlet-name>
-            <url-pattern>/sendCode</url-pattern>
+        <servlet-name>sendCodeServlet</servlet-name>
+        <url-pattern>/sendCode</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>forgotPass</servlet-name>
+        <servlet-name>forgotPassServlet</servlet-name>
         <url-pattern>/forgotPass</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ImportProductServlet</servlet-name>
         <url-pattern>/ImportProduct</url-pattern>
-
     </servlet-mapping>
-
+    <servlet-mapping>
+        <servlet-name>ShowProductHomeServerlet</servlet-name>
+        <url-pattern>/ShowProductHomeServerlet</url-pattern>
+    </servlet-mapping>
 </web-app>

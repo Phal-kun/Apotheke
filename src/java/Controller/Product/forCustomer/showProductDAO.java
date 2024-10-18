@@ -15,6 +15,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import Model.Product.Component;
+import Model.Product.ProductDetail;
+import Model.Product.ProductUnit;
 import com.oracle.wls.shaded.org.apache.bcel.generic.AALOAD;
 
 /**
@@ -66,6 +68,9 @@ public class showProductDAO extends DBContext {
                 product.setComponent(myList);
                 
                 product.setDescription(rs.getString("description"));
+//                product.setBaseUnitID(rs.getInt("baseUnitID"));
+//                product.setActive(rs.getBoolean("isActive")); // Giả sử bạn có phương thức này
+
 
                 products.add(product);
             }
@@ -127,7 +132,7 @@ public class showProductDAO extends DBContext {
                     // Tạo đối tượng ProductDetail và gán giá trị từ ResultSet
                     productDetail = new ProductDetail();
                     productDetail.setProductDetailID(rs.getInt("productDetailID"));
-                    productDetail.setSoldPrice(rs.getInt("baseSoldPrice"));
+                    productDetail.setPrice(rs.getInt("baseSoldPrice"));
                 }
          } catch (SQLException e) {
                 e.printStackTrace();

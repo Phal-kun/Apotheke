@@ -22,7 +22,7 @@ import java.util.logging.Logger;
  *
  * @author Dell
  */
-public class loginGoogle extends HttpServlet {
+public class loginGoogleServlet extends HttpServlet {
    private static final long serialVersionUID = 1L;
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -93,7 +93,7 @@ public class loginGoogle extends HttpServlet {
                             } 
                 
              } catch (Exception ex) {
-                 Logger.getLogger(loginGoogle.class.getName()).log(Level.SEVERE, null, ex);
+                 Logger.getLogger(loginGoogleServlet.class.getName()).log(Level.SEVERE, null, ex);
              }
         }
 

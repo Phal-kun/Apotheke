@@ -5,13 +5,14 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/CSS/login/loginform.css">
-        
+        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/CSS/login/showproduct.css"> 
     </head>
     <script src="Login_Register/oauthConfig.js"></script>
     
@@ -44,7 +45,7 @@
                 <span class="forgot-password">
                    <!-- register -->
                     <a onclick="openForm3()" class="link2">Register</a>                
-                    <a href="Login_Register/forgotPassword.jsp" class="link1">Forgot Password?</a>
+                    <a href="${pageContext.request.contextPath}/View/Login_Register/forgotPassword.jsp" class="link1">Forgot Password?</a>
                     
                 </span>
                 <button type="submit" class ="submitds" >Login Now </button><br>
@@ -162,13 +163,41 @@
 
 
         </div>
-<!--        <div> $verificationCode </div>  -->
+        <!--        <div> $verificationCode </div>  -->
     
 
-        <!-- comment -->
+        <!-- show list product  -->
+        
+       
+          <h1>Danh sách sản phẩm</h1>
+            <div class="product-grid">
+                <c:forEach var="product" items="${products}" varStatus="status">
+                    <div class="product-card" style="display: ${status.index < 12 ? 'block' : 'none'};">
+                        <img src="${product.imageURL}" alt="${product.productName}">
+                        <h3>${product.productName}</h3>
+                        <p>Giá: ${product.baseSoldPrice} VNĐ</p>
+                        <a href="addToCart?id=${product.productID}" class="btn">Thêm vào giỏ hàng</a>
+                    </div>
+                </c:forEach>
+            </div>
+
+            <div style="text-align: center; margin-top: 20px;">
+                <button id="loadMore" onclick="showMoreProducts()">Xem thêm</button>
+            </div>
+
+        
         
 
-
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
 
     </body>
     
@@ -224,7 +253,24 @@
             }
 
         
+        // phan trang 
+        let currentProducts = 12; // Số lượng sản phẩm hiện tại hiển thị
+        const productsPerPage = 12; // Tổng sản phẩm trên 1 trang
 
+        function showMoreProducts() {
+            currentProducts += 12; // Thêm 12 sản phẩm khi nhấn "Xem thêm"
+            const allProducts = document.querySelectorAll('.product-card');
+            allProducts.forEach((product, index) => {
+                if (index < currentProducts) {
+                    product.style.display = 'block'; // Hiện sản phẩm
+                }
+            });
+
+            // Ẩn nút "Xem thêm" nếu không còn sản phẩm nào để hiển thị
+            if (currentProducts >= allProducts.length) {
+                document.getElementById('loadMore').style.display = 'none';
+            }
+        }
             
         
           

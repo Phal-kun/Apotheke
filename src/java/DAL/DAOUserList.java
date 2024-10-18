@@ -71,7 +71,7 @@ public class DAOUserList {
         SELECT 
             *
         FROM 
-            [User] u JOIN [role] r ON u.role = r.roleID
+            [User] u JOIN [role] r ON u.roleID = r.roleID
         WHERE
             %s
         ORDER BY
@@ -81,7 +81,7 @@ public class DAOUserList {
         """;
 
             // Set up the base WHERE clause
-            StringBuilder condition = new StringBuilder(isCustomer ? "u.role = 1" : "u.role != 1");
+            StringBuilder condition = new StringBuilder(isCustomer ? "u.roleID = 1" : "u.roleID != 1");
 
             // Add search condition
             if (keyword != null && !keyword.isEmpty()) {
@@ -99,11 +99,11 @@ public class DAOUserList {
                         case "female" ->
                             filterCondition.append(" OR u.gender = 'female'");
                         case "warehouse" ->
-                            filterCondition.append(" OR u.role = 2");
+                            filterCondition.append(" OR u.roleID = 2");
                         case "sale" ->
-                            filterCondition.append(" OR u.role = 3");
+                            filterCondition.append(" OR u.roleID = 3");
                         case "marketing" ->
-                            filterCondition.append(" OR u.role = 4");
+                            filterCondition.append(" OR u.roleID = 4");
                         case "active" ->
                             filterCondition.append(" OR u.status = 1");
                         case "inactive" ->
@@ -370,10 +370,12 @@ public class DAOUserList {
     }
 
     public static void main(String[] args) {
-//        ArrayList userList = INSTANCE.getUser(1, true, "userID", true, "", null);
-//        for (Object object : userList) {
-//            System.out.println(object);
-//        }
+        ArrayList userList = INSTANCE.getUser(1, true, "userID", true, "", null);
+        for (Object object : userList) {
+            System.out.println(object);
+        }
+
+        
         
         
         System.out.println(INSTANCE.hashPassword("admin"));
