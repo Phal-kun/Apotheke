@@ -37,7 +37,7 @@ public class CategoryDAO {
             ps = connection.prepareStatement(sql);
             ps.setString(1, category.getCategoryName());
             ps.setString(2, category.getDescription());
-            
+
             if (category.getParentCategory() != null) {
                 ps.setInt(3, category.getParentCategory().getCategoryID());
             } else {
@@ -108,6 +108,28 @@ public class CategoryDAO {
             rs.close();
         } catch (SQLException e) {
             LOG.log(Level.SEVERE, "Error getting all categories", e);
+        }
+        return categories;
+    }
+
+    public List<Category> getAllCategoriesSorted(String sortOrder) {
+        List<Category> categories = new ArrayList<>();
+        String query = "SELECT * FROM Category ORDER BY CategoryName " + (sortOrder.equals("DESC") ? "DESC" : "ASC");
+
+        try (PreparedStatement ps = connection.prepareStatement(query); ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                Category parentCategory = getCategoryByID(rs.getInt("ParentCategoryID"));
+                Category category = new Category(
+                        rs.getInt("CategoryID"),
+                        parentCategory,
+                        rs.getString("CategoryName"),
+                        rs.getString("Description"),
+                        rs.getBoolean("Status")
+                );
+                categories.add(category);
+            }
+        } catch (SQLException e) {
+            LOG.log(Level.SEVERE, "Error getting categories with sorting", e);
         }
         return categories;
     }
