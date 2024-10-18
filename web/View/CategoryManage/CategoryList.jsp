@@ -15,6 +15,14 @@
     </head>
     <body>
         <h1>Category List</h1>
+        <form method="GET" action="CategoryManager">
+            <!-- Sort Order Dropdown -->
+            <label for="sortOrder">Sort by:</label>
+            <select name="sortOrder" id="sortOrder" onchange="this.form.submit()">
+                <option value="ASC" ${sortOrder == 'ASC' ? 'selected' : ''}>A-Z</option>
+                <option value="DESC" ${sortOrder == 'DESC' ? 'selected' : ''}>Z-A</option>
+            </select>
+        </form>
 
         <c:if test="${empty categoryList}">
         <tr>
@@ -33,17 +41,27 @@
                 <th>Category ID</th>
                 <th>Category Name</th>
                 <th>Description</th>
+                <th>Status</th>
                 <th>Parent Category</th>
-                <th>Option</th>
-                <th>Option</th>
+                <th>Option</th>                
             </tr>
         </thead>
         <tbody>
-            <c:forEach var="category" items="${categoryList}">
+            <c:forEach var="category" items="${categories}">
                 <tr>
                     <td>${category.categoryID}</td>
                     <td>${category.categoryName}</td>
                     <td>${category.description}</td>
+                    <td>
+                        <c:choose>
+                            <c:when test="${category.status}">
+                                Active
+                            </c:when>
+                            <c:otherwise>
+                                Inactive
+                            </c:otherwise>
+                        </c:choose>
+                    </td> <!-- Status column -->
                     <td>
                         <c:choose>
                             <c:when test="${category.parentCategory != null}">
@@ -59,13 +77,6 @@
                         <form action="EditCategory" method="GET">
                             <input type="hidden" name="categoryID" value="${category.categoryID}" />
                             <button type="submit" class="select-btn">Edit</button>
-                        </form>
-                    </td>
-                    <td>
-                        <!-- Delete Button with Form Submission -->
-                        <form action="DeleteCategory" method="POST">
-                            <input type="hidden" name="categoryID" value="${category.categoryID}" />
-                            <button type="submit" class="select-btn" onclick="return confirm('Are you sure to delete this Category?')">Delete</button>
                         </form>
                     </td>
                 </tr>

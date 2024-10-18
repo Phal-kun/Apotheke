@@ -29,9 +29,9 @@ public class CategoryDAO {
         return instance;
     }
 
-// Method to insert a new category into the database
+    // Method to insert a new category into the database
     public boolean insertCategory(Category category) {
-        String sql = "INSERT INTO Category (CategoryName, Description, ParentCategoryID) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO Category (CategoryName, Description, ParentCategoryID, Status) VALUES (?, ?, ?, ?)";
         PreparedStatement ps = null;
         try {
             ps = connection.prepareStatement(sql);
@@ -43,6 +43,8 @@ public class CategoryDAO {
             } else {
                 ps.setNull(3, java.sql.Types.INTEGER);
             }
+
+            ps.setBoolean(4, category.isStatus()); // Assuming Category has a status field as boolean
 
             int rowsAffected = ps.executeUpdate();
             return rowsAffected > 0;
@@ -58,8 +60,7 @@ public class CategoryDAO {
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(CategoryDAO.class
-            .getName());
+    private static final Logger LOG = Logger.getLogger(CategoryDAO.class.getName());
 
     // Get a single Category by its ID
     public Category getCategoryByID(int categoryID) {
@@ -70,14 +71,15 @@ public class CategoryDAO {
             if (rs.next()) {
                 Category parentCategory = null;
                 int parentID = rs.getInt("ParentCategoryID");
-                if (rs.wasNull()) {
+                if (!rs.wasNull()) {
                     parentCategory = getCategoryByID(parentID);
                 }
                 return new Category(
                         rs.getInt("CategoryID"),
                         parentCategory,
                         rs.getString("CategoryName"),
-                        rs.getString("Description")
+                        rs.getString("Description"),
+                        rs.getBoolean("Status") // Assuming status is a boolean
                 );
             }
             rs.close();
@@ -98,7 +100,8 @@ public class CategoryDAO {
                         rs.getInt("CategoryID"),
                         parentCategory,
                         rs.getString("CategoryName"),
-                        rs.getString("Description")
+                        rs.getString("Description"),
+                        rs.getBoolean("Status") // Assuming status is a boolean
                 );
                 categories.add(category);
             }
@@ -109,9 +112,31 @@ public class CategoryDAO {
         return categories;
     }
 
-    // Add a new category
+    public List<Category> getAllCategoriesSorted(String sortOrder) {
+        List<Category> categories = new ArrayList<>();
+        String query = "SELECT * FROM Category ORDER BY CategoryName " + (sortOrder.equals("DESC") ? "DESC" : "ASC");
+
+        try (PreparedStatement ps = connection.prepareStatement(query); ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                Category parentCategory = getCategoryByID(rs.getInt("ParentCategoryID"));
+                Category category = new Category(
+                        rs.getInt("CategoryID"),
+                        parentCategory,
+                        rs.getString("CategoryName"),
+                        rs.getString("Description"),
+                        rs.getBoolean("Status")
+                );
+                categories.add(category);
+            }
+        } catch (SQLException e) {
+            LOG.log(Level.SEVERE, "Error getting categories with sorting", e);
+        }
+        return categories;
+    }
+
+    // Add a new category (alternative method to insertCategory)
     public boolean addCategory(Category category) {
-        String query = "INSERT INTO Category (CategoryName, Description, ParentCategoryID) VALUES (?, ?, ?)";
+        String query = "INSERT INTO Category (CategoryName, Description, ParentCategoryID, Status) VALUES (?, ?, ?, ?)";
         try (PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setString(1, category.getCategoryName());
             ps.setString(2, category.getDescription());
@@ -120,6 +145,7 @@ public class CategoryDAO {
             } else {
                 ps.setNull(3, java.sql.Types.INTEGER);
             }
+            ps.setBoolean(4, category.isStatus());
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             LOG.log(Level.SEVERE, "Error adding category", e);
@@ -129,7 +155,7 @@ public class CategoryDAO {
 
     // Update an existing category
     public boolean updateCategory(Category category) {
-        String query = "UPDATE Category SET CategoryName = ?, Description = ?, ParentCategoryID = ? WHERE CategoryID = ?";
+        String query = "UPDATE Category SET CategoryName = ?, Description = ?, ParentCategoryID = ?, Status = ? WHERE CategoryID = ?";
         try (PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setString(1, category.getCategoryName());
             ps.setString(2, category.getDescription());
@@ -138,7 +164,8 @@ public class CategoryDAO {
             } else {
                 ps.setNull(3, java.sql.Types.INTEGER);
             }
-            ps.setInt(4, category.getCategoryID());
+            ps.setBoolean(4, category.isStatus());
+            ps.setInt(5, category.getCategoryID());
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             LOG.log(Level.SEVERE, "Error updating category", e);
@@ -146,6 +173,7 @@ public class CategoryDAO {
         return false;
     }
 
+    // Delete a category
     public boolean deleteCategory(int categoryID) {
         String sql = "DELETE FROM Category WHERE CategoryID = ?";
         PreparedStatement ps = null;
@@ -154,7 +182,7 @@ public class CategoryDAO {
             ps = connection.prepareStatement(sql);
             ps.setInt(1, categoryID);
             int rowsAffected = ps.executeUpdate();
-            return rowsAffected > 0; // Return true if at least one row was deleted
+            return rowsAffected > 0;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
@@ -168,6 +196,6 @@ public class CategoryDAO {
     }
 
     public static void main(String[] args) {
-        System.out.println(CategoryDAO.instance.getAllCategories());
+        System.out.println(CategoryDAO.getInstance().getAllCategories());
     }
 }
