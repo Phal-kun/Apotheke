@@ -1,0 +1,140 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Oct 18, 2024, 8:11:14 PM
+    Author     : Dell
+*/
+
+.cart-container {
+    width: 100%;
+    max-width: 600px;
+    margin: auto;
+    background-color: #f8f8f8;
+    padding: 10px;
+    border-radius: 8px;
+    font-family: Arial, sans-serif;
+}
+
+.cart-header {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    font-weight: bold;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.cart-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.cart-item img {
+    width: 60px;
+    margin-right: 10px;
+}
+
+.item-info {
+    flex-grow: 1;
+}
+
+.item-name {
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.item-price {
+    color: blue;
+    font-weight: bold;
+}
+
+.old-price {
+    text-decoration: line-through;
+    color: #999;
+    margin-right: 5px
+}
+
+.item-quantity {
+    display: flex;
+    align-items: center;
+    border: 1px solid #d9d9d9;
+    border-radius: 50px; /* Làm bo tròn */
+    overflow: hidden; /* Để bo góc */
+    width: 140px;
+    height: 40px;
+    justify-content: space-between;
+}
+
+.item-quantity button {
+    width: 40px;
+    height: 40px;
+    border: none;
+    background-color: transparent;
+    font-size: 20px;
+    color: #555;
+    cursor: pointer;
+    outline: none;
+}
+
+.item-quantity button:active {
+    background-color: #f0f0f0; /* Hiệu ứng khi nhấn */
+}
+
+.item-quantity input {
+    width: 40px;
+    text-align: center;
+    border: none;
+    font-size: 18px;
+    outline: none;
+    background-color: #fff;
+}
+
+.item-quantity input[type="text"] {
+    -moz-appearance: textfield; /* Loại bỏ mũi tên lên xuống trên Firefox */
+}
+
+.item-quantity input::-webkit-outer-spin-button,
+.item-quantity input::-webkit-inner-spin-button {
+    -webkit-appearance: none; /* Loại bỏ mũi tên lên xuống trên Chrome */
+}
+
+
+.item-unit select {
+    width: 120px;
+    height: 40px;
+    border: 1px solid #d9d9d9;
+    border-radius: 50px; /* Bo tròn các cạnh */
+    padding: 0 16px;
+    font-size: 16px;
+    background-color: #fff;
+    appearance: none; /* Loại bỏ giao diện mặc định */
+    -webkit-appearance: none; /* Loại bỏ giao diện mặc định trên Chrome/Safari */
+    -moz-appearance: none; /* Loại bỏ giao diện mặc định trên Firefox */
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 4 5"><path fill="black" d="M2 0L0 2h4z"/></svg>'); 
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 10px;
+    cursor: pointer;
+}
+
+.item-unit {
+    display: inline-block;
+    position: relative;
+    width: 120px;
+}
+
+.item-unit::after {
+    content: '';
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+

@@ -1,0 +1,43 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Oct 18, 2024, 12:23:37 PM
+    Author     : Dell
+*/
+
+.cart-icon {
+            position: relative;
+            display: inline-block;
+            font-size: 24px;
+            color: white;
+            background-color: #0063f7; /* Màu nền */
+            padding: 10px;
+            border-radius: 20px;
+        }
+
+        .cart-icon .fa-shopping-cart {
+            color: white;
+        }
+
+        .cart-icon .cart-count {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background-color: orange;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 12px;
+        }
+
+        .cart-label {
+            margin-left: 10px;
+            color: white;
+            
+        }
+        .gio-hang{
+          font-family: Arial;
+          font-size: 5px;
+        }

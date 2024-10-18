@@ -4,8 +4,10 @@
  */
 package Controller.Product.forCustomer;
 
+import Model.Product.Component;
 import Model.Product.Product;
 import Model.Product.ProductUnit;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,13 +24,27 @@ public class Main {
             List<Product> products = productDAO.list();
             List<ProductUnit> productUnits = productDAO.myListProductUnit(1);
             // Kiểm tra nếu danh sách không rỗng, thì in ra thông tin sản phẩm
+          ArrayList<Component> allComponents = new ArrayList<>();
             if (products != null && !products.isEmpty()) {
                 System.out.println("Danh sách sản phẩm:");
                 for (Product product : products) {
-                    System.out.println(product.toString());
+                     ArrayList<Component> components = product.getComponent();
+                    if (components != null && !components.isEmpty()) {
+                System.out.println("Component đã được tìm thấy cho sản phẩm: " + product.getProductName());
+                // Thêm tất cả các components của sản phẩm vào danh sách allComponents
+                allComponents.addAll(components);
+    } else {
+        System.out.println("Không có component cho sản phẩm: " + product.getProductName());
+    }
                 }
             } else {
                 System.out.println("Không có sản phẩm nào trong cơ sở dữ liệu.");
+            }
+            
+            for (Component component : allComponents) {
+                System.out.println("Component Name: " + component.getComponentName());
+                System.out.println("Measure Unit: " + component.getComponentMeasureUnit());
+                System.out.println("Quantity: " + component.getQuantity());
             }
 //            if (productUnits != null && !productUnits.isEmpty()) {
 //                System.out.println("Danh sách các base unit ");

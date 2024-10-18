@@ -6,6 +6,8 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%--<jsp:forward page="ShowProductHomeServlet" />--%>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -13,6 +15,10 @@
         <title>JSP Page</title>
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/CSS/login/loginform.css">
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/CSS/login/showproduct.css"> 
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"> <!-- Import Font Awesome -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/CSS/login/shoppingcart.css"> 
+        
     </head>
     <script src="Login_Register/oauthConfig.js"></script>
     
@@ -164,22 +170,71 @@
 
         </div>
         <!--        <div> $verificationCode </div>  -->
-    
-
+        <form action="${pageContext.request.contextPath}/showOrderDetailServelet" method="get">
+            <div class="cart-icon">
+                <a href="${pageContext.request.contextPath}/showOrderDetailServelet">
+                    <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count"> 
+                        ${sessionScope.cartCount != null ? sessionScope.cartCount : 0}
+                        </span> 
+                    <span class="cart-label" id="gio-hang">Giỏ hàng</span>
+                </a>
+<!--                <span class="cart-count"> 
+                    {sessionScope.cartCount != null ? sessionScope.cartCount : 0}
+                </span> 
+                <span class="cart-label" id="gio-hang">Giỏ hàng</span>-->
+            </div>
+        </form>
+        
+        
+            
+            
         <!-- show list product  -->
         
        
-          <h1>Danh sách sản phẩm</h1>
-            <div class="product-grid">
-                <c:forEach var="product" items="${products}" varStatus="status">
-                    <div class="product-card" style="display: ${status.index < 12 ? 'block' : 'none'};">
-                        <img src="${product.imageURL}" alt="${product.productName}">
-                        <h3>${product.productName}</h3>
-                        <p>Giá: ${product.baseSoldPrice} VNĐ</p>
-                        <a href="addToCart?id=${product.productID}" class="btn">Thêm vào giỏ hàng</a>
-                    </div>
+          <c:if test="${not empty productList}">
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Product ID</th>
+                    <th>Product Name</th>
+                    <th>Category</th>
+                    <th>Origin</th>
+                    <th>Manufacturer</th>
+                    <th>Description</th>
+                    <th>Components</th>
+                     <th>Add to Cart</th>
+                </tr>
+            </thead>
+            <tbody>
+                <c:forEach var="product" items="${productList}">
+                    <tr>
+                        <td>${product.productID}</td>
+                        <td>${product.productName}</td>
+                        <td>${product.category.categoryName}</td>
+                        <td>${product.origin.originName}</td>
+                        <td>${product.manufacturer.manufacturerName}</td>
+                        <td>${product.description}</td>
+                        <td>
+                            <c:forEach var="component" items="${product.component}">
+                                ${component.componentMeasureUnit} <br/>
+                            </c:forEach>
+                        </td>
+                        <td>
+                            <form action="addToCartServelet" method ="get">
+                                <input type="hidden" name="productID" value="${product.productID}" />
+                                <button class="add-to-cart-btn" data-productid="${product.productID}">Add to Cart</button>
+                            </form>
+                        </td>
+                    </tr>
                 </c:forEach>
-            </div>
+            </tbody>
+        </table>
+    </c:if>
+
+    <c:if test="${empty productList}">
+        <p>No products found.</p>
+    </c:if>
 
             <div style="text-align: center; margin-top: 20px;">
                 <button id="loadMore" onclick="showMoreProducts()">Xem thêm</button>

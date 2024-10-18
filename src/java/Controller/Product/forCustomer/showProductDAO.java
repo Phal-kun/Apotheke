@@ -121,9 +121,33 @@ public class showProductDAO extends DBContext {
             return productUnits;
 
     }
-     
+    // productUnit by productId
+    public ProductUnit getProductUnitByProductId(int productId) throws Exception {
+        ProductUnit productUnit = new ProductUnit();
+        String sql =    "SELECT productID, unitName, unitToBaseConvertRate"+
+                        " FROM productUnit"+
+                        " WHERE productID = ?";
+        try{
+                con = new DBContext().getConnection();
+                ps = con.prepareStatement(sql);
+                ps.setInt(1, productId);
+                rs = ps.executeQuery();
+                if (rs.next()) {
+                    // Tạo đối tượng ProductDetail và gán giá trị từ ResultSet
+                    productUnit.setProductUnitID(rs.getInt("productID"));
+                    productUnit.setProductUnitName(rs.getString("unitName"));
+                    productUnit.setUnitToBaseConvertRate(rs.getDouble("unitToBaseConvertRate"));
+                }
+         } catch (SQLException e) {
+                e.printStackTrace();
+                throw e;  
+            }   
+        return productUnit;
+    
+    }
+        
     public ProductDetail getProductDetailByUnitId(int unitId) throws Exception{
-        ProductDetail productDetail = null;
+    ProductDetail productDetail = null;
     String sql = "SELECT productDetailID, baseSoldPrice, unitID " +
                  "FROM dbo.productDetail " +
                  "WHERE unitID = ?"; 
@@ -137,6 +161,16 @@ public class showProductDAO extends DBContext {
                     productDetail = new ProductDetail();
                     productDetail.setProductDetailID(rs.getInt("productDetailID"));
                     productDetail.setPrice(rs.getInt("baseSoldPrice"));
+                    Product product = null;
+                    productDetail.setProduct(product);
+                    ProductUnit productUnit = new ProductUnit();
+                    productUnit.setProductUnitID(rs.getInt("unitID"));
+                    productUnit.setProductUnitName("");
+                    productUnit.setUnitToBaseConvertRate(0);
+                    productDetail.setProductUnit(productUnit);
+                    productDetail.setVolume(0);
+                    productDetail.setStock(0);
+                    productDetail.setBatchNo(0);              
                 }
          } catch (SQLException e) {
                 e.printStackTrace();
@@ -145,5 +179,61 @@ public class showProductDAO extends DBContext {
         return productDetail;
         
     }
+    // get product by productId
+    public Product getProductsByProductId(int productId) throws Exception {
+        Product product = new Product();
+        String sql = "SELECT *" +
+                     "FROM dbo.product " +
+                     "WHERE productID = ?"; // Giả định có cột productID trong bảng
+        try {
+            con = new DBContext().getConnection();
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, productId);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                // Tạo đối tượng Product và gán giá trị từ ResultSet
+                product.setProductID(rs.getInt("productID"));
+                product.setProductName(rs.getString("productName"));
+
+                // Lấy thông tin Category
+                Category category = new Category();
+                category.setCategoryID(rs.getInt("categoryID"));
+                 category.setCategoryName("");
+                product.setCategory(category);
+
+                // Lấy thông tin Origin
+                Origin origin = new Origin();
+                origin.setOriginID(rs.getInt("originID"));
+                origin.setOriginName("");
+                product.setOrigin(origin);
+                
+                // manufactures
+                Manufacturer manu = new Manufacturer();
+                manu.setManufacturerName(rs.getString("manufacturer"));
+                product.setManufacturer(manu);
+                
+                // Component list Component 
+                Component com = new Component();
+                com.setComponentMeasureUnit(rs.getString("componentDescription"));
+                ArrayList<Component> myList = new ArrayList<>();
+                myList.add(com);
+                product.setComponent(myList);
+                
+                product.setDescription(rs.getString("description"));
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;  
+        } finally {
+            // Đảm bảo đóng các tài nguyên
+            if (rs != null) rs.close();
+            if (ps != null) ps.close();
+            if (con != null) con.close();
+        }
+        return product;
+    }
+    
     
 }

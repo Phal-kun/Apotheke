@@ -21,7 +21,7 @@ public class ProductDAO {
     private Connection con;
     private String status = "OK";
 
-    private ProductDAO() {
+    public ProductDAO() {
         if (INSTANCE == null) {
             con = new DBContext().connect;
         } else {
