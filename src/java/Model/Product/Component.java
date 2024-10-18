@@ -19,16 +19,8 @@ public class Component {
 
     public Component() {
     }
-    //component without quantity for component list
-    public Component(int componentID, String componentName, String componentMeasureUnit) {
-        this.componentID = componentID;
-        this.componentName = componentName;
-        this.componentMeasureUnit = componentMeasureUnit;
-    }
-    //component with quantity for product component
-
-    public Component(int componentID, String componentName, String componentMeasureUnit, int quantity) {
-        this.componentID = componentID;
+ 
+    public Component(String componentName, String componentMeasureUnit, int quantity) {
         this.componentName = componentName;
         this.componentMeasureUnit = componentMeasureUnit;
         this.quantity = quantity;

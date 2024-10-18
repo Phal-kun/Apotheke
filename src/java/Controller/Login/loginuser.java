@@ -85,16 +85,16 @@ public class loginuser extends HttpServlet {
                         request.getRequestDispatcher("View/Login_Register/customerHome.jsp").forward(request, response);
                         break;
                     case 2:
-                        request.getRequestDispatcher(request.getContextPath() + "/ListProduct").forward(request, response);
+                        request.getRequestDispatcher("/ListProduct").forward(request, response);
                         break;
                     case 3:
-                        request.getRequestDispatcher(request.getContextPath() + "/CRUDOrderList").forward(request, response);
+                        request.getRequestDispatcher("/CRUDOrderList").forward(request, response);
                         break;
                     case 4:
-                        request.getRequestDispatcher(request.getContextPath() + "/BlogManager").forward(request, response);
+                        request.getRequestDispatcher("/BlogManager").forward(request, response);
                         break;
                     case 5:
-                        request.getRequestDispatcher(request.getContextPath() + "/CRUDUserList").forward(request, response);
+                        request.getRequestDispatcher("/CRUDUserList").forward(request, response);
                         break;
                     default:
                         break;

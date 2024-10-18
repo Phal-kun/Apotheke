@@ -14,14 +14,17 @@ import java.util.logging.Logger;
 public class ProductDetail {
     int productDetailID;
     Product product;
-    ProductUnit productUnit;
-    int volume, stock, price;
+    ProductUnit unit;
+    int stock;
+    double importPrice, soldPrice;
+    Date manufactureDate, expiredDate;
+    boolean isActive;
     int batchNo;
 
     public ProductDetail() {
     }
 
-    public ProductDetail(int productDetailID, Product product, ProductUnit productUnit, int volume, int stock, int price) {
+    public ProductDetail(int productDetailID, Product product, ProductUnit productUnit, int stock, double importPrice, double soldPrice, Date manufactureDate, Date expiredDate, boolean isActive) {
         this.productDetailID = productDetailID;
         this.product = product;
         this.productUnit = productUnit;
@@ -33,10 +36,7 @@ public class ProductDetail {
     public ProductDetail(int productDetailID, Product product, ProductUnit productUnit, int volume, int stock, int price, int batchNo) {
         this.productDetailID = productDetailID;
         this.product = product;
-        this.productUnit = productUnit;
-        this.volume = volume;
         this.stock = stock;
-        this.price = price;
         this.batchNo = batchNo;
     }
 
@@ -63,19 +63,11 @@ public class ProductDetail {
     }
 
     public ProductUnit getProductUnit() {
-        return productUnit;
+        return unit;
     }
 
-    public void setProductUnit(ProductUnit productUnit) {
-        this.productUnit = productUnit;
-    }
-
-    public int getVolume() {
-        return volume;
-    }
-
-    public void setVolume(int volume) {
-        this.volume = volume;
+    public void setProductUnit(ProductUnit unit) {
+        this.unit = unit;
     }
 
     public int getStock() {
@@ -100,6 +92,46 @@ public class ProductDetail {
 
     public void setBatchNo(int batchNo) {
         this.batchNo = batchNo;
+    }
+
+    public double getImportPrice() {
+        return importPrice;
+    }
+
+    public void setImportPrice(double importPrice) {
+        this.importPrice = importPrice;
+    }
+
+    public double getSoldPrice() {
+        return soldPrice;
+    }
+
+    public void setSoldPrice(double soldPrice) {
+        this.soldPrice = soldPrice;
+    }
+
+    public Date getManufactureDate() {
+        return manufactureDate;
+    }
+
+    public void setManufactureDate(Date manufactureDate) {
+        this.manufactureDate = manufactureDate;
+    }
+
+    public Date getExpiredDate() {
+        return expiredDate;
+    }
+
+    public void setExpiredDate(Date expiredDate) {
+        this.expiredDate = expiredDate;
+    }
+
+    public boolean isIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(boolean isActive) {
+        this.isActive = isActive;
     }
     
     

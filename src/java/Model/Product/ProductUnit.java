@@ -12,9 +12,10 @@ import java.util.logging.Logger;
  * @author ASUS
  */
 public class ProductUnit {
-    int productUnitID;
-    String productUnitName;
-
+    private int productUnitID;
+    private String productUnitName;
+    private double unitToBaseConvertRate;
+    
     public ProductUnit() {
     }
 

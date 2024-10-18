@@ -221,7 +221,23 @@ public class ProductDAO {
                     componentList.add(new Component(componentID, componentName, componentMeasureUnit, quantity));
                 }
                 rsComponentProduct.close();
-
+                // Fetch associated Unit for the product
+                ArrayList unitList = new ArrayList<>();
+                PreparedStatement psUnit = con.prepareStatement(sqlUnit);
+                psUnit.setInt(1, productID);
+                ResultSet rsUnit = psUnit.executeQuery();
+                
+                ProductUnit baseUnit = new ProductUnit();
+                while (rsUnit.next()) {
+                    int unitID = rsUnit.getInt("unitID");
+                    String unitName = rsUnit.getString("unitName");
+                    int convertRate = (int) Math.floor(rsUnit.getDouble("unitToBaseConvertRate"));
+                    if (convertRate==1){
+                        baseUnit = new ProductUnit(unitID, unitName, convertRate);
+                    }
+                    unitList.add(new ProductUnit(unitID, unitName, convertRate));
+                }
+                rsUnit.close();
                 // Add to productList
                 Product product = new Product(productID, productName, category, origin, manufacturer, form, description, componentList, isActive);
                 productList.add(product);

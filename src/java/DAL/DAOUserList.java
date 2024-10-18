@@ -36,7 +36,7 @@ public class DAOUserList {
             PreparedStatement ps = con.prepareStatement(sql);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    int roleid = rs.getInt("roleid");
+                    int roleid = rs.getInt("roleID");
                     String rolename = rs.getString("rolename");
                     int permision = rs.getInt("permission");
                     System.out.println(roleid + " - " + rolename + " - " + permision);
@@ -146,7 +146,7 @@ public class DAOUserList {
         try {
             String countSql = """
             SELECT COUNT(*)
-            FROM [User] u JOIN [role] r ON u.role = r.roleID
+            FROM [User] u JOIN [role] r ON u.roleID = r.roleID
             WHERE %s
         """;
 
@@ -166,11 +166,11 @@ public class DAOUserList {
                         case "female" ->
                             filterCondition.append(" OR u.gender = 'female'");
                         case "warehouse" ->
-                            filterCondition.append(" OR u.role = 2");
+                            filterCondition.append(" OR u.roleID = 2");
                         case "sale" ->
-                            filterCondition.append(" OR u.role = 3");
+                            filterCondition.append(" OR u.roleID = 3");
                         case "marketing" ->
-                            filterCondition.append(" OR u.role = 4");
+                            filterCondition.append(" OR u.roleID = 4");
                         case "active" ->
                             filterCondition.append(" OR u.status = 1");
                         case "inactive" ->
@@ -214,7 +214,7 @@ public class DAOUserList {
             FROM 
                 [User] u 
             JOIN 
-                [role] r ON u.role = r.roleID 
+                [role] r ON u.roleID = r.roleID 
             WHERE 
                 u.userID = ?;
         """;
@@ -261,7 +261,7 @@ public class DAOUserList {
             username = ?, 
             gender = ?, 
             status = ?, 
-            role = ?, 
+            roleID = ?, 
             address = ?
         WHERE userID = ?;
         """;
@@ -306,7 +306,7 @@ public class DAOUserList {
     public void addStaff(User user){
         try {
             String sql = """
-        INSERT INTO [user](fullname,phone,username,password,gender,status,role,address)
+        INSERT INTO [user](fullname,phone,username,password,gender,status,roleID,address)
         VALUES (?,?,?,?,?,?,?,?)
         """;
             PreparedStatement statement = con.prepareStatement(sql);

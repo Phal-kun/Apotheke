@@ -97,9 +97,11 @@ public class CRUDOrderList extends HttpServlet {
         }
                 
         String keyword = request.getParameter("keyword");
-        if (request.getParameter("keywordReset") != null && request.getParameter("keywordReset").equals("true")) {
+        if (request.getParameter("keywordReset") != null && keyword!=null) {
             session.setAttribute("keyword", keyword);
-        }
+        } else if (request.getParameter("keywordReset") != null && keyword!=null){
+            session.setAttribute("keyword", null);
+        } 
         
         String statusIDString = request.getParameter("statusID");
         if (statusIDString!=null&&!statusIDString.isEmpty()){
@@ -112,7 +114,7 @@ public class CRUDOrderList extends HttpServlet {
         ArrayList<Order> orderList = db.getOrder(indexNowCo, false, "orderDate", (String) session.getAttribute("keyword"), (int)session.getAttribute("statusID"));
         ArrayList<Status> statusList = db.getStatus();
         
-        request.setAttribute("orderList", orderList);
+        request.setAttribute("orderList", orderList); 
         request.setAttribute("indexNowCo", indexNowCo);
         request.setAttribute("endPageCo", endPageCo);
         request.setAttribute("statusList", statusList);

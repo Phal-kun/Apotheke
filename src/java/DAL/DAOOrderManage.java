@@ -7,7 +7,6 @@ package DAL;
 import Model.Order.Order;
 import Model.Order.OrderDetail;
 import Model.Order.Status;
-import Model.Product.Manufacturer;
 import Model.Product.Product;
 import Model.Product.ProductDetail;
 import Model.Product.ProductUnit;
@@ -338,7 +337,7 @@ public class DAOOrderManage {
                 
                 Product product = new Product();
                 product.setProductName(rs.getString("productName"));
-                product.setManufacturer(new Manufacturer(rs.getString("manufacturer")));
+                product.setManufacturer(rs.getString("manufacturer"));
                 
                 ProductDetail productDetail = new ProductDetail();
                 productDetail.setBatchNo(rs.getInt("batchNo"));

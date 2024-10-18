@@ -64,7 +64,7 @@
                                 <td>${orderDetail.unit.productUnitName}</td>
                                 <td>${orderDetail.soldPrice}</td>
                                 <td>${orderDetail.totalProductPrice}</td>
-                                <td>${orderDetail.product.manufacturer.manufacturerName}</td>
+                                <td>${orderDetail.product.manufacturer}</td>
                                 <td>${orderDetail.productDetail.batchNo}</td>
                             </tr>
                         </c:forEach>
@@ -79,17 +79,67 @@
                 <input type="hidden" name="orderID" value="${order.orderID}">
                 <button type="submit" class="approve-btn">Approve Order</button>
             </form>
-            <form action="${pageContext.request.contextPath}/CRUDOrderReject" method="get" class="input-tab">
+            <!-- Main Page Form -->
+            <form id="rejectForm" action="${pageContext.request.contextPath}/CRUDOrderReject" method="post" class="input-tab">
                 <input type="hidden" name="orderID" value="${order.orderID}">
-                <button type="submit" class="reject-btn">Reject Order</button>
+                <input type="hidden" name="rejectReason" id="rejectReasonInput"> <!-- Hidden field to hold the reject reason -->
+                <button type="button" class="reject-btn" onclick="openRejectModal()">Reject Order</button> <!-- Trigger modal -->
             </form>
+
             <form action="${pageContext.request.contextPath}/CRUDOrderList" method="get" class="input-tab">
                 <button type="submit" class="back-btn">Back to List</button>
             </form>
         </div>
 
+
+        <div id="rejectModal" class="modal" style="display:none;">
+            <div class="modal-content">
+                <span class="close" onclick="closeRejectModal()">&times;</span>
+                <h3>Enter Reject Reason</h3>
+                <textarea id="rejectReasonText" rows="4" cols="50" placeholder="Enter your reason here..."></textarea>
+                <button type="button" class="reject-submit-btn" onclick="submitRejectForm()">Submit</button>
+            </div>
+        </div>
+
         <footer>
             <p>&copy; 2023 Order Detail. All rights reserved.</p>
         </footer>
+
+
+        <!-- JavaScript for Modal and Form Submission -->
+        <script>
+            // Open the modal
+            function openRejectModal() {
+                document.getElementById("rejectModal").style.display = "block";
+            }
+
+            // Close the modal
+            function closeRejectModal() {
+                document.getElementById("rejectModal").style.display = "none";
+            }
+
+            // Submit the form with the reject reason
+            function submitRejectForm() {
+                var rejectReason = document.getElementById("rejectReasonText").value;
+                if (rejectReason.trim() === "") {
+                    alert("Please enter a reject reason.");
+                    return; // Prevent submission if the reason is empty
+                }
+
+                // Set the reject reason in the hidden input field
+                document.getElementById("rejectReasonInput").value = rejectReason;
+
+                // Submit the form
+                document.getElementById("rejectForm").submit();
+            }
+
+            // Close modal if the user clicks outside of it
+            window.onclick = function (event) {
+                var modal = document.getElementById("rejectModal");
+                if (event.target === modal) {
+                    modal.style.display = "none";
+                }
+            };
+        </script>
     </body>
 </html>
