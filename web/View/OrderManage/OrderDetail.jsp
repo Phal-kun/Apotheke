@@ -75,16 +75,19 @@
 
         <div class="container">
             <div class="section-title">Actions</div>
-            <form action="${pageContext.request.contextPath}/CRUDOrderApprove" method="get" class="input-tab">
-                <input type="hidden" name="orderID" value="${order.orderID}">
-                <button type="submit" class="approve-btn">Approve Order</button>
-            </form>
-            <!-- Main Page Form -->
-            <form id="rejectForm" action="${pageContext.request.contextPath}/CRUDOrderReject" method="post" class="input-tab">
-                <input type="hidden" name="orderID" value="${order.orderID}">
-                <input type="hidden" name="rejectReason" id="rejectReasonInput"> <!-- Hidden field to hold the reject reason -->
-                <button type="button" class="reject-btn" onclick="openRejectModal()">Reject Order</button> <!-- Trigger modal -->
-            </form>
+            <c:if test="${order.status.statusID == 1}">
+                <form action="${pageContext.request.contextPath}/CRUDOrderApprove" method="get" class="input-tab">
+                    <input type="hidden" name="orderID" value="${order.orderID}">
+                    <button type="submit" class="approve-btn">Approve Order</button>
+                </form>
+
+                <!-- Main Page Form -->
+                <form id="rejectForm" action="${pageContext.request.contextPath}/CRUDOrderReject" method="get" class="input-tab">
+                    <input type="hidden" name="orderID" value="${order.orderID}">
+                    <input type="hidden" name="rejectReason" id="rejectReasonInput"> <!-- Hidden field to hold the reject reason -->
+                    <button type="button" class="reject-btn" onclick="openRejectModal()">Reject Order</button> <!-- Trigger modal -->
+                </form>
+            </c:if>
 
             <form action="${pageContext.request.contextPath}/CRUDOrderList" method="get" class="input-tab">
                 <button type="submit" class="back-btn">Back to List</button>

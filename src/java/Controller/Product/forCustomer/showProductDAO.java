@@ -132,7 +132,7 @@ public class showProductDAO extends DBContext {
                     // Tạo đối tượng ProductDetail và gán giá trị từ ResultSet
                     productDetail = new ProductDetail();
                     productDetail.setProductDetailID(rs.getInt("productDetailID"));
-                    productDetail.setPrice(rs.getInt("baseSoldPrice"));
+                    productDetail.setSoldPrice(rs.getInt("baseSoldPrice"));
                 }
          } catch (SQLException e) {
                 e.printStackTrace();

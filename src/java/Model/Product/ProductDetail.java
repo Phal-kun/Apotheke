@@ -15,17 +15,17 @@ import java.util.logging.Logger;
 public class ProductDetail {
     int productDetailID;
     Product product;
-    Unit unit;
+    ProductUnit unit;
     int stock;
     double importPrice, soldPrice;
     Date manufactureDate, expiredDate;
     boolean isActive;
-        int batchNo;
+    int batchNo;
 
     public ProductDetail() {
     }
 
-    public ProductDetail(int productDetailID, Product product, Unit productUnit, int stock, double importPrice, double soldPrice, Date manufactureDate, Date expiredDate, boolean isActive) {
+    public ProductDetail(int productDetailID, Product product, ProductUnit productUnit, int stock, double importPrice, double soldPrice, Date manufactureDate, Date expiredDate, boolean isActive) {
         this.productDetailID = productDetailID;
         this.product = product;
         this.unit = productUnit;
@@ -66,11 +66,11 @@ public class ProductDetail {
         this.product = product;
     }
 
-    public Unit getUnit() {
+    public ProductUnit getUnit() {
         return unit;
     }
 
-    public void setUnit(Unit unit) {
+    public void setUnit(ProductUnit unit) {
         this.unit = unit;
     }
 

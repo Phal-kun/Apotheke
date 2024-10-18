@@ -20,15 +20,15 @@ public class Product {
     String manufacturer;
     String componentDescription;
     String description;
-    Unit baseUnit;
-    ArrayList<Unit> unit;
+    ProductUnit baseUnit;
+    ArrayList<ProductUnit> unit;
     ArrayList<Component> component;
     boolean isActive;
 
     public Product() {
     }
 
-    public Product(int productID, String productName, Category category, Origin origin, String manufacturer, String componentDescription, String description, Unit baseUnit, ArrayList<Unit> unit, ArrayList<Component> component, boolean isActive) {
+    public Product(int productID, String productName, Category category, Origin origin, String manufacturer, String componentDescription, String description, ProductUnit baseUnit, ArrayList<ProductUnit> unit, ArrayList<Component> component, boolean isActive) {
         this.productID = productID;
         this.productName = productName;
         this.category = category;
@@ -42,11 +42,11 @@ public class Product {
         this.isActive = isActive;
     }
 
-    public Unit getBaseUnit() {
+    public ProductUnit getBaseUnit() {
         return baseUnit;
     }
 
-    public void setBaseUnit(Unit baseUnit) {
+    public void setBaseUnit(ProductUnit baseUnit) {
         this.baseUnit = baseUnit;
     }
 

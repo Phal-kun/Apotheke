@@ -366,14 +366,56 @@ public class DAOOrderManage {
         return order;
     }
     
+    public void approveOrder(int orderID){
+        try {
+            // SQL query to select the order details for the given order
+            String sql = """
+             UPDATE [order]
+             SET statusID = 2
+             WHERE orderID = ?
+             """;
+
+            PreparedStatement statement = con.prepareStatement(sql);
+            statement.setInt(1, orderID); // Set the order ID in the query
+            statement.executeUpdate();
+
+            // Populating the order with its details
+
+        } catch (SQLException e) {
+            System.out.println("Error inserting order detail: " + e.getMessage());
+        }
+    }
+    
+    public void rejectOrder(int orderID, String rejectReason){
+        try {
+            // SQL query to select the order details for the given order
+            String sql = """
+             UPDATE [order]
+             SET statusID = 4, rejectReason = ?
+             WHERE orderID = ?
+             """;
+
+            PreparedStatement statement = con.prepareStatement(sql);
+            statement.setString(1, rejectReason);
+            statement.setInt(2, orderID);            
+            statement.executeUpdate();
+
+
+        } catch (SQLException e) {
+            System.out.println("Error inserting order detail: " + e.getMessage());
+        }
+    }
+    
     public static void main(String[] args) {
         INSTANCE.loadDB();
 //        ArrayList list = INSTANCE.getOrder(1, false, "orderDate", "", 0);
 //        for (Object object : list) {
 //            System.out.println(object);
 //        }
-        
+        INSTANCE.rejectOrder(1, "Unable to ship");
 
         System.out.println(INSTANCE.getOrderDetail(1));
     }
+    
+    
 }

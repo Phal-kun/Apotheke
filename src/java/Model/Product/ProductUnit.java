@@ -15,6 +15,7 @@ public class ProductUnit {
     private int productUnitID;
     private String productUnitName;
     private double unitToBaseConvertRate;
+    
     public ProductUnit() {
     }
 

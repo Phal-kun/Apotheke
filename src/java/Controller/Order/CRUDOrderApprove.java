@@ -5,6 +5,7 @@
 
 package Controller.Order;
 
+import DAL.DAOOrderManage;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -55,7 +56,20 @@ public class CRUDOrderApprove extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+        DAOOrderManage db = DAOOrderManage.INSTANCE;
+        
+        int orderID = Integer.parseInt(request.getParameter("orderID"));
+        
+        db.approveOrder(orderID);
+        
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
+
+        // JavaScript alert
+        out.println("<script type=\"text/javascript\">");
+        out.println("alert('Order Update Sucesfully');");
+        out.println("window.location.href = 'CRUDOrderList';");  // Redirect after the alert
+        out.println("</script>");
     } 
 
     /** 

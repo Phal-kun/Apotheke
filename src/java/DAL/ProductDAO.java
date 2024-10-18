@@ -156,20 +156,20 @@ public class ProductDAO {
                 }
                 rsComponentProduct.close();
                 // Fetch associated Unit for the product
-                ArrayList<Unit> unitList = new ArrayList<>();
+                ArrayList<ProductUnit> unitList = new ArrayList<>();
                 PreparedStatement psUnit = con.prepareStatement(sqlUnit);
                 psUnit.setInt(1, productID);
                 ResultSet rsUnit = psUnit.executeQuery();
                 
-                Unit baseUnit = new Unit();
+                ProductUnit baseUnit = new ProductUnit();
                 while (rsUnit.next()) {
                     int unitID = rsUnit.getInt("unitID");
                     String unitName = rsUnit.getString("unitName");
                     int convertRate = (int) Math.floor(rsUnit.getDouble("unitToBaseConvertRate"));
                     if (convertRate==1){
-                        baseUnit = new Unit(unitID, unitName, convertRate);
+                        baseUnit = new ProductUnit(unitID, unitName, convertRate);
                     }
-                    unitList.add(new Unit(unitID, unitName, convertRate));
+                    unitList.add(new ProductUnit(unitID, unitName, convertRate));
                 }
                 rsUnit.close();
                 // Add to productList
