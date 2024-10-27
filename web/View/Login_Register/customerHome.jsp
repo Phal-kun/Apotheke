@@ -13,6 +13,7 @@
         <title>JSP Page</title>
     </head>
     <body>
+        ${sessionScope.account.role.roleID}
         <c:if test="${not empty sessionScope.account}">
             
                 <c:if test="${sessionScope.account.role.roleID == 1}">

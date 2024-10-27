@@ -20,7 +20,7 @@
 
         <div class="container">
             <div class="order-detail">
-                <div class="section-title">Order Information</div>
+                <div class="section-title" style="font-weight: bold">Order Information</div><br/>
                 <div class="detail-row"><span>Order ID:</span> ${order.orderID}</div>
                 <div class="detail-row"><span>Order Date:</span> ${order.orderDate}</div>
                 <div class="detail-row"><span>Order Completed:</span> ${order.orderCompleted}</div>
@@ -29,21 +29,21 @@
                 <div class="detail-row"><span>Reject Reason:</span> ${order.rejectReason != null ? order.rejectReason : 'N/A'}</div>
                 <br/><br/>
 
-                <div class="section-title">Shipping Information</div>
+                <div class="section-title" style="font-weight: bold">Shipping Information</div><br/>
                 <div class="detail-row"><span>Ship Name:</span> ${order.shipName}</div>
                 <div class="detail-row"><span>Ship Address:</span> ${order.shipAddress}</div>
                 <div class="detail-row"><span>Ship Phone:</span> ${order.shipPhone}</div>
                 <div class="detail-row"><span>Ship Note:</span> ${order.shipNote}</div>
                 <br/><br/>
 
-                <div class="section-title">Customer Account Information</div>
+                <div class="section-title" style="font-weight: bold">Customer Account Information</div><br/>
                 <div class="detail-row"><span>Username:</span> ${order.user.username}</div>
                 <div class="detail-row"><span>Full Name:</span> ${order.user.fullname}</div>
                 <div class="detail-row"><span>Phone:</span> ${order.user.phone}</div>
                 <div class="detail-row"><span>Address:</span> ${order.user.address}</div>
                 <br/><br/>
 
-                <div class="section-title">Order Details</div>
+                <div class="section-title" style="font-weight: bold">Order Details</div><br/>
                 <table>
                     <thead>
                         <tr>

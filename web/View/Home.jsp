@@ -13,6 +13,7 @@
         <title>JSP Page</title>
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/CSS/login/loginform.css">
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/CSS/login/showproduct.css"> 
+        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/CSS/login/newcss.css"> 
     </head>
     <script src="Login_Register/oauthConfig.js"></script>
     

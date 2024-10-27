@@ -85,7 +85,7 @@ public class loginuserServlet extends HttpServlet {
                         request.getRequestDispatcher("View/Login_Register/customerHome.jsp").forward(request, response);
                         break;
                     case 2:
-                        request.getRequestDispatcher("/ListProduct").forward(request, response);
+                        request.getRequestDispatcher("View/Login_Register/warehouseHome.jsp").forward(request, response);
                         break;
                     case 3:
                         request.getRequestDispatcher("/CRUDOrderList").forward(request, response);
