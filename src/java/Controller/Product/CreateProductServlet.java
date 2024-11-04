@@ -89,6 +89,9 @@ public class CreateProductServlet extends HttpServlet {
         String categoryIDStr = request.getParameter("categoryID");
         String originIDStr = request.getParameter("originID");
         String manufacturer = request.getParameter("manufacturer");
+        
+        String baseUnitName = request.getParameter("baseUnitName");
+        
         String[] unitNames = request.getParameterValues("unitName");
         String[] convertRates = request.getParameterValues("convertRate");
         String[] componentNames = request.getParameterValues("componentName");
@@ -103,7 +106,7 @@ public class CreateProductServlet extends HttpServlet {
             errorMsg.append("Product Name ");
         }
 
-        int productID=0,categoryID = 0, originID = 0;
+        int productID=0, categoryID = 0, originID = 0;
 
         try {
             if (productIDStr != null) {
@@ -136,6 +139,9 @@ public class CreateProductServlet extends HttpServlet {
             request.setAttribute("createMsg", false);
         } else {
             StringBuilder unitString = new StringBuilder();
+            unitString.append(baseUnitName).append(",")
+                        .append("1.00")
+                        .append(";");
             for (int i = 0; i < unitNames.length; i++) {
                 unitString.append(unitNames[i])
                         .append(",")
@@ -153,7 +159,7 @@ public class CreateProductServlet extends HttpServlet {
                         .append(";");
             }
 
-            ProductDAO.INSTANCE.insertProduct(productID, productName, categoryID, originID, manufacturer, description, componentDescription, unitString.toString(), componentString.toString());
+            ProductDAO.INSTANCE.insertProduct(productID, productName, categoryID, originID, manufacturer, description, componentDescription, unitString.toString(), componentString.toString(), baseUnitName);
 
         }
 

@@ -79,10 +79,20 @@
                             <th></th>
                         </tr>
                     </thead>
-                    <tbody></tbody>
+                    <tbody>
+                    <td>
+                        <input type="text" name="componentName" placeholder="Enter component name" required />
+                    </td>
+                    <td>
+                        <input class="input-field" type="number" name="quantity" placeholder="Enter quantity" min="1" required onchange="validateQuantity(this)" />
+                    </td>
+                    <td>
+                        <input type="text" name="componentUnit" placeholder="Enter component's unit" required />
+                    </td>
+                    </tbody>
                 </table>
 
-                <button type="button" onclick="addComponentRow()">Add Component</button><br>
+                <button type="button" onclick="addComponentRow()">Add more Component</button><br>
 
                 <!-- Unit dynamic table -->
                 <div class="labels">
@@ -96,10 +106,17 @@
                             <th></th>
                         </tr>
                     </thead>
-                    <tbody></tbody>
+                    <tbody>
+                    <td>
+                        <input class="input-field" type="text" name="baseUnitName" placeholder="Enter base unit name" required>
+                    </td>
+                    <td>
+                        <input class="input-field" type="number" step="0.01" name="baseConvertRate" value="1" placeholder="1" required readonly>
+                    </td>
+                    </tbody>
                 </table>
 
-                <button type="button" onclick="addUnitRow()">Add Unit</button><br>
+                <button type="button" onclick="addUnitRow()">Add more Unit</button><br>
 
                 <!-- Description -->
                 <div class="labels">
@@ -156,7 +173,7 @@
                         <input class="input-field" type="text" name="unitName" placeholder="Enter unit name" required>
                     </td>
                     <td>
-                        <input class="input-field" type="number" step="0.01" name="convertRate" placeholder="Enter conversion rate" required>
+                        <input class="input-field" type="number" step="0.01" name="convertRate" placeholder="Enter conversion rate to base unit" required>
                     </td>
                     <td>
                         <button type="button" onclick="deleteRow(this)">Delete</button>
