@@ -146,6 +146,7 @@ public class ProductDAO {
                 ArrayList<Component> componentList = new ArrayList<>();
                 PreparedStatement psComponentProduct = con.prepareStatement(sqlComponentProduct);
                 psComponentProduct.setInt(1, productID);
+                
                 ResultSet rsComponentProduct = psComponentProduct.executeQuery();
 
                 while (rsComponentProduct.next()) {

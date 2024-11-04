@@ -42,7 +42,7 @@
                             <td>${product.getCategory().getCategoryName()}</td>
                             <td>${product.getOrigin().getOriginName()}</td>
                             <td>${product.getManufacturer()}</td>
-                            <td>${product.getBaseUnit().getUnitName()}</td>
+                            <td>${product.getBaseUnit().getProductUnitName()}</td>
                             <td>
                                 <c:choose>
                                     <c:when test="${product.isActive()}">Active</c:when>
