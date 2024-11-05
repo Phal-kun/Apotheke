@@ -1,0 +1,250 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Nov 1, 2024, 11:16:00 AM
+    Author     : Dell
+*/
+
+/* Import fonts */
+/* Import fonts */
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&display=swap');
+
+
+.container {
+  width: 1200px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  min-height: 130px;
+  margin: 0 auto;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  background-color: #f3f4f6;
+  height: 100px;
+}
+
+.title {
+  font-size: 1.875rem;
+  color: #1d4ed8;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.search-bar {
+  display: flex;
+  height: 50px;
+    width: 600px;
+    padding-left: 50px;
+}
+
+.search-input {
+  padding: 8px 16px;
+  border: 2px solid #2460ba;
+  border-radius: 32px;
+  width: 600px;
+}
+
+.search-icon {
+    position: absolute;
+    color: #6b7280;
+    padding-left: 520px;
+    padding-top: 10px;
+}
+
+
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  
+  .user-popup {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .popup-content {
+    display: none; /* Initially hidden */
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 0px 0;
+    margin-top: 0px;
+    z-index: 1;
+    min-width: 200px;
+  }
+  
+  .user-popup:hover .popup-content {
+    display: block; /* Show on hover */
+  }
+  
+  .popup-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 16px;
+    color: #111827;
+    font-size: 14px;
+    text-decoration: none;
+    font-family: 'Open Sans', sans-serif;
+  }
+  
+  .popup-item:hover {
+    background-color: #f3f4f6;
+  }
+  
+  .popup-item .material-symbols-outlined {
+    font-size: 20px;
+    color: #1d4ed8; /* Icon color */
+  }
+  .user-popup:hover .popup-content, .popup-content:hover {
+    display: block;
+    }
+.user-btn {
+  background-color: #1d4ed8;
+  color: white;
+  border-radius: 8px;
+  padding: 8px 16px;
+  border: none;
+  cursor: pointer;
+}
+.login-btn{
+    background-color: #1d4ed8;
+  color: white;
+  border-radius: 8px;
+  padding: 8px 16px;
+  border: none;
+  cursor: pointer;
+}
+.logout-btn{
+    background-color: #1d4ed8;
+  color: white;
+  border-radius: 8px;
+  padding: 8px 16px;
+  border: none;
+  cursor: pointer;
+}
+.cart {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.cart-icon {
+  color: #1d4ed8;
+}
+
+.cart-text {
+  color: #1d4ed8;
+}
+
+.main-content {
+  padding: 16px;
+}
+
+.section-title {
+  font-size: 1.5rem;
+  color: #111827;
+  margin-bottom: 16px;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.product-item {
+  background-color: #f3f4f6;
+  border-radius: 8px;
+  padding: 16px;
+  text-align: center;
+}
+
+.product-img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+.product-title {
+  font-size: 1.125rem;
+  color: #111827;
+  font-weight: 600;
+}
+
+.product-desc {
+  color: #6b7280;
+  margin: 8px 0 16px;
+}
+
+.add-to-cart-btn {
+  background-color: #1d4ed8;
+  color: white;
+  border-radius: 9999px;
+  padding: 8px 24px;
+  border: none;
+}
+
+.loading {
+  text-align: center;
+  margin-top: 24px;
+  color: #9ca3af;
+}
+
+
+
+  .navbar1 {
+    background-color: white;
+    border-bottom: 1px solid #eaeaea;
+    height: 50px;
+}
+
+.nav-items1 {
+    list-style: none;
+    display: flex;
+
+    justify-content: center;
+}
+
+.nav-items1 li {
+    position: relative;
+}
+
+.nav-items1 li a {
+    text-align: center;
+    text-decoration: none;
+    color: #1c1c1c;
+    font-size: 14px;
+    padding: 10px 15px;
+    display: block;
+    font-weight: bold;
+}
+
+.nav-items1 li a:hover {
+    color: #007bff;
+}
+
+.nav-items1 li a:after {
+    content: "\25BC";
+    font-size: 10px;
+    margin-left: 5px;
+    vertical-align: middle;
+}

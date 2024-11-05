@@ -1,0 +1,44 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Nov 4, 2024, 8:54:28 AM
+    Author     : Dell
+*/
+
+.cart-container {
+            width: 100%;
+            max-width: 800px;
+            margin: auto;
+            font-family: Arial, sans-serif;
+        }
+        .cart-header, .cart-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .cart-header span, .cart-item span {
+            flex: 1;
+            text-align: center;
+        }
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .quantity-control button {
+            padding: 0 10px;
+            cursor: pointer;
+        }
+        .quantity-control input {
+            width: 40px;
+            text-align: center;
+            border: none;
+        }
+        .delete-btn {
+            color: red;
+            cursor: pointer;
+        }
+      

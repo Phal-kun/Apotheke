@@ -72,7 +72,7 @@ public class loginuserServlet extends HttpServlet {
             
         }else{
             if(!BCrypt.checkpw(password, user.getPassword())){
-                request.setAttribute("mess", "Wrong user or pass");
+                request.setAttribute("mess", "Wrong email or password");
                 request.setAttribute("enteredUsername", username); // Lưu username đã nhập
                 request.setAttribute("enteredPassword", password); // Lưu password đã nhập
                 request.getRequestDispatcher("View/Home.jsp").forward(request, response);
@@ -82,7 +82,7 @@ public class loginuserServlet extends HttpServlet {
             if(user.isStatus() == true) {
                 switch (user.getRole().getRoleID()) {
                     case 1:
-                        request.getRequestDispatcher("View/Login_Register/customerHome.jsp").forward(request, response);
+                        request.getRequestDispatcher("View/Home.jsp").forward(request, response);
                         break;
                     case 2:
                         request.getRequestDispatcher("/ListProduct").forward(request, response);

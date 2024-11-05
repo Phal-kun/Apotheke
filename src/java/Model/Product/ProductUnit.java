@@ -16,9 +16,12 @@ public class ProductUnit {
     private String productUnitName;
     private double unitToBaseConvertRate;
     
+
     public ProductUnit() {
     }
 
+    
+    
     public ProductUnit(int productUnitID, String productUnitName, double unitToBaseConvertRate) {
         this.productUnitID = productUnitID;
         this.productUnitName = productUnitName;
@@ -89,6 +92,11 @@ public class ProductUnit {
     public String toString() {
         return "ProductUnit{" + "productUnitID=" + productUnitID + ", productUnitName=" + productUnitName + ", unitToBaseConvertRate=" + unitToBaseConvertRate + '}';
     }
+
+    
+    
+
+    
 
     
        

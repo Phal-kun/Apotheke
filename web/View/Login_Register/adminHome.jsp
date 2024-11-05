@@ -17,6 +17,9 @@
         <c:if test="${not empty sessionScope.account and sessionScope.account.role.roleID == 5}">
             <h1>Welcome, Admin!</h1>
             <a href="${pageContext.request.contextPath}/CRUDUserList">
+            <a href ="${pageContext.request.contextPath}/CategoryManager" >    
+                        <button>Category Manager</button>
+            <a>             
             <a href="${pageContext.request.contextPath}/View/Home.jsp">
                 <button>Logout</button>
             </a>

@@ -10,7 +10,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
 
 
 .overlay{
-    background-color: aqua;
+    background-color: #b7ebeb;
 }
 
 .form-login{
@@ -301,7 +301,7 @@ transform: translate(-50%, -50%);
 .ti2{
   
   height: 8px;
-  margin-top: 16px;
+  margin-top: 25px;
   text-align: center;
 }
 .user2 {

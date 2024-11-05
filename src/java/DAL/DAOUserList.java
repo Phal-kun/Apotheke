@@ -150,7 +150,7 @@ public class DAOUserList {
             WHERE %s
         """;
 
-            StringBuilder condition = new StringBuilder(isCustomer ? "u.role = 1" : "u.role != 1");
+            StringBuilder condition = new StringBuilder(isCustomer ? "u.roleID = 1" : "u.roleID != 1");
 
             if (keyword != null && !keyword.isEmpty()) {
                 condition.append(" AND (u.fullname LIKE ? OR u.username LIKE ? OR u.address LIKE ? OR u.phone LIKE ?)");
