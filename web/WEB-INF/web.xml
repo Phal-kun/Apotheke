@@ -1,6 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="6.0" xmlns="https://jakarta.ee/xml/ns/jakartaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd">
     <servlet>
+        <servlet-name>updateCartServelet</servlet-name>
+        <servlet-class>Controller.Product.forCustomer.updateCartServelet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>submitorderSeverlet</servlet-name>
+        <servlet-class>Controller.Product.forCustomer.submitorderSeverlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>addtocartServerlet</servlet-name>
+        <url-pattern>/addtocart</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>cartdetailServlet</servlet-name>
+        <url-pattern>/cartdetailServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>updateCartServelet</servlet-name>
+        <url-pattern>/updateCartServelet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>submitorderSeverlet</servlet-name>
+        <url-pattern>/submitorder</url-pattern>
+    </servlet-mapping>
+    <welcome-file-list>
+        <welcome-file>ShowProductHomeServlet</welcome-file>
+    </welcome-file-list>
+    <servlet>
         <servlet-name>CRUDUserList</servlet-name>
         <servlet-class>Controller.User.CRUDUserList</servlet-class>
     </servlet>
@@ -105,8 +132,20 @@
         <servlet-class>Controller.Product.ImportProductServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>ShowProductHomeServerlet</servlet-name>
-        <servlet-class>Controller.Product.forCustomer.ShowProductHomeServerlet</servlet-class>
+        <servlet-name>addToCartServelet</servlet-name>
+        <servlet-class>Controller.Product.forCustomer.addToCartServelet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>showOrderDetailServelet</servlet-name>
+        <servlet-class>Controller.Product.forCustomer.showOrderDetailServelet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>addtocartServerlet</servlet-name>
+        <servlet-class>Controller.Product.forCustomer.addtocart</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>cartdetailServlet</servlet-name>
+        <servlet-class>Controller.Product.forCustomer.cartdetailServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>CRUDUserList</servlet-name>
@@ -212,8 +251,20 @@
         <servlet-name>ImportProductServlet</servlet-name>
         <url-pattern>/ImportProduct</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>ShowProductHomeServlet</servlet-name>
+        <servlet-class>Controller.Product.forCustomer.ShowProductHomeServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
-        <servlet-name>ShowProductHomeServerlet</servlet-name>
-        <url-pattern>/ShowProductHomeServerlet</url-pattern>
+        <servlet-name>ShowProductHomeServlet</servlet-name>
+        <url-pattern>/ShowProductHomeServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>addToCartServelet</servlet-name>
+        <url-pattern>/addToCartServelet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>showOrderDetailServelet</servlet-name>
+        <url-pattern>/showOrderDetailServelet</url-pattern>
     </servlet-mapping>
 </web-app>

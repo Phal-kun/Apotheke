@@ -66,20 +66,22 @@ public class loginGoogleServlet extends HttpServlet {
                     session.setAttribute("account", user);
                     request.getRequestDispatcher("/View/Login_Register/customerHome.jsp").forward(request,response);
                 }else{  
-
-                        HttpSession session = request.getSession();
-                        User checkuser = usdao.getUserByEmail(email);
-                        System.out.println("sai roi ");
-                        session.setAttribute("account", checkuser);
+                    HttpSession session = request.getSession();
+                    User checkuser = usdao.getUserByEmail(email);
+                    System.out.println("dhsa"+email);
+                    System.out.println("sai roi " + checkuser.toString());
+                    session.setAttribute("account", checkuser);
+                    System.out.print(checkuser.toString());
                         switch (checkuser.getRole().getRoleID()) {
                             case 1:
-                                response.sendRedirect("View/Login_Register/customerHome.jsp");
-                                break; 
+                                  request.getRequestDispatcher("View/Home.jsp").forward(request, response);
+                      
+                               break; 
                             case 2:
                                 response.sendRedirect(request.getContextPath() + "/ListProduct");
                                 break;
                             case 3:
-                                    response.sendRedirect("View/Login_Register/saleHome.jsp");
+                                response.sendRedirect("View/Login_Register/saleHome.jsp");
                                 break;
                             case 4:
                                 response.sendRedirect(request.getContextPath() + "/BlogManager");

@@ -82,7 +82,7 @@ public class loginuserServlet extends HttpServlet {
             if(user.isStatus() == true) {
                 switch (user.getRole().getRoleID()) {
                     case 1:
-                        request.getRequestDispatcher("View/Login_Register/customerHome.jsp").forward(request, response);
+                        request.getRequestDispatcher("View/Home.jsp").forward(request, response);
                         break;
                     case 2:
                         request.getRequestDispatcher(request.getContextPath() + "/ListProduct").forward(request, response);

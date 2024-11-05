@@ -16,6 +16,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -23,58 +24,66 @@ import java.util.List;
  * @author Dell
  */
 public class ShowProductHomeServlet extends HttpServlet {
- 
+     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
+        List<Item> listItems = CartControl.displayProductList();
+        // Chia danh sách thành các nhóm 12 item
+        List<List<Item>> groupedItems = CartControl.splitItemsIntoGroups(listItems, 12);
+        // size
+        int groupCount = groupedItems.size();
+        List<Item> itemsAtPageIndex = getItemsByIndex(0);
+         for (Item item : itemsAtPageIndex) {
+                System.out.println(item.toString()); // In thông tin của từng item
+            }
+        System.out.print("so size cua ban la "+ groupedItems.size());
+        HttpSession session = request.getSession();
+        session.setAttribute("itemsAtPageIndex", itemsAtPageIndex);
+        session.setAttribute("groupCount", groupedItems.size());
+        session.setAttribute("currentIndex", 0);
+        request.getRequestDispatcher("View/Home.jsp").forward(request, response);
     } 
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        showProductDAO showPdDAo = new showProductDAO();
-        try {
-            // Lấy danh sách sản phẩm từ ProductDAO
-            List<Product> productList = showPdDAo.list();
-            ArrayList<Component> allComponents = new ArrayList<>();
-            // Truyền danh sách sản phẩm vào request
-            request.setAttribute("productList", productList);
-            // Forward request và response đến trang JSP
-            for (Product product : productList){
-                ArrayList<Component> components = product.getComponent();
-                 // Kiểm tra xem danh sách component của product có dữ liệu không
-                if (components != null && !components.isEmpty()) {
-                    
-                    // Thêm tất cả các components của sản phẩm vào danh sách allComponents
-                    allComponents.addAll(components);
-                }
-            }
-            HttpSession session = request.getSession();
-            Integer cartCount = (Integer) session.getAttribute("cartCount");
-            if (cartCount == null) {
-                cartCount = 0;
-                session.setAttribute("cartCount", cartCount);
-            }
-            request.getRequestDispatcher("View/Home.jsp").forward(request, response);  
-            
-        } catch (Exception e) {
-            e.printStackTrace();
-            // Xử lý lỗi và chuyển hướng đến trang lỗi nếu cần
-            request.setAttribute("errorMessage", "Có lỗi xảy ra khi lấy danh sách sản phẩm");
-            request.getRequestDispatcher("error.jsp").forward(request, response);
-        }   
-    
-        
-    } 
-
+        processRequest(request, response);
+      
+    }   
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+        String pageIndexParam = request.getParameter("pageIndex");
+        try{
+            int index = Integer.parseInt(pageIndexParam);
+            List<Item> itemsAtPageIndex = getItemsByIndex(index);
+            HttpSession session = request.getSession();
+            session.setAttribute("itemsAtPageIndex", itemsAtPageIndex);
+            // Lưu index hiện tại để sử dụng cho các nút điều hướng
+            session.setAttribute("currentIndex", index);
+            // Chuyển hướng đến trang JSP để hiển thị danh sách item
+            request.getRequestDispatcher("View/Home.jsp").forward(request, response);
+        }catch(Exception e){
+             e.printStackTrace(); 
+        }
+            
     }
 
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
+    }
+    
+    
+    private List<Item> getItemsByIndex(int index) {
+        List<Item> listItems = CartControl.displayProductList();
 
+        // Chia danh sách thành các nhóm 12 item
+        List<List<Item>> groupedItems = CartControl.splitItemsIntoGroups(listItems, 12);
+        // size
+        int groupCount = groupedItems.size();
+        List<Item> itemsAtIndex1 = groupedItems.get(index); 
+        return itemsAtIndex1;
+    }
+    
 }

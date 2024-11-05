@@ -29,6 +29,8 @@ public class showProductDAO extends DBContext {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
+        
+    // list product 
     public List<Product> list() throws Exception,   SQLException{
         List<Product> products = new ArrayList<>();
         String sql = "SELECT p.productID, p.productName, p.categoryID, p.originID, p.manufacturer, p.componentDescription, "
@@ -90,10 +92,11 @@ public class showProductDAO extends DBContext {
         return products;
     }
     
+    // list product unit by productID 
     public List<ProductUnit> myListProductUnit(int productID) throws Exception{
         List<ProductUnit> productUnits = new ArrayList<>();
         // Câu lệnh SQL để lấy các ProductUnit dựa trên ProductID
-        String sql = "SELECT unitID, unitName, unitToBaseConvertRate FROM productUnit WHERE productID = ?";
+        String sql = "SELECT * FROM productUnit WHERE productID = ?";
 
         // Kết nối tới cơ sở dữ liệu và thực hiện truy vấn
         try {
@@ -107,8 +110,7 @@ public class showProductDAO extends DBContext {
                     productUnit.setProductUnitID(rs.getInt("unitID"));
                     productUnit.setProductUnitName(rs.getString("unitName"));
                     productUnit.setUnitToBaseConvertRate(rs.getDouble("unitToBaseConvertRate"));
-
-                    // Thêm vào danh sách
+                                       // Thêm vào danh sách
                     productUnits.add(productUnit);
                 }
                 
@@ -121,10 +123,11 @@ public class showProductDAO extends DBContext {
             return productUnits;
 
     }
+    
     // productUnit by productId
     public ProductUnit getProductUnitByProductId(int productId) throws Exception {
         ProductUnit productUnit = new ProductUnit();
-        String sql =    "SELECT productID, unitName, unitToBaseConvertRate"+
+        String sql =    "SELECT unitID, productID, unitName, unitToBaseConvertRate"+
                         " FROM productUnit"+
                         " WHERE productID = ?";
         try{
@@ -134,7 +137,8 @@ public class showProductDAO extends DBContext {
                 rs = ps.executeQuery();
                 if (rs.next()) {
                     // Tạo đối tượng ProductDetail và gán giá trị từ ResultSet
-                    productUnit.setProductUnitID(rs.getInt("productID"));
+                   
+                    productUnit.setProductUnitID(rs.getInt("unitID"));
                     productUnit.setProductUnitName(rs.getString("unitName"));
                     productUnit.setUnitToBaseConvertRate(rs.getDouble("unitToBaseConvertRate"));
                 }
@@ -145,7 +149,8 @@ public class showProductDAO extends DBContext {
         return productUnit;
     
     }
-        
+    
+    // product detail by unitID
     public ProductDetail getProductDetailByUnitId(int unitId) throws Exception{
     ProductDetail productDetail = null;
     String sql = "SELECT productDetailID, baseSoldPrice, unitID " +
@@ -179,6 +184,7 @@ public class showProductDAO extends DBContext {
         return productDetail;
         
     }
+    
     // get product by productId
     public Product getProductsByProductId(int productId) throws Exception {
         Product product = new Product();
