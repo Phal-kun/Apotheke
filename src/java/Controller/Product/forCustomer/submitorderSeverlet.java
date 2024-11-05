@@ -5,6 +5,7 @@
 
 package Controller.Product.forCustomer;
 
+import Model.User.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -57,14 +58,15 @@ public class submitorderSeverlet extends HttpServlet {
         HttpSession session = request.getSession(false); // false: không tạo session mới nếu chưa tồn tại
 
         // Kiểm tra xem người dùng đã đăng nhập hay chưa
-        String account = (session != null) ? (String) session.getAttribute("account") : null;
+        User account = (session != null) ? (User) session.getAttribute("account") : null;
+
          if (account == null) {
             System.out.println("hiepday");
             // Nếu chưa có tài khoản trong session, bạn có thể trả về thông báo hoặc redirect tới trang login
             request.setAttribute("loginMessage", "Vui lòng đăng nhập để tiếp tục."); // Thiết lập thông báo
             request.getRequestDispatcher("View/pagecontrol/cart.jsp").forward(request, response); // Chuyển hướng đến trang JSP
         } else {
-           
+             
         }   
 
     } 
