@@ -81,13 +81,13 @@
                     </thead>
                     <tbody>
                     <td>
-                        <input type="text" name="componentName" placeholder="Enter component name" required />
+                        <input class="input-field" type="text" name="componentName" placeholder="Enter component name" required />
                     </td>
                     <td>
                         <input class="input-field" type="number" name="quantity" placeholder="Enter quantity" min="1" required onchange="validateQuantity(this)" />
                     </td>
                     <td>
-                        <input type="text" name="componentUnit" placeholder="Enter component's unit" required />
+                        <input class="input-field" type="text" name="componentUnit" placeholder="Enter component's unit" required />
                     </td>
                     </tbody>
                 </table>
@@ -108,10 +108,10 @@
                     </thead>
                     <tbody>
                     <td>
-                        <input class="input-field" type="text" name="baseUnitName" placeholder="Enter base unit name" required>
+                        <input class="input-field" type="text" name="unitName" placeholder="Enter base unit name" required>
                     </td>
                     <td>
-                        <input class="input-field" type="number" step="0.01" name="baseConvertRate" value="1" placeholder="1" required readonly>
+                        <input class="input-field" type="number" step="0.01" name="convertRate" value="1" placeholder="1" required readonly>
                     </td>
                     </tbody>
                 </table>
@@ -150,13 +150,13 @@
 
                 row.innerHTML = `
                     <td>
-                        <input type="text" name="componentName" placeholder="Enter component name" required />
+                        <input type="text" class="input-field" name="componentName" placeholder="Enter component name" required />
                     </td>
                     <td>
                         <input class="input-field" type="number" name="quantity" placeholder="Enter quantity" min="1" required onchange="validateQuantity(this)" />
                     </td>
                     <td>
-                        <input type="text" name="componentUnit" placeholder="Enter component's unit" required />
+                        <input type="text" class="input-field" name="componentUnit" placeholder="Enter component's unit" required />
                     </td>
                     <td>
                         <button type="button" onclick="deleteRow(this)">Delete</button>

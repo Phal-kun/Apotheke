@@ -3,9 +3,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
-package Controller.Order;
+package Controller.WarehouseOrderManage;
 
-import DAL.DAOOrderManage;
+import DAL.WarehouseOrderDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -18,8 +18,8 @@ import jakarta.servlet.http.HttpServletResponse;
  *
  * @author ASUS
  */
-@WebServlet(name="CRUDOrderApprove", urlPatterns={"/CRUDOrderApprove"})
-public class CRUDOrderApprove extends HttpServlet {
+@WebServlet(name="ApprovedOrderDetail", urlPatterns={"/ApprovedOrderDetail"})
+public class ApprovedOrderDetail extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -36,10 +36,10 @@ public class CRUDOrderApprove extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet CRUDOrderApprove</title>");  
+            out.println("<title>Servlet ApprovedOrderDetail</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet CRUDOrderApprove at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet ApprovedOrderDetail at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -56,20 +56,12 @@ public class CRUDOrderApprove extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        DAOOrderManage db = DAOOrderManage.INSTANCE;
-        
+        WarehouseOrderDAO db = WarehouseOrderDAO.INSTANCE;
         int orderID = Integer.parseInt(request.getParameter("orderID"));
-        
-        db.approveOrder(orderID);
-        
-        response.setContentType("text/html");
-        PrintWriter out = response.getWriter();
 
-        // JavaScript alert
-        out.println("<script type=\"text/javascript\">");
-        out.println("alert('Order Update Sucesfully');");
-        out.println("window.location.href = 'CRUDOrderList';"); 
-        out.println("</script>");
+        request.setAttribute("order", db.getOrderDetail(orderID));
+        
+        request.getRequestDispatcher("/View/WarehouseOrderManage/ApprovedOrderDetail.jsp").forward(request, response);
     } 
 
     /** 

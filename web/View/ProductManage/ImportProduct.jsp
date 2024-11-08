@@ -26,7 +26,7 @@
                     <select id="productID" name="unitID" required>
                         <option disabled selected>Select a product</option>
                         <c:forEach var="product" items="${productList}">
-                            <option value="${product.getBaseUnit().getUnitID()}">${product.getProductName()}</option>
+                            <option value="${product.getBaseUnit().getProductUnitID()}">${product.getProductName()}</option>
                         </c:forEach>
                     </select>
                 </div>

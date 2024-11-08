@@ -15,6 +15,13 @@
     </head>
     <body>
         <h1>Category List</h1>
+        <a href="${pageContext.request.contextPath}/logout">
+            <button>Logout</button>
+        </a>
+        <a href="${pageContext.request.contextPath}/View/Login_Register/warehouseHome.jsp">
+            <button>Management Menu</button>
+        </a></br>
+        <hr>
         <form method="GET" action="CategoryManager">
             <!-- Sort Order Dropdown -->
             <label for="sortOrder">Sort by:</label>

@@ -186,7 +186,7 @@ public class ProductDAO {
     }
 
     //insert new product using procedure
-    public void insertProduct(int productID, String productName, int categoryID, int originID, String manufacturer, String description, String componentDescription, String unitString, String componentString, String baseUnitName) {
+    public void insertProduct(int productID, String productName, int categoryID, int originID, String manufacturer, String description, String componentDescription, String unitString, String componentString) {
         String sql = "{call InsertProduct(?, ?, ?, ?, ?, ?, ?, ?, ?)}";
         
         try (CallableStatement stmt = con.prepareCall(sql)) {
@@ -202,7 +202,7 @@ public class ProductDAO {
             stmt.execute();
             System.out.println("Product inserted successfully!");
             
-            insertBaseUnit(productID, baseUnitName);
+//            insertBaseUnit(productID, baseUnitName);
             
         } catch (SQLServerException ex) {
             System.err.println("SQL Error: " + ex.getMessage());
@@ -266,6 +266,40 @@ public class ProductDAO {
         }
     }
     
+    public Product findProductByID(int productID){
+        ArrayList<Product> productList = INSTANCE.loadProductList();
+        Product searchProduct = null;
+        for (Product product : productList) {
+            if(productID == product.getProductID()){
+                searchProduct = product;
+            } 
+        }
+        return searchProduct;
+    }
+    
+    public boolean isExist(int productID){
+        try (CallableStatement statement = con.prepareCall("{ ? = CALL CheckProductExists(?) }")){      
+            statement.registerOutParameter(1, Types.BIT);
+            statement.setInt(2, productID);
+            statement.execute();
+            
+            boolean productExists = statement.getBoolean(1);
+            
+            if (productExists) {
+                System.out.println("Product with ID " + productID + " exists.");
+            } else {
+                System.out.println("Product with ID " + productID + " does not exist.");
+            }
+            
+            return productExists;
+        } catch (SQLException e){
+            System.out.println(e);
+            return false;
+        }      
+    }
+
+    
+   
     public static void main(String[] args) {
         insertProductTest();
     }
@@ -282,6 +316,7 @@ public class ProductDAO {
 //        String componentString = "Salicylic Acid, 500, mg; Buffering Agent, 100, mg"; // List of components
 //        ProductDAO.INSTANCE.insertProduct(productID, productName, categoryID, originID, manufacturer, description, componentDescription, unitString, componentString);
 //        
-        System.out.println(ProductDAO.INSTANCE.loadProductList());
+
+        System.out.println(ProductDAO.INSTANCE.findProductByID(1234));
     }
 }

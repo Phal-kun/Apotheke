@@ -24,6 +24,9 @@
                     <a href="${pageContext.request.contextPath}/ListProduct">
                         <button>Product Manage</button>
                     </a>
+                    <a href="${pageContext.request.contextPath}/ApprovedOrderList">
+                        <button>Order Manage</button>
+                    </a>    
         </c:if>
 
         <c:if test="${empty sessionScope.account or sessionScope.account.role.roleID != 2}">

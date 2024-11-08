@@ -15,7 +15,14 @@
     <body>
         <header>
             <div class="text-box">
-                <h1 id="title">Product List</h1><hr>
+                <h1 id="title">Product List</h1>
+                <a href="${pageContext.request.contextPath}/logout">
+                    <button>Logout</button>
+                </a>
+                <a href="${pageContext.request.contextPath}/View/Login_Register/warehouseHome.jsp">
+                    <button>Management Menu</button>
+                </a>
+                <hr>
                 <p id="description">Below is the list of products available</p>
             </div>
         </header>
@@ -31,7 +38,11 @@
                         <th>Manufacturer</th>
                         <th>Base Unit</th>
                         <th>Active Status</th>
-                        <th>Actions</th>
+                        <th>        
+                            <a href="ImportProduct">
+                                <button type="button">Import product</button>
+                            </a>
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -54,6 +65,10 @@
                                     <input type="hidden" name="productID" value="${product.getProductID()}" />
                                     <button type="submit" class="select-btn">Update</button>
                                 </form>
+                                <form action="ProductDetailServlet" method="get" style="display:inline-block;">
+                                    <input type="hidden" name="productID" value="${product.getProductID()}" />
+                                    <button type="submit" class="select-btn">View Detail</button>
+                                </form>
                             </td>
                         </tr>
                     </c:forEach>
@@ -66,12 +81,7 @@
                 </a>
             </div>
         </div>
-        <a href="${pageContext.request.contextPath}/logout">
-            <button>Logout</button>
-        </a>
-        <a href="ImportProduct">
-            <button type="button">Import product</button>
-        </a>
+
 
     </body>
 </html>
