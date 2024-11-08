@@ -744,8 +744,8 @@ public class WarehouseOrderDAO {
                 // Populate ProductDetail fields using setters
                 productDetail.setProductDetailID(rs.getInt("productDetailID"));
                 productDetail.setStock(rs.getInt("stock"));
-                productDetail.setImportPrice(rs.getDouble("importPrice"));
-                productDetail.setSoldPrice(rs.getDouble("soldPrice"));
+                productDetail.setImportPrice(rs.getDouble("avgImportPrice"));
+                productDetail.setSoldPrice(rs.getDouble("baseSoldPrice"));
                 productDetail.setManufactureDate(rs.getDate("manufactureDate"));
                 productDetail.setExpiredDate(rs.getDate("expiredDate"));
                 productDetail.setIsActive(rs.getBoolean("isActive"));
@@ -781,23 +781,48 @@ public class WarehouseOrderDAO {
                          """;
             PreparedStatement st = con.prepareStatement(sql);
             st.setInt(1, productDetailID);
-            st.setInt(2, productDetailID);
+            st.setInt(2, orderDetailID);
             st.executeUpdate();
+            
+            System.out.println("Stock updated");
         }catch(SQLException e){
             System.out.println(e);
         }
     }
+    
+    public void completeOrder(int orderID){
+         try {
+            // SQL query to select the order details for the given order
+            String sql = """
+             UPDATE [order]
+             SET statusID = ?
+             WHERE orderID = ?
+             """;
+
+            PreparedStatement statement = con.prepareStatement(sql);
+            statement.setInt(1, completedStatus);
+            statement.setInt(2, orderID); // Set the order ID in the query
+            statement.executeUpdate();
+
+            // Populating the order with its details
+        } catch (SQLException e) {
+            System.out.println("Error inserting order detail: " + e.getMessage());
+        }
+    }
         
     public static void main(String[] args) {
-        INSTANCE.loadDB();
+//        INSTANCE.loadDB();
 //        ArrayList list = INSTANCE.getOrder(1, false, "orderDate", "", 0);
 //        for (Object object : list) {
 //            System.out.println(object);
 //        }
 
 
-        OrderDetail ob = INSTANCE.findOrderDetailBaseOnId(1);
-        System.out.println(ob);
+//        OrderDetail ob = INSTANCE.findOrderDetailBaseOnId(1);
+
+        ArrayList ob = INSTANCE.findProductDetailBaseOnUnit(4);
+        INSTANCE.chooseStock(7, 6);
+        System.out.println("A");
     }
 
 }

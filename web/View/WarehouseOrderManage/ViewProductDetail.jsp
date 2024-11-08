@@ -9,24 +9,6 @@
         <link rel="stylesheet" href="${pageContext.request.contextPath}/CSS/OrderCSS/OrderDetailCSS.css"> 
         <link rel="stylesheet" href="${pageContext.request.contextPath}/CSS/style.css">
 
-        <script>
-            function validateStock(button) {
-                // Retrieve values from data attributes
-                const quantity = parseFloat(button.dataset.quantity);
-                const unitToBaseConvertRate = parseFloat(button.dataset.unitToBaseConvertRate);
-                const stock = parseFloat(button.dataset.stock);
-
-                // Calculate the total required stock
-                const requiredStock = quantity * unitToBaseConvertRate;
-
-                // Validate if the stock is sufficient
-                if (requiredStock >= stock) {
-                    alert("Insufficient stock! Please choose a stock that meets the requirements.");
-                    return false; // Prevent form submission
-                }
-                return true; // Allow form submission
-            }
-        </script>
     </head>
     <body>
         <div class="text-box">
@@ -34,6 +16,9 @@
             <div class="logout">
                 <a href="${pageContext.request.contextPath}/logout">
                     <button>Logout</button>
+                </a>
+                <a href="${pageContext.request.contextPath}/View/Login_Register/warehouseHome.jsp">
+                    <button>Management Menu</button>
                 </a>
             </div>
         </div>
@@ -50,9 +35,11 @@
                     <div class="detail-row"><span>Component Description:</span> ${orderDetail.product.componentDescription}</div>
                     <div class="detail-row"><span>Product Description:</span> ${orderDetail.product.description}</div>
                     <div class="detail-row"><span>Product Unit:</span> ${orderDetail.unit.productUnitName}</div>
+                    <div class="detail-row"><span>Product Unit Convertion Rate:</span> ${orderDetail.unit.unitToBaseConvertRate}</div>
                     <div class="detail-row"><span>Quantity:</span> ${orderDetail.quantity}</div>
                     <div class="detail-row"><span>Sold Price per Unit:</span> ${orderDetail.soldPrice}</div>
                     <div class="detail-row"><span>Total Product Price:</span> ${orderDetail.totalProductPrice}</div>
+                    <div class="detail-row"><span>Current BatchNo:</span> ${orderDetail.productDetail.batchNo}</div>
                     <br/><br/>
 
                     <div class="container">
@@ -87,8 +74,8 @@
                                                                 class="approve-btn"
                                                                 data-quantity="${orderDetail.quantity}" 
                                                                 data-unitToBaseConvertRate="${orderDetail.unit.unitToBaseConvertRate}" 
-                                                                data-stock="${productDetail.stock}"
-                                                                onclick="return validateStock(this)">Choose Stock</button>
+                                                                data-stock="${productDetail.stock}">Choose Stock</button>
+
                                                     </form>
                                                 </c:if>
                                             </td>
@@ -105,5 +92,56 @@
                         <button type="submit" class="back-btn">Back to List</button>
                     </form>
                 </div>
+                <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        function validateStock(button) {
+            // Retrieve values from data attributes and log them
+            const quantity = parseFloat(button.getAttribute("data-quantity"));
+            const unitToBaseConvertRate = parseFloat(button.getAttribute("data-unitToBaseConvertRate"));
+            const stock = parseFloat(button.getAttribute("data-stock"));
+
+            console.log("Button clicked:", button);
+            console.log("Parsed Quantity:", quantity);
+            console.log("Parsed Unit to Base Convert Rate:", unitToBaseConvertRate);
+            console.log("Parsed Stock:", stock);
+
+            // Check if any value is NaN
+            if (isNaN(quantity) || isNaN(unitToBaseConvertRate) || isNaN(stock)) {
+                console.error("One or more values are NaN.");
+                alert("Error: Invalid data attributes.");
+                return false;
+            }
+
+            // Calculate the total required stock
+            const requiredStock = quantity * unitToBaseConvertRate;
+            console.log("Required Stock:", requiredStock);
+
+            // Validate if the stock is sufficient
+            if (requiredStock > stock) {
+                alert("Insufficient stock! Please choose a stock that meets the requirements.");
+                return false;
+            }
+
+            return true;
+        }
+
+        // Attach click event listeners to all approve buttons
+        const approveButtons = document.querySelectorAll(".approve-btn");
+        if (approveButtons.length === 0) {
+            console.warn("No approve buttons found.");
+        }
+
+        approveButtons.forEach(button => {
+            button.addEventListener("click", function (event) {
+                console.log("Approve button clicked.");
+                if (!validateStock(button)) {
+                    event.preventDefault(); // Prevent form submission if validation fails
+                }
+            });
+        });
+    });
+                </script>
+
+
                 </body>
-                </html>
+        </html>

@@ -57,58 +57,70 @@ public class DeliverOrder extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        try{
-            WarehouseOrderDAO db = WarehouseOrderDAO.INSTANCE;
-            int orderID = Integer.parseInt(request.getParameter("orderID"));
-            
-            response.setContentType("text/html");
-            PrintWriter out = response.getWriter();
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out = response.getWriter();
 
-            Order order = db.getOrder(orderID);
-            
-            boolean hasError = false;
-            StringBuilder errMsg = new StringBuilder();
-            
-            if (order.getOrderDetail().isEmpty() || order.getOrderDetail() == null) {
-                hasError = true;
-                errMsg.append("Order Detail is Empty");
+        try {
+            WarehouseOrderDAO db = WarehouseOrderDAO.INSTANCE;
+            int orderID;
+            try {
+                orderID = Integer.parseInt(request.getParameter("orderID"));
+            } catch (NumberFormatException e) {
+                request.setAttribute("err", "Invalid Order ID.");
+                request.getRequestDispatcher("/View/ErrorPage.jsp").forward(request, response);
+                return;
             }
 
-            for (OrderDetail orderDetail : order.getOrderDetail()) {
-                if (orderDetail.getProductDetail() == null) {
-                    hasError = true;
-                    errMsg.append("Please choose stock for all product in the Order. ");
-                } else if (orderDetail.getProductDetail() != null && (orderDetail.getQuantity() * orderDetail.getUnit().getUnitToBaseConvertRate()) > orderDetail.getProductDetail().getStock()) {
-                    hasError = true;
-                    errMsg.append("Product's stock is not enough to deliver order.");              
-                } else {
-                    System.out.println("No err detected");
-                    db.deliverOrder(order);
-                    
-                    out.println("<script type=\"text/javascript\">");
-                    out.println("alert('Order Delivering');");
-                    out.println("window.location.href = 'ApprovedOrderList';");  // Redirect after the alert
-                    out.println("</script>");
+            Order order = db.getOrder(orderID);
+            boolean hasError = false;
+            StringBuilder errMsg = new StringBuilder();
+
+            // Null check for Order Detail list
+            if (order == null || order.getOrderDetail() == null || order.getOrderDetail().isEmpty()) {
+                hasError = true;
+                errMsg.append("Order Detail is Empty. ");
+            } else {
+                for (OrderDetail orderDetail : order.getOrderDetail()) {
+                    // Stock validation
+                    if (orderDetail.getProductDetail().getProductDetailID() == 0) {
+                        hasError = true;
+                        errMsg.append("Please choose stock for all products in the Order. ");
+                        break;
+                    } else if ((orderDetail.getQuantity() * orderDetail.getUnit().getUnitToBaseConvertRate())
+                            > orderDetail.getProductDetail().getStock()) {
+                        hasError = true;
+                        errMsg.append("Product's stock is not enough to deliver the order. ");
+                        break;
+                    }
                 }
             }
 
+            // If errors were detected, set error message and redirect
             if (hasError) {
-                String errorMsg = errMsg.toString();
-                request.setAttribute("err", errorMsg);
-                System.out.println("Error message set: " + errorMsg);
+                request.setAttribute("err", errMsg.toString());
+                request.getRequestDispatcher("/View/WarehouseOrderManage/ApprovedOrderDetail.jsp").forward(request, response);
+                return;
             }
 
+            // Deliver order if no errors
+            db.deliverOrder(order);
+            out.println("<script type=\"text/javascript\">");
+            out.println("alert('Order Delivering');");
+            out.println("window.location.href = 'ApprovedOrderList';");
+            out.println("</script>");
 
-            request.setAttribute("order", db.getOrder(orderID));
-            request.getRequestDispatcher("/View/WarehouseOrderManage/ApprovedOrderDetail.jsp").forward(request, response);
         } catch (Exception e) {
-            System.out.println(e);
+            // Log exception using proper logging
+            e.printStackTrace();
+            request.setAttribute("err", "An unexpected error occurred.");
+            request.getRequestDispatcher("/View/ErrorPage.jsp").forward(request, response);
         }
     }
 
-    /** 
+    /**
      * Handles the HTTP <code>POST</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs

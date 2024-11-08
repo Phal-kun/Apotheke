@@ -16,6 +16,9 @@
                 <a href="${pageContext.request.contextPath}/logout">
                     <button>Logout</button>
                 </a>
+                <a href="${pageContext.request.contextPath}/View/Login_Register/warehouseHome.jsp">
+                    <button>Management Menu</button>
+                </a>
             </div>
         </div>
 

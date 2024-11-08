@@ -5,6 +5,9 @@
 
 package Controller.WarehouseOrderManage;
 
+import DAL.WarehouseOrderDAO;
+import Model.Order.Order;
+import Model.Order.OrderDetail;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -55,7 +58,43 @@ public class CompleteOrder extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+        response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+
+        try {
+            WarehouseOrderDAO db = WarehouseOrderDAO.INSTANCE;
+            int orderID;
+            try {
+                orderID = Integer.parseInt(request.getParameter("orderID"));
+            } catch (NumberFormatException e) {
+                request.setAttribute("err", "Invalid Order ID.");
+                request.getRequestDispatcher("/View/ErrorPage.jsp").forward(request, response);
+                return;
+            }
+
+            Order order = db.getOrder(orderID);
+            boolean hasError = false;
+            StringBuilder errMsg = new StringBuilder();
+
+            // If errors were detected, set error message and redirect
+            if (hasError) {
+                request.setAttribute("err", errMsg.toString());
+                request.getRequestDispatcher("/View/WarehouseOrderManage/ApprovedOrderDetail.jsp").forward(request, response);
+                return;
+            }
+
+            db.completeOrder(orderID);
+            out.println("<script type=\"text/javascript\">");
+            out.println("alert('Order Completed!!!');");
+            out.println("window.location.href = 'ApprovedOrderList';");
+            out.println("</script>");
+
+        } catch (Exception e) {
+            // Log exception using proper logging
+            e.printStackTrace();
+            request.setAttribute("err", "An unexpected error occurred.");
+            request.getRequestDispatcher("/View/ErrorPage.jsp").forward(request, response);
+        }
     } 
 
     /** 

@@ -15,6 +15,9 @@
                 <a href="${pageContext.request.contextPath}/logout">
                     <button>Logout</button>
                 </a>
+                <a href="${pageContext.request.contextPath}/View/Login_Register/warehouseHome.jsp">
+                    <button>Management Menu</button>
+                </a>
             </div>
         </div>
 
@@ -76,7 +79,7 @@
                                 <td>${orderDetail.productDetail.batchNo != null ? orderDetail.productDetail.batchNo : 'N/A'}<td>
                                 <td>                                 
                                     <form action="${pageContext.request.contextPath}/ProductDetailList" method="get" class="input-tab">
-                                        <input type="hidden" name="unitID" value="${orderDetail.orderDetailID}">
+                                        <input type="hidden" name="orderDetailID" value="${orderDetail.orderDetailID}">
                                         <input type="hidden" name="orderStatusID" value="${order.status.statusID}">
                                         <button type="submit" class="approve-btn">View Product Detail</button>
                                     </form>
@@ -100,6 +103,16 @@
                         <button type="submit" class="approve-btn">Deliver Order</button>
                     </form>
                 </c:if>
+                        
+                <c:if test="${order.status.statusID == 3}">
+                    <c:if test="${not empty err}">
+                        <p style="color:red;">${err}</p>
+                    </c:if>
+                    <form action="${pageContext.request.contextPath}/CompleteOrder" method="get" class="input-tab">
+                        <input type="hidden" name="orderID" value="${order.orderID}">
+                        <button type="submit" class="approve-btn">Complete Order</button>
+                    </form>
+                </c:if>                      
 
                 <!-- Main Page Form -->
                 <form id="rejectForm" action="${pageContext.request.contextPath}/RejectOrder" method="get" class="input-tab">

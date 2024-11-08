@@ -6,6 +6,7 @@
 package Controller.WarehouseOrderManage;
 
 import DAL.WarehouseOrderDAO;
+import Model.Order.Order;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -59,7 +60,11 @@ public class ApprovedOrderDetail extends HttpServlet {
         WarehouseOrderDAO db = WarehouseOrderDAO.INSTANCE;
         int orderID = Integer.parseInt(request.getParameter("orderID"));
 
-        request.setAttribute("order", db.getOrder(orderID));
+        Order order = db.getOrder(orderID);
+        request.getSession().setAttribute("order", order);
+        order = db.getOrder(order.getOrderID());
+        request.setAttribute("order", order);
+        
         
         request.getRequestDispatcher("/View/WarehouseOrderManage/ApprovedOrderDetail.jsp").forward(request, response);
     } 
