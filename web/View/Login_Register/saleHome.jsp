@@ -15,7 +15,7 @@
         <c:if test="${not empty sessionScope.account}">
             
                 <c:if test="${sessionScope.account.role.roleID == 3}">
-                    <h1>Welcome Customer</h1>
+                    <h1>Welcome Sale Member</h1>
                     <a href="${pageContext.request.contextPath}/logout">
                         <button>Logout</button>
                     </a>

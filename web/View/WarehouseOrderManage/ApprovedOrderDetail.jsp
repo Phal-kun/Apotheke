@@ -23,7 +23,14 @@
                 <div class="section-title" style="font-weight: bold">Order Information</div><br/>
                 <div class="detail-row"><span>Order ID:</span> ${order.orderID}</div>
                 <div class="detail-row"><span>Order Date:</span> ${order.orderDate}</div>
-                <div class="detail-row"><span>Order Completed:</span> ${order.orderCompleted}</div>
+                <c:choose>
+                    <c:when test="${order.status.statusID == 5}">
+                        <div class="detail-row"><span>Order Completed:</span> ${order.orderCompleted}</div>
+                    </c:when>
+                    <c:otherwise>
+                        <div class="detail-row"><span>Order Completed:</span> N/A</div>
+                    </c:otherwise>
+                </c:choose>
                 <div class="detail-row"><span>Total Price:</span> $${order.totalPrice}</div>
                 <div class="detail-row"><span>Order Status:</span> ${order.status.statusName}</div>
                 <div class="detail-row"><span>Reject Reason:</span> ${order.rejectReason != null ? order.rejectReason : 'N/A'}</div>
@@ -54,6 +61,7 @@
                             <th>Total Product Price</th>
                             <th>Manufacturer</th>
                             <th>Batch No.</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -65,7 +73,13 @@
                                 <td>${orderDetail.soldPrice}</td>
                                 <td>${orderDetail.totalProductPrice}</td>
                                 <td>${orderDetail.product.manufacturer}</td>
-                                <td>${orderDetail.productDetail.batchNo}</td>
+                                <td>${orderDetail.productDetail.batchNo != null ? orderDetail.productDetail.batchNo : 'N/A'}<td>
+                                <td>
+                                    <form action="${pageContext.request.contextPath}/ProductDetailList" method="get" class="input-tab">
+                                        <input type="hidden" name="unitID" value="${orderDetail.unit.productUnitID}">
+                                        <button type="submit" class="approve-btn">View Product Detail</button>
+                                    </form>
+                                </td>
                             </tr>
                         </c:forEach>
                     </tbody>
@@ -75,21 +89,22 @@
 
         <div class="container">
             <div class="section-title">Actions</div>
-            <c:if test="${order.status.statusID == 1}">
-                <form action="${pageContext.request.contextPath}/CRUDOrderApprove" method="get" class="input-tab">
-                    <input type="hidden" name="orderID" value="${order.orderID}">
-                    <button type="submit" class="approve-btn">Approve Order</button>
-                </form>
+            <c:if test="${order.status.statusID == 2 || order.status.statusID == 3}">
+                <c:if test="${order.status.statusID == 2}">
+                    <form action="${pageContext.request.contextPath}/DeliverOrder" method="get" class="input-tab">
+                        <input type="hidden" name="orderID" value="${order.orderID}">
+                        <button type="submit" class="approve-btn">Deliver Order</button>
+                    </form>
+                </c:if>
 
                 <!-- Main Page Form -->
-                <form id="rejectForm" action="${pageContext.request.contextPath}/CRUDOrderReject" method="get" class="input-tab">
+                <form id="rejectForm" action="${pageContext.request.contextPath}/RejectOrder" method="get" class="input-tab">
                     <input type="hidden" name="orderID" value="${order.orderID}">
                     <input type="hidden" name="rejectReason" id="rejectReasonInput"> <!-- Hidden field to hold the reject reason -->
                     <button type="button" class="reject-btn" onclick="openRejectModal()">Reject Order</button> <!-- Trigger modal -->
                 </form>
             </c:if>
-
-            <form action="${pageContext.request.contextPath}/CRUDOrderList" method="get" class="input-tab">
+            <form action="${pageContext.request.contextPath}/ApprovedOrderList" method="get" class="input-tab">
                 <button type="submit" class="back-btn">Back to List</button>
             </form>
         </div>
@@ -103,6 +118,7 @@
                 <button type="button" class="reject-submit-btn" onclick="submitRejectForm()">Submit</button>
             </div>
         </div>
+
 
 
         <!-- JavaScript for Modal and Form Submission -->

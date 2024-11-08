@@ -168,7 +168,7 @@ public class showProductDAO extends DBContext {
                     productUnit.setProductUnitID(rs.getInt("unitID"));
                     productUnit.setProductUnitName("");
                     productUnit.setUnitToBaseConvertRate(0);
-            
+
                     productDetail.setUnit(productUnit);
                     
                     productDetail.setStock(0);

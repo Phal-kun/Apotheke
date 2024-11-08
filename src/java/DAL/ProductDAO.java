@@ -20,19 +20,19 @@ import java.util.HashMap;
  * @author Admin
  */
 public class ProductDAO {
-
+    
     public static ProductDAO INSTANCE = new ProductDAO();
     private Connection con;
     private String status = "OK";
-
-    public ProductDAO() {
+    
+    private ProductDAO() {
         if (INSTANCE == null) {
             con = new DBContext().connect;
         } else {
             INSTANCE = this;
         }
     }
-    
+
     //fetch data from origin table
     public ArrayList<Origin> loadOriginList() {
         System.out.println("Load origin list");
@@ -52,13 +52,13 @@ public class ProductDAO {
         }
         return originList;
     }
-    
+
     //fetch data from category table
     public ArrayList<Category> loadCategoryList() {
         System.out.println("Load category list");
         String sql = "select * from [Category]";
         ArrayList<Category> categoryList = new ArrayList<Category>();
-
+        
         try {
             PreparedStatement ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
@@ -72,21 +72,21 @@ public class ProductDAO {
                 int parentCategoryID = rs.getInt("ParentCategoryID"); // Might be NULL
                 String categoryName = rs.getString("CategoryName");
                 String description = rs.getString("Description");
-
+                
                 Category parentCategory = null; // Default to null if no parent
 
                 // If parentCategoryID is not null, find or delay setting it
                 if (parentCategoryID != 0) {
                     parentCategory = categoryMap.get(parentCategoryID); // Retrieve from map or add later
                 }
-
+                
                 Category category = new Category(categoryID, parentCategory, categoryName, description);
                 categoryList.add(category);
 
                 // Store this category in the map for later reference by its children
                 categoryMap.put(categoryID, category);
             }
-
+            
             rs.close();
         } catch (Exception e) {
             status = "Error at reading Category: " + e.getMessage();
@@ -94,8 +94,8 @@ public class ProductDAO {
         return categoryList;
     }
     
-    public ArrayList<Product> loadProductList(){
-         System.out.println("Loading product list...");
+    public ArrayList<Product> loadProductList() {
+        System.out.println("Loading product list...");
 
         // SQL to get product, category, origin, manufacturer, and form data
         String sql = "SELECT p.productID, p.productName, p.Description, p.isActive, p.manufacturer, "
@@ -117,13 +117,13 @@ public class ProductDAO {
                 + "FROM [productUnit] u "
                 + "JOIN [product] p ON u.productID = p.productID "
                 + "WHERE u.productID = ?";
-
+        
         ArrayList<Product> productList = new ArrayList<>();
-
+        
         try {
             PreparedStatement psProduct = con.prepareStatement(sql);
             ResultSet rsProduct = psProduct.executeQuery();
-
+            
             while (rsProduct.next()) {
                 // Get product data
                 int productID = rsProduct.getInt("productID");
@@ -146,8 +146,9 @@ public class ProductDAO {
                 ArrayList<Component> componentList = new ArrayList<>();
                 PreparedStatement psComponentProduct = con.prepareStatement(sqlComponentProduct);
                 psComponentProduct.setInt(1, productID);
+                
                 ResultSet rsComponentProduct = psComponentProduct.executeQuery();
-
+                
                 while (rsComponentProduct.next()) {
                     String componentName = rsComponentProduct.getString("componentName");
                     String componentMeasureUnit = rsComponentProduct.getString("componentUnit");
@@ -166,7 +167,7 @@ public class ProductDAO {
                     int unitID = rsUnit.getInt("unitID");
                     String unitName = rsUnit.getString("unitName");
                     int convertRate = (int) Math.floor(rsUnit.getDouble("unitToBaseConvertRate"));
-                    if (convertRate==1){
+                    if (convertRate == 1) {
                         baseUnit = new ProductUnit(unitID, unitName, convertRate);
                     }
                     unitList.add(new ProductUnit(unitID, unitName, convertRate));
@@ -180,14 +181,14 @@ public class ProductDAO {
         } catch (Exception e) {
             System.out.println("Error loading product list: " + e.getMessage());
         }
-
+        
         return productList;
     }
-    
+
     //insert new product using procedure
     public void insertProduct(int productID, String productName, int categoryID, int originID, String manufacturer, String description, String componentDescription, String unitString, String componentString) {
         String sql = "{call InsertProduct(?, ?, ?, ?, ?, ?, ?, ?, ?)}";
-
+        
         try (CallableStatement stmt = con.prepareCall(sql)) {
             stmt.setInt(1, productID);
             stmt.setString(2, productName);
@@ -198,9 +199,11 @@ public class ProductDAO {
             stmt.setString(7, componentDescription); // Can be NULL or a valid string
             stmt.setString(8, unitString); // Your unit string
             stmt.setString(9, componentString); // Your component string
-
             stmt.execute();
             System.out.println("Product inserted successfully!");
+            
+//            insertBaseUnit(productID, baseUnitName);
+            
         } catch (SQLServerException ex) {
             System.err.println("SQL Error: " + ex.getMessage());
         } catch (SQLException ex) {
@@ -212,10 +215,42 @@ public class ProductDAO {
         }
     }
 
-        public void importProduct(int productID, double importPrice, int batchNo, int quantity, Date manufacturedDate, Date expiredDate, double price) throws SQLException {
+    private void insertBaseUnit(int productID, String baseUnitName) {
+        String selectSql = "SELECT * FROM productUnit WHERE productID = ? AND unitName = ?";
+
+        try (PreparedStatement statement = con.prepareStatement(selectSql)) {
+            statement.setInt(1, productID);
+            statement.setString(2, baseUnitName);
+            try (ResultSet rs = statement.executeQuery()) {
+                if (rs.next()) {
+                    int baseUnitID = rs.getInt("unitID");
+                    updateBaseUnitID(productID, baseUnitID);
+                } else {
+                    System.out.println("Base unit not found for product.");
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error retrieving base unit: " + e.getMessage());
+        }
+    }
+
+    private void updateBaseUnitID(int productID, int baseUnitID) {
+        String updateSql = "UPDATE product SET baseUnitID = ? WHERE productID = ?";
+
+        try (PreparedStatement updateStatement = con.prepareStatement(updateSql)) {
+            updateStatement.setInt(1, baseUnitID);
+            updateStatement.setInt(2, productID);
+            updateStatement.executeUpdate();
+            System.out.println("Base Unit updated successfully.");
+        } catch (SQLException e) {
+            System.err.println("Error updating base unit ID: " + e.getMessage());
+        }
+    }
+
+    public void importProduct(int productID, double importPrice, int batchNo, int quantity, Date manufacturedDate, Date expiredDate, double price) throws SQLException {
         // Assuming the stored procedure is called 'importProduct'
         String sql = "{CALL importProduct(?, ?, ?, ?, ?, ?, ?)}";
-
+        
         try (CallableStatement callableStatement = con.prepareCall(sql)) {
             // Set the input parameters for the stored procedure
             callableStatement.setInt(1, productID);
@@ -226,16 +261,49 @@ public class ProductDAO {
             callableStatement.setDate(6, expiredDate);
             callableStatement.setDouble(7, price);
 
-
             // Execute the stored procedure
             callableStatement.execute();
         }
     }
     
+    public Product findProductByID(int productID){
+        ArrayList<Product> productList = INSTANCE.loadProductList();
+        Product searchProduct = null;
+        for (Product product : productList) {
+            if(productID == product.getProductID()){
+                searchProduct = product;
+            } 
+        }
+        return searchProduct;
+    }
+    
+    public boolean isExist(int productID){
+        try (CallableStatement statement = con.prepareCall("{ ? = CALL CheckProductExists(?) }")){      
+            statement.registerOutParameter(1, Types.BIT);
+            statement.setInt(2, productID);
+            statement.execute();
+            
+            boolean productExists = statement.getBoolean(1);
+            
+            if (productExists) {
+                System.out.println("Product with ID " + productID + " exists.");
+            } else {
+                System.out.println("Product with ID " + productID + " does not exist.");
+            }
+            
+            return productExists;
+        } catch (SQLException e){
+            System.out.println(e);
+            return false;
+        }      
+    }
+
+    
+   
     public static void main(String[] args) {
         insertProductTest();
     }
-
+    
     static void insertProductTest() {
 //        int productID = 1;
 //        String productName = "Test Product";
@@ -248,6 +316,7 @@ public class ProductDAO {
 //        String componentString = "Salicylic Acid, 500, mg; Buffering Agent, 100, mg"; // List of components
 //        ProductDAO.INSTANCE.insertProduct(productID, productName, categoryID, originID, manufacturer, description, componentDescription, unitString, componentString);
 //        
-        System.out.println(ProductDAO.INSTANCE.loadProductList());
+
+        System.out.println(ProductDAO.INSTANCE.findProductByID(1234));
     }
 }

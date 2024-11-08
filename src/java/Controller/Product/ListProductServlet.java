@@ -60,8 +60,7 @@ public class ListProductServlet extends HttpServlet {
         ArrayList<Product> productList = ProductDAO.INSTANCE.loadProductList();
         request.setAttribute("productList", productList);
         
-        RequestDispatcher rd = request.getRequestDispatcher("View/ProductManage/ListProduct.jsp");
-        rd.forward(request, response);
+        request.getRequestDispatcher("View/ProductManage/ListProduct.jsp").forward(request, response);
     } 
 
     /** 

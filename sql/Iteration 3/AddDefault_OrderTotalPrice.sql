@@ -1,0 +1,2 @@
+ALTER TABLE [Order]
+ADD CONSTRAINT DF_TotalPrice DEFAULT 0 FOR totalPrice;

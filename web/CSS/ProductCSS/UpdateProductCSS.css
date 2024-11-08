@@ -1,0 +1,169 @@
+@import url('https://fonts.googleapis.com/css?family=Abel');
+
+body, html {
+    color: #fff;
+    font-family: 'Abel', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: transparent;
+}
+
+body {
+    font-size: 1.2em;
+    background-size: cover;
+}
+
+.text-box {
+    background-color: rgba(230, 126, 34, 0.8);
+    border-radius: 20px;
+    margin: 2em auto;
+    padding: 20px;
+    width: 90%;
+    max-width: 1200px; /* Set a max width for larger screens */
+}
+
+h1 {
+    margin: 0;
+    font-size: 2.8em;
+    color: #fff;
+    text-align: center;
+    letter-spacing: 2px;
+    font-weight: bold;
+}
+
+p {
+    text-align: center;
+    font-size: 1.2em;
+}
+
+.container {
+    background-color: rgba(22, 160, 133, 0.7);
+    border-radius: 20px;
+    margin: auto;
+    padding: 1em;
+    width: 90%;
+    max-width: 1200px; /* Set a max width for larger screens */
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+#product-form {
+    margin: 0 auto;
+    width: 80%;
+    padding: 10px;
+}
+
+.labels, .input-tab {
+    display: flex;
+    flex-direction: column;
+    width: 100%; /* Full width for mobile */
+    max-width: 600px; /* Restrict width on larger screens */
+}
+
+.form-group {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    width: 100%;
+}
+
+.input-field {
+    width: 100%;
+    padding: 5px;
+    margin-top: 10px;
+    border: 1px solid #e67e22;
+    border-radius: 4px;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+#dropdown {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #e67e22;
+    border-radius: 3px;
+    font-size: 15px;
+}
+
+button {
+    background-color: #e67e22;
+    border-radius: 4px;
+    color: white;
+    font-size: 1em;
+    font-weight: bold;
+    padding: 10px 15px;
+    border: 1px solid;
+    width: 100%;
+    max-width: 200px; /* Limit width for larger screens */
+    margin: 10px auto;
+}
+
+button:hover {
+    background-color: #bf6516;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+thead th {
+    background-color: #2e7ba6;
+    color: #fff;
+    border: 2px solid #1a4f73;
+    padding: 10px;
+    text-align: center;
+}
+
+tbody td {
+    padding: 10px;
+    text-align: center;
+    border: 2px solid #1a4f73;
+}
+
+#component-table, #product-table {
+    background-color: rgba(30, 30, 30, 0.9);
+    border: 2px solid #ffffff;
+    width: 100%;
+}
+
+/* Extra alignment for labels and inputs */
+.labels, .input-tab {
+    width: 100%; /* Full width to align correctly */
+}
+
+#product-form button[type="button"] {
+    margin: 10px 0;
+}
+
+#component-table, #unit-table {
+    margin-top: 10px;
+}
+
+.btn, .back-btn {
+    text-align: center;
+    margin-top: 15px;
+}
+
+
+@media only screen and (max-width: 768px) {
+    h1 {
+        font-size: 2em;
+    }
+
+    .container, #product-form {
+        width: 100%;
+        margin: 0;
+    }
+
+    .form-group {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .btn, .back-btn {
+        width: 100%;
+        margin: auto;
+    }
+}

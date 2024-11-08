@@ -3,12 +3,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
-package Controller.Category;
+package Controller.UserProfileManage;
 
-import Controller.Blog.*;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -17,7 +17,8 @@ import jakarta.servlet.http.HttpServletResponse;
  *
  * @author ASUS
  */
-public class DefaultServlet extends HttpServlet {
+@WebServlet(name="OrderDetail", urlPatterns={"/OrderDetail"})
+public class OrderDetail extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -34,10 +35,10 @@ public class DefaultServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet DefaultServlet</title>");  
+            out.println("<title>Servlet OrderDetail</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet DefaultServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet OrderDetail at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }

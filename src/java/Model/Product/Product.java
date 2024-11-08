@@ -28,12 +28,15 @@ public class Product {
     public Product() {
     }
     
-    public Product(int productID, String productName, Category category, Origin origin, String manufacturer,String description, ArrayList<Component> component, boolean isActive, String product_image) {
+
+    public Product(int productID, String productName, Category category, Origin origin, String manufacturer,  String description, ArrayList<Component> component, boolean isActive, String product_image) {
+
         this.productID = productID;
         this.productName = productName;
         this.category = category;
         this.origin = origin;
         this.manufacturer = manufacturer;
+
         this.description = description;
         this.component = component;
         this.isActive = isActive;
@@ -52,14 +55,6 @@ public class Product {
         this.unit = unit;
         this.component = component;
         this.isActive = isActive;
-    }
-
-    public ProductUnit getBaseUnit() {
-        return baseUnit;
-    }
-
-    public void setBaseUnit(ProductUnit baseUnit) {
-        this.baseUnit = baseUnit;
     }
 
     public int getProductID() {
@@ -102,6 +97,14 @@ public class Product {
         this.manufacturer = manufacturer;
     }
 
+    public String getComponentDescription() {
+        return componentDescription;
+    }
+
+    public void setComponentDescription(String componentDescription) {
+        this.componentDescription = componentDescription;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -110,11 +113,27 @@ public class Product {
         this.description = description;
     }
 
-    public ArrayList getComponent() {
+    public ProductUnit getBaseUnit() {
+        return baseUnit;
+    }
+
+    public void setBaseUnit(ProductUnit baseUnit) {
+        this.baseUnit = baseUnit;
+    }
+
+    public ArrayList<ProductUnit> getUnit() {
+        return unit;
+    }
+
+    public void setUnit(ArrayList<ProductUnit> unit) {
+        this.unit = unit;
+    }
+
+    public ArrayList<Component> getComponent() {
         return component;
     }
 
-    public void setComponent(ArrayList component) {
+    public void setComponent(ArrayList<Component> component) {
         this.component = component;
     }
 
@@ -125,6 +144,10 @@ public class Product {
     public void setIsActive(boolean isActive) {
         this.isActive = isActive;
     }
+
+    
+    
+    
 
     @Override
     public int hashCode() {
