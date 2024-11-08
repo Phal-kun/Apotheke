@@ -74,9 +74,10 @@
                                 <td>${orderDetail.totalProductPrice}</td>
                                 <td>${orderDetail.product.manufacturer}</td>
                                 <td>${orderDetail.productDetail.batchNo != null ? orderDetail.productDetail.batchNo : 'N/A'}<td>
-                                <td>
+                                <td>                                 
                                     <form action="${pageContext.request.contextPath}/ProductDetailList" method="get" class="input-tab">
-                                        <input type="hidden" name="unitID" value="${orderDetail.unit.productUnitID}">
+                                        <input type="hidden" name="unitID" value="${orderDetail.orderDetailID}">
+                                        <input type="hidden" name="orderStatusID" value="${order.status.statusID}">
                                         <button type="submit" class="approve-btn">View Product Detail</button>
                                     </form>
                                 </td>
@@ -91,6 +92,9 @@
             <div class="section-title">Actions</div>
             <c:if test="${order.status.statusID == 2 || order.status.statusID == 3}">
                 <c:if test="${order.status.statusID == 2}">
+                    <c:if test="${not empty err}">
+                        <p style="color:red;">${err}</p>
+                    </c:if>
                     <form action="${pageContext.request.contextPath}/DeliverOrder" method="get" class="input-tab">
                         <input type="hidden" name="orderID" value="${order.orderID}">
                         <button type="submit" class="approve-btn">Deliver Order</button>

@@ -7,6 +7,8 @@ package DAL;
 import Model.Order.Order;
 import Model.Order.OrderDetail;
 import Model.Order.Status;
+import Model.Product.Category;
+import Model.Product.Origin;
 import Model.Product.Product;
 import Model.Product.ProductDetail;
 import Model.Product.ProductUnit;
@@ -205,7 +207,7 @@ public class WarehouseOrderDAO {
         return statusList;
     }
 
-    public Order getOrderDetail(int orderID) {
+    public Order getOrder(int orderID) {
         Order order = null;
         try {
             String sql = """
@@ -343,14 +345,21 @@ public class WarehouseOrderDAO {
             while (rs.next()) {
 
                 Product product = new Product();
+                product.setProductID(rs.getInt("productID"));
                 product.setProductName(rs.getString("productName"));
                 product.setManufacturer(rs.getString("manufacturer"));
+                product.setComponentDescription(rs.getString("componentDescription"));
+                product.setDescription(rs.getString("description"));
+                product.setIsActive(rs.getBoolean("isActive"));
 
                 ProductDetail productDetail = new ProductDetail();
+                productDetail.setProductDetailID(rs.getInt("productDetailID"));
                 productDetail.setBatchNo(rs.getInt("batchNo"));
 
                 ProductUnit productUnit = new ProductUnit();
+                productUnit.setProductUnitID(rs.getInt("unitID"));
                 productUnit.setProductUnitName(rs.getString("unitName"));
+                
 
                 OrderDetail orderDetail = new OrderDetail();
                 orderDetail.setOrderDetailID(rs.getInt("orderDetailID"));
@@ -403,9 +412,6 @@ public class WarehouseOrderDAO {
                     // Start a transaction
                     con.setAutoCommit(false);
 
-                    // Change order status to 'Delivered'
-                    changeToDeliverStatus(order.getOrderID());
-
                     // Loop through order details and reduce stock for each
                     String sql = "{CALL IncreaseStockBasedOnOrder(?)}";
 
@@ -440,7 +446,7 @@ public class WarehouseOrderDAO {
                         closeEx.printStackTrace();
                     }
                 }
-            }
+            } 
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -587,8 +593,8 @@ public class WarehouseOrderDAO {
                 product.setProductName(rs.getString("productName"));
                 product.setManufacturer(rs.getString("manufacturer"));
                 product.setComponentDescription(rs.getString("componentDescription"));
-                product.setDescription(rs.getString("productDescription"));
-                product.setIsActive(rs.getBoolean("productActive"));
+                product.setDescription(rs.getString("description"));
+                product.setIsActive(rs.getBoolean("isActive"));
 
                 // Set Product to ProductDetail
                 productDetail.setProduct(product);
@@ -612,7 +618,176 @@ public class WarehouseOrderDAO {
 
         return productDetailList;
     }
+    
+    public OrderDetail findOrderDetailBaseOnId(int orderDetailID){
+        OrderDetail orderDetail = new OrderDetail();
+        
+        try {
+            String sql = """
+                    SELECT 
+                         od.*,                  
+                         p.*,                 
+                         pu.unitName,            
+                         pu.unitToBaseConvertRate,
+                         o.originName,            
+                         c.categoryName,         
+                         c.description AS categoryDescription 
+                     FROM 
+                         orderDetail od
+                     JOIN 
+                         product p ON od.productID = p.productID
+                     JOIN 
+                         productUnit pu ON od.unitID = pu.unitID
+                     JOIN 
+                         origin o ON p.originID = o.originID
+                     JOIN 
+                         category c ON p.categoryID = c.categoryID
+                     WHERE 
+                         od.orderDetailID = ?;
+                     """;
 
+            PreparedStatement statement = con.prepareStatement(sql);
+            statement.setInt(1, orderDetailID); // Set the orderID parameter
+            ResultSet rs = statement.executeQuery();
+
+            orderDetail = toOrderDetail(rs);
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return orderDetail;
+    }
+    
+    private OrderDetail toOrderDetail(ResultSet rs){
+        OrderDetail orderDetail = new OrderDetail();
+        
+         try {
+            if (rs.next()) {
+
+                Product product = new Product();
+                product.setProductID(rs.getInt("productID"));
+                product.setProductName(rs.getString("productName"));
+                product.setManufacturer(rs.getString("manufacturer"));
+                product.setComponentDescription(rs.getString("componentDescription"));
+                product.setDescription(rs.getString("description"));
+                product.setIsActive(rs.getBoolean("isActive"));
+                
+                Category category = new Category();
+                category.setCategoryID(rs.getInt("categoryID"));
+                category.setCategoryName(rs.getString("categoryName"));
+                category.setDescription(rs.getString("categoryDescription"));
+                product.setCategory(category);
+                
+                Origin origin = new Origin();
+                origin.setOriginID(rs.getInt("originID"));
+                origin.setOriginName(rs.getString("originName"));
+                product.setOrigin(origin);
+                
+                orderDetail.setProduct(product);
+                
+                ProductUnit unit = new ProductUnit();
+                unit.setProductUnitID(rs.getInt("unitID"));
+                unit.setProductUnitName(rs.getString("unitName"));
+                unit.setUnitToBaseConvertRate(rs.getDouble("unitToBaseConvertRate"));
+                
+                orderDetail.setUnit(unit);
+                
+                orderDetail.setOrderDetailID(rs.getInt("orderDetailID"));
+                orderDetail.setSoldPrice(rs.getDouble("soldPrice"));
+                orderDetail.setQuantity(rs.getInt("quantity"));
+                orderDetail.setTotalProductPrice(rs.getDouble("totalProductPrice"));
+
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        
+        return orderDetail;
+    }
+    
+    public ArrayList<ProductDetail> findProductDetailBaseOnUnit(int unitID){
+        ArrayList<ProductDetail> productDetailList = new ArrayList<ProductDetail>();
+        
+        try {
+            String sql = """
+                    SELECT 
+                        pu.unitID,
+                        pu.productID,
+                        pu.unitName,
+                        pu.unitToBaseConvertRate,
+                        pd.productDetailID,
+                        pd.avgImportPrice,
+                        pd.stock,
+                        pd.baseSoldPrice,
+                        pd.batchNo,
+                        pd.manufactureDate,
+                        pd.expiredDate,
+                        pd.isActive
+                    FROM 
+                        productUnit pu
+                    JOIN 
+                        productDetail pd ON pu.unitID = pd.unitID
+                     WHERE 
+                         pu.unitID = ? AND pd.isActive = 1;
+                     """;
+
+            PreparedStatement statement = con.prepareStatement(sql);
+            statement.setInt(1, unitID); // Set the orderID parameter
+            ResultSet rs = statement.executeQuery();
+            
+            while (rs.next()) {
+
+                ProductDetail productDetail = new ProductDetail();
+
+                // Populate ProductDetail fields using setters
+                productDetail.setProductDetailID(rs.getInt("productDetailID"));
+                productDetail.setStock(rs.getInt("stock"));
+                productDetail.setImportPrice(rs.getDouble("importPrice"));
+                productDetail.setSoldPrice(rs.getDouble("soldPrice"));
+                productDetail.setManufactureDate(rs.getDate("manufactureDate"));
+                productDetail.setExpiredDate(rs.getDate("expiredDate"));
+                productDetail.setIsActive(rs.getBoolean("isActive"));
+                productDetail.setBatchNo(rs.getInt("batchNo"));
+
+
+                // Populate the associated ProductUnit using setters
+                ProductUnit unit = new ProductUnit();
+                unit.setProductUnitID(rs.getInt("unitID"));
+                unit.setProductUnitName(rs.getString("unitName"));
+                unit.setUnitToBaseConvertRate(rs.getDouble("unitToBaseConvertRate"));
+
+                // Set Unit to ProductDetail
+                productDetail.setUnit(unit);
+
+                productDetailList.add(productDetail);
+
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return productDetailList;
+    }
+    
+    public void chooseStock(int orderDetailID, int productDetailID){
+        try{
+            String sql = """
+                         UPDATE orderDetail
+                         SET productDetailID = ?
+                         WHERE orderDetailID = ?
+                         """;
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setInt(1, productDetailID);
+            st.setInt(2, productDetailID);
+            st.executeUpdate();
+        }catch(SQLException e){
+            System.out.println(e);
+        }
+    }
+        
     public static void main(String[] args) {
         INSTANCE.loadDB();
 //        ArrayList list = INSTANCE.getOrder(1, false, "orderDate", "", 0);
@@ -620,7 +795,9 @@ public class WarehouseOrderDAO {
 //            System.out.println(object);
 //        }
 
-        System.out.println(INSTANCE.getOrderDetail(1));
+
+        OrderDetail ob = INSTANCE.findOrderDetailBaseOnId(1);
+        System.out.println(ob);
     }
 
 }

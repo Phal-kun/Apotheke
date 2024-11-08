@@ -63,6 +63,8 @@ public class ApprovedOrderList extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        System.out.println("Go to listing");
+        
         WarehouseOrderDAO db = WarehouseOrderDAO.INSTANCE;
         HttpSession session = request.getSession();
         int indexNowCo = 1;

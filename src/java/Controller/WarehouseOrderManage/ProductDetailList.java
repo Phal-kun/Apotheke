@@ -5,7 +5,11 @@
 
 package Controller.WarehouseOrderManage;
 
+import DAL.ProductDAO;
 import DAL.WarehouseOrderDAO;
+import Model.Order.OrderDetail;
+import Model.Product.Product;
+import Model.Product.ProductDetail;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -59,12 +63,17 @@ public class ProductDetailList extends HttpServlet {
     throws ServletException, IOException {
         try{
             WarehouseOrderDAO db = WarehouseOrderDAO.INSTANCE;
-            int unitID = Integer.parseInt(request.getParameter("unitID"));
             
-            ArrayList productDetail = db.getProductDetailList(unitID);
+            int orderDetailID = Integer.parseInt(request.getParameter("orderDetailID"));
+            int orderStatusID = Integer.parseInt(request.getParameter("orderStatusID"));
             
-            request.setAttribute("productDetailList", productDetail);
+            OrderDetail orderDetail = db.findOrderDetailBaseOnId(orderDetailID);
+            ArrayList<ProductDetail> productDetailList = db.findProductDetailBaseOnUnit(orderDetail.getUnit().getProductUnitID());
             
+            request.setAttribute("orderDetail", orderDetail);
+            request.setAttribute("productDetailList", productDetailList);
+            request.getSession().setAttribute("orderStatusID", orderStatusID);
+                
             request.getRequestDispatcher("/View/WarehouseOrderManage/ViewProductDetail.jsp").forward(request, response);
             
 
@@ -83,7 +92,24 @@ public class ProductDetailList extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+        try{
+             int orderDetailID = Integer.parseInt(request.getParameter("orderDetailID"));
+             int productDetailID = Integer.parseInt(request.getParameter("productDetailID"));
+             
+             
+             WarehouseOrderDAO db = WarehouseOrderDAO.INSTANCE;
+             
+             db.chooseStock(orderDetailID, productDetailID);
+             OrderDetail orderDetail = db.findOrderDetailBaseOnId(orderDetailID);
+             ArrayList<ProductDetail> productDetailList = db.findProductDetailBaseOnUnit(orderDetail.getUnit().getProductUnitID());
+             request.setAttribute("orderDetail", orderDetail);
+            request.setAttribute("productDetailList", productDetailList);
+                
+            request.getRequestDispatcher("/View/WarehouseOrderManage/ViewProductDetail.jsp").forward(request, response);
+             
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
     /** 

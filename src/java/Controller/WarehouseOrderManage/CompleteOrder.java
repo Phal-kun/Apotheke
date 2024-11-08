@@ -5,9 +5,6 @@
 
 package Controller.WarehouseOrderManage;
 
-import DAL.WarehouseOrderDAO;
-import Model.Order.Order;
-import Model.Order.OrderDetail;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -20,8 +17,8 @@ import jakarta.servlet.http.HttpServletResponse;
  *
  * @author ASUS
  */
-@WebServlet(name="DeliverOrder", urlPatterns={"/DeliverOrder"})
-public class DeliverOrder extends HttpServlet {
+@WebServlet(name="CompleteOrder", urlPatterns={"/CompleteOrder"})
+public class CompleteOrder extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -38,10 +35,10 @@ public class DeliverOrder extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet DeliverOrder</title>");  
+            out.println("<title>Servlet CompleteOrder</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet DeliverOrder at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet CompleteOrder at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -58,54 +55,8 @@ public class DeliverOrder extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        try{
-            WarehouseOrderDAO db = WarehouseOrderDAO.INSTANCE;
-            int orderID = Integer.parseInt(request.getParameter("orderID"));
-            
-            response.setContentType("text/html");
-            PrintWriter out = response.getWriter();
-
-            Order order = db.getOrder(orderID);
-            
-            boolean hasError = false;
-            StringBuilder errMsg = new StringBuilder();
-            
-            if (order.getOrderDetail().isEmpty() || order.getOrderDetail() == null) {
-                hasError = true;
-                errMsg.append("Order Detail is Empty");
-            }
-
-            for (OrderDetail orderDetail : order.getOrderDetail()) {
-                if (orderDetail.getProductDetail() == null) {
-                    hasError = true;
-                    errMsg.append("Please choose stock for all product in the Order. ");
-                } else if (orderDetail.getProductDetail() != null && (orderDetail.getQuantity() * orderDetail.getUnit().getUnitToBaseConvertRate()) > orderDetail.getProductDetail().getStock()) {
-                    hasError = true;
-                    errMsg.append("Product's stock is not enough to deliver order.");              
-                } else {
-                    System.out.println("No err detected");
-                    db.deliverOrder(order);
-                    
-                    out.println("<script type=\"text/javascript\">");
-                    out.println("alert('Order Delivering');");
-                    out.println("window.location.href = 'ApprovedOrderList';");  // Redirect after the alert
-                    out.println("</script>");
-                }
-            }
-
-            if (hasError) {
-                String errorMsg = errMsg.toString();
-                request.setAttribute("err", errorMsg);
-                System.out.println("Error message set: " + errorMsg);
-            }
-
-
-            request.setAttribute("order", db.getOrder(orderID));
-            request.getRequestDispatcher("/View/WarehouseOrderManage/ApprovedOrderDetail.jsp").forward(request, response);
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-    }
+        processRequest(request, response);
+    } 
 
     /** 
      * Handles the HTTP <code>POST</code> method.

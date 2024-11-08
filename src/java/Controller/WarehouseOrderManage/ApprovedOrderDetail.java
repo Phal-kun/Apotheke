@@ -59,7 +59,7 @@ public class ApprovedOrderDetail extends HttpServlet {
         WarehouseOrderDAO db = WarehouseOrderDAO.INSTANCE;
         int orderID = Integer.parseInt(request.getParameter("orderID"));
 
-        request.setAttribute("order", db.getOrderDetail(orderID));
+        request.setAttribute("order", db.getOrder(orderID));
         
         request.getRequestDispatcher("/View/WarehouseOrderManage/ApprovedOrderDetail.jsp").forward(request, response);
     } 
