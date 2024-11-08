@@ -1,0 +1,149 @@
+/* Container cho các mục đơn hàng 
+.myordercontainer {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    width: 90%;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+ Container cho các tab 
+.tab-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+ Mỗi tab 
+.tab {
+    width: 32%;
+    padding: 15px;
+    text-align: center;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+ Tab khi được hover 
+.tab:hover {
+    background-color: #f0f0f5;
+}
+
+ Tab khi active 
+.tab.active {
+    background-color: #007bff;
+    color: #fff;
+    font-weight: bold;
+}
+
+ Danh sách đơn hàng 
+.order-list {
+    display: none;  Ẩn danh sách đơn hàng theo mặc định 
+    background-color: #ffffff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+ Danh sách đơn hàng khi active 
+.order-list.active {
+    display: block;  Chỉ hiển thị danh sách đơn hàng có class active 
+}
+
+ Mục đơn hàng 
+.order-item {
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+ Bỏ đường viền cuối cùng của danh sách 
+.order-item:last-child {
+    border-bottom: none;
+}*/
+/* Container cho các mục đơn hàng */
+.myordercontainer {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    width: 90%;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Container cho các tab */
+.tab-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+/* Mỗi tab */
+.tab {
+    width: 32%;
+    padding: 15px;
+    text-align: center;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+/* Tab khi được hover */
+.tab:hover {
+    background-color: #f0f0f5;
+}
+
+/* Tab khi active */
+.tab.active {
+    background-color: #007bff;
+    color: #fff;
+    font-weight: bold;
+}
+
+/* Danh sách đơn hàng */
+.order-list {
+    display: none; /* Ẩn danh sách đơn hàng theo mặc định */
+    background-color: #ffffff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+/* Danh sách đơn hàng khi active */
+.order-list.active {
+    display: block; /* Chỉ hiển thị danh sách đơn hàng có class active */
+}
+
+/* Mục đơn hàng */
+.order-item {
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Bỏ đường viền cuối cùng của danh sách */
+.order-item:last-child {
+    border-bottom: none;
+}
+
+/* Căn chỉnh button hủy đơn hàng trong form */
+.cancel-form {
+    margin: 0;
+}
+
+/* Nút hủy đơn hàng */
+.cancel-btn {
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.cancel-btn:hover {
+    background-color: #e60000;
+}
