@@ -3,9 +3,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
-package Controller.Order;
+package Controller.WarehouseOrderManage;
 
-import DAL.DAOOrderManage;
+import DAL.WarehouseOrderDAO;
+import Model.Order.Order;
+import Model.Order.OrderDetail;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -18,8 +20,8 @@ import jakarta.servlet.http.HttpServletResponse;
  *
  * @author ASUS
  */
-@WebServlet(name="CRUDOrderApprove", urlPatterns={"/CRUDOrderApprove"})
-public class CRUDOrderApprove extends HttpServlet {
+@WebServlet(name="DeliverOrder", urlPatterns={"/DeliverOrder"})
+public class DeliverOrder extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -36,10 +38,10 @@ public class CRUDOrderApprove extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet CRUDOrderApprove</title>");  
+            out.println("<title>Servlet DeliverOrder</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet CRUDOrderApprove at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet DeliverOrder at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -56,21 +58,32 @@ public class CRUDOrderApprove extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        DAOOrderManage db = DAOOrderManage.INSTANCE;
-        
-        int orderID = Integer.parseInt(request.getParameter("orderID"));
-        
-        db.approveOrder(orderID);
-        
-        response.setContentType("text/html");
-        PrintWriter out = response.getWriter();
+        try{
+            WarehouseOrderDAO db = WarehouseOrderDAO.INSTANCE;
+            int orderID = Integer.parseInt(request.getParameter("orderID"));
+            
+            Order order = db.getOrderDetail(orderID);
+            
+            boolean hasError = false;
+            StringBuilder errMsg = new StringBuilder();
+            for (OrderDetail orderDetail : order.getOrderDetail()) {
+                if (orderDetail.getProductDetail() == null) {
+                    hasError = true;
+                    errMsg.append("Please choose stock for all product in the Order. ");
+                } else if (orderDetail.getProductDetail() != null && (orderDetail.getQuantity() * orderDetail.getUnit().getUnitToBaseConvertRate()) > orderDetail.getProductDetail().getStock()) {
+                    hasError = true;
+                    errMsg.append("Product's stock is not enough to deliver order.");
+                } else {
+                    db.deliverOrder(order);
+                }
+            }
 
-        // JavaScript alert
-        out.println("<script type=\"text/javascript\">");
-        out.println("alert('Order Update Sucesfully');");
-        out.println("window.location.href = 'CRUDOrderList';"); 
-        out.println("</script>");
-    } 
+            request.setAttribute("order", db.getOrderDetail(orderID));
+            request.getRequestDispatcher("/View/WarehouseOrderManage/ApprovedOrderDetail.jsp").forward(request, response);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
 
     /** 
      * Handles the HTTP <code>POST</code> method.

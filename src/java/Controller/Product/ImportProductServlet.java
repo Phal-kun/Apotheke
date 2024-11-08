@@ -47,12 +47,11 @@ public class ImportProductServlet extends HttpServlet {
             ProductDAO.INSTANCE.importProduct(unitID, importPrice, quantity, batchNo, sqlManufacturerDate, sqlExpiredDate, salePrice);
 
             // Redirect or forward to success page
-            response.sendRedirect("ListProduct");
+            doGet(request, response);
 
         } catch (ParseException | NumberFormatException e) {
             e.printStackTrace();
-            request.setAttribute("errorMsg", "Invalid input. Please try again.");
-            request.getRequestDispatcher("importProduct.jsp").forward(request, response);
+            System.out.println(e);
         } catch (SQLException ex) {
             Logger.getLogger(ImportProductServlet.class.getName()).log(Level.SEVERE, null, ex);
         }

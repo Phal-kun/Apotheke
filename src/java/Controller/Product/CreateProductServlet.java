@@ -89,6 +89,9 @@ public class CreateProductServlet extends HttpServlet {
         String categoryIDStr = request.getParameter("categoryID");
         String originIDStr = request.getParameter("originID");
         String manufacturer = request.getParameter("manufacturer");
+        
+//        String baseUnitName = request.getParameter("baseUnitName");
+        
         String[] unitNames = request.getParameterValues("unitName");
         String[] convertRates = request.getParameterValues("convertRate");
         String[] componentNames = request.getParameterValues("componentName");
@@ -96,14 +99,14 @@ public class CreateProductServlet extends HttpServlet {
         String[] componentUnits = request.getParameterValues("componentUnit");
 
         boolean hasError = false;
-        StringBuilder errorMsg = new StringBuilder("Please fill in the following fields: ");
+        StringBuilder errorMsg = new StringBuilder("Creare Product Failed: ");
 
         if (productName == null || productName.trim().isEmpty()) {
             hasError = true;
-            errorMsg.append("Product Name ");
+            errorMsg.append("Product Name missing");
         }
 
-        int productID=0,categoryID = 0, originID = 0;
+        int productID=0, categoryID = 0, originID = 0;
 
         try {
             if (productIDStr != null) {
@@ -122,7 +125,12 @@ public class CreateProductServlet extends HttpServlet {
 
         if (componentNames == null || componentNames.length == 0) {
             hasError = true;
-            errorMsg.append("Components ");
+            errorMsg.append("Components missing");
+        }
+        
+        if (productID!=0 && ProductDAO.INSTANCE.isExist(productID)) {
+            hasError = true;
+            errorMsg.append("Product ID is already exists!");
         }
 
         if (hasError) {
@@ -136,6 +144,9 @@ public class CreateProductServlet extends HttpServlet {
             request.setAttribute("createMsg", false);
         } else {
             StringBuilder unitString = new StringBuilder();
+//            unitString.append(baseUnitName).append(",")
+//                        .append("1.00")
+//                        .append(";");
             for (int i = 0; i < unitNames.length; i++) {
                 unitString.append(unitNames[i])
                         .append(",")

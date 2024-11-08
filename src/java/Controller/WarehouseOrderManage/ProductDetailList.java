@@ -3,9 +3,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
-package Controller.Order;
+package Controller.WarehouseOrderManage;
 
-import DAL.DAOOrderManage;
+import DAL.WarehouseOrderDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,13 +13,14 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 
 /**
  *
  * @author ASUS
  */
-@WebServlet(name="CRUDOrderApprove", urlPatterns={"/CRUDOrderApprove"})
-public class CRUDOrderApprove extends HttpServlet {
+@WebServlet(name="ProductDetailList", urlPatterns={"/ProductDetailList"})
+public class ProductDetailList extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -36,10 +37,10 @@ public class CRUDOrderApprove extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet CRUDOrderApprove</title>");  
+            out.println("<title>Servlet ProductDetailList</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet CRUDOrderApprove at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet ProductDetailList at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -56,20 +57,20 @@ public class CRUDOrderApprove extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        DAOOrderManage db = DAOOrderManage.INSTANCE;
-        
-        int orderID = Integer.parseInt(request.getParameter("orderID"));
-        
-        db.approveOrder(orderID);
-        
-        response.setContentType("text/html");
-        PrintWriter out = response.getWriter();
+        try{
+            WarehouseOrderDAO db = WarehouseOrderDAO.INSTANCE;
+            int unitID = Integer.parseInt(request.getParameter("unitID"));
+            
+            ArrayList productDetail = db.getProductDetailList(unitID);
+            
+            request.setAttribute("productDetailList", productDetail);
+            
+            request.getRequestDispatcher("/View/WarehouseOrderManage/ViewProductDetail.jsp").forward(request, response);
+            
 
-        // JavaScript alert
-        out.println("<script type=\"text/javascript\">");
-        out.println("alert('Order Update Sucesfully');");
-        out.println("window.location.href = 'CRUDOrderList';"); 
-        out.println("</script>");
+        }catch (Exception e){
+            System.out.println(e);
+        }
     } 
 
     /** 

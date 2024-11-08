@@ -64,6 +64,7 @@ public class loginuserServlet extends HttpServlet {
         
         UserDao userd= new UserDao();
         User user = userd.login(username);
+        System.out.println(user.toString());
         if(user ==null){
             request.setAttribute("mess", "Wrong user or pass");
             request.setAttribute("enteredUsername", username); // Lưu username đã nhập
@@ -79,13 +80,17 @@ public class loginuserServlet extends HttpServlet {
             }else{
                 HttpSession session = request.getSession();
                 session.setAttribute("account", user);
+                System.out.println(user.toString());
+                System.out.println(user.getRole().getRoleID());
             if(user.isStatus() == true) {
+                System.out.println("dung roi");
                 switch (user.getRole().getRoleID()) {
                     case 1:
                         request.getRequestDispatcher("View/Home.jsp").forward(request, response);
                         break;
                     case 2:
-                        request.getRequestDispatcher("/ListProduct").forward(request, response);
+                        System.out.println("deo on roi");
+                        request.getRequestDispatcher("View/Login_Register/warehouseHome.jsp").forward(request, response);
                         break;
                     case 3:
                         request.getRequestDispatcher("/CRUDOrderList").forward(request, response);

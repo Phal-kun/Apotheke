@@ -13,6 +13,7 @@
         <title>JSP Page</title>
     </head>
     <body>
+        ${sessionScope.account.role.roleID}
         <c:if test="${not empty sessionScope.account}">
               <jsp:include page="${pageContext.request.contextPath}/View/pagecontrol/header.jsp"></jsp:include>
               <h1>Submit Order Successful</h1>
