@@ -1,44 +1,259 @@
-/*
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
-*/
-/* 
-    Created on : Nov 4, 2024, 8:54:28 AM
-    Author     : Dell
-*/
+
 
 .cart-container {
-            width: 100%;
-            max-width: 800px;
-            margin: auto;
-            font-family: Arial, sans-serif;
-        }
-        .cart-header, .cart-item {
-            display: flex;
-            align-items: center;
-            padding: 10px;
-            border-bottom: 1px solid #e0e0e0;
-        }
-        .cart-header span, .cart-item span {
-            flex: 1;
-            text-align: center;
-        }
-        .quantity-control {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .quantity-control button {
-            padding: 0 10px;
-            cursor: pointer;
-        }
-        .quantity-control input {
-            width: 40px;
-            text-align: center;
-            border: none;
-        }
-        .delete-btn {
-            color: red;
-            cursor: pointer;
-        }
-      
+    width: 80%;
+    max-width: 1200px;
+    margin: 40px auto;
+    background-color: #fff;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.cart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    background-color: #007bff;
+    color: #fff;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.cart-item {
+    display: flex;
+    align-items: center;
+    padding: 16px;
+    border-bottom: 1px solid #ddd;
+}
+
+.cart-item:last-child {
+    border-bottom: none;
+}
+
+.cart-item input[type="checkbox"] {
+    margin-right: 12px;
+}
+
+.cart-item span {
+    flex: 1;
+    text-align: center;
+    font-size: 0.95rem;
+}
+
+.quantity-control {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.quantity-control button {
+    padding: 5px 10px;
+    border: none;
+    background-color: #007bff;
+    color: #fff;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.quantity-control button:hover {
+    background-color: #0056b3;
+}
+
+.price {
+    color: #28a745;
+    font-weight: bold;
+}
+
+.delete-btn {
+    color: #dc3545;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: color 0.2s;
+}
+
+.delete-btn:hover {
+    color: #c82333;
+}
+
+.total-price {
+    padding: 16px;
+    font-size: 1.1rem;
+    text-align: right;
+    background-color: #f8f9fa;
+    font-weight: bold;
+    color: #007bff;
+}
+
+#total-price {
+    margin-top: 20px;
+    font-size: 1.2rem;
+    text-align: right;
+}
+
+.empty-cart-message {
+    padding: 16px;
+    text-align: center;
+    color: #666;
+    font-size: 1.1rem;
+}
+/* Phong cách nút Đặt hàng */
+form input[type="submit"] {
+    background-color: #28a745;
+    color: white;
+    padding: 12px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.2s;
+}
+
+form input[type="submit"]:hover {
+    background-color: #218838;
+}
+
+/* Phong cách thông tin đơn hàng */
+.section {
+    padding: 20px;
+    margin: 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    width: 45%;
+    box-sizing: border-box;
+}
+
+.section h2 {
+    color: #007bff;
+    font-size: 1.2rem;
+    margin-bottom: 12px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    width: 90%;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.form-group input[type="text"]:focus,
+.form-group input[type="email"]:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+/* Phong cách giỏ hàng trống */
+.emptycart-container {
+    text-align: center;
+    color: #333;
+}
+
+.emptycart-container img {
+    width: 120px;
+    margin-bottom: 20px;
+}
+
+.emptycart-message {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.emptycart-subtext {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.emptycart-button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #007bff;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.emptycart-button:hover {
+    background-color: #0056b3;
+}
+
+/* Phong cách phần đặt hàng */
+#formSubmitOrder {
+    width: 300px;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+}
+
+.order-summary {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+}
+
+.price-line {
+    display: flex;
+    justify-content: space-between;
+    margin: 8px 0;
+}
+
+.total, .voucher, .shipping {
+    font-weight: bold;
+}
+
+.total-price, .voucher-amount, .shipping-fee, .final-price {
+    color: #333;
+}
+
+.final-price {
+    font-size: 1.5em;
+    color: #007bff;
+    text-align: center;
+    margin-top: 10px;
+}
+
+#completeOrder {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.1em;
+    text-align: center;
+}
+
+/* Căn các div song song */
+#formShip-form {
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
+}
+

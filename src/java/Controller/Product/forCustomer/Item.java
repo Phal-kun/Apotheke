@@ -21,7 +21,7 @@ public class Item {
     private String productName;
     private String description;
     // 1 list đối tượng listPrice<name, price>
-    private List<Map<String, Object>> listPrice;
+    List<Map<String, Object>> listPrice;
     private String nameShow;
     private int quantity; 
     private float price;
