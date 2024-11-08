@@ -4,6 +4,8 @@
 /dist/
 /nbbuild/
 /nbdist/
+/nbproject/build-impl.xml
+/nbproject/genfile.properties
 
 # IDE-specific files
 /.vscode/
