@@ -22,8 +22,21 @@ public class Product {
     String description;
     ArrayList<Component> component;
     boolean isActive;
-
+    String product_image;
     public Product() {
+    }
+    
+    public Product(int productID, String productName, Category category, Origin origin, Manufacturer manufacturer, Form form, String description, ArrayList<Component> component, boolean isActive, String product_image) {
+        this.productID = productID;
+        this.productName = productName;
+        this.category = category;
+        this.origin = origin;
+        this.manufacturer = manufacturer;
+        this.form = form;
+        this.description = description;
+        this.component = component;
+        this.isActive = isActive;
+        this.product_image = product_image;
     }
 
     public Product(int productID, String productName, Category category, Origin origin, Manufacturer manufacturer, Form form, String description, ArrayList<Component> component, boolean isActive) {

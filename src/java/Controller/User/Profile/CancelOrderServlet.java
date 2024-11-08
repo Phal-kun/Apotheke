@@ -3,8 +3,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
-package Controller.Login;
+package Controller.User.Profile;
 
+import DAL.OrderDao;
+import Model.Order.Order;
+import Model.User.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -12,12 +15,15 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
- * @author ASUS
+ * @author Dell
  */
-public class logoutServlet extends HttpServlet {
+public class CancelOrderServlet extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -34,43 +40,52 @@ public class logoutServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet LogoutServlet</title>");  
+            out.println("<title>Servlet CancelOrderServlet</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet LogoutServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet CancelOrderServlet at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
     } 
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
-     * Handles the HTTP <code>GET</code> method.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        HttpSession session = request.getSession(false); // Get the session, if it exists
-         session.removeAttribute("account");
-        response.sendRedirect(request.getContextPath() + "/View/Home.jsp");
-//        processRequest(request, response);
+         String orderIDStr = request.getParameter("orderID");
+         HttpSession session = request.getSession();
+        User user = (User) request.getSession().getAttribute("account");
+        
+         try {
+                // Chuyển đổi orderID từ String sang Integer
+                int orderID = Integer.parseInt(orderIDStr);
+
+                // Gọi phương thức trong DAO để cập nhật đơn hàng (giả sử bạn có phương thức updateOrderByOrderID)
+                OrderDao orderDAO = new OrderDao();
+                boolean result = orderDAO.updateOrderByOrderID(orderID, 4);  // Giả sử 2 là statusID cho trạng thái đã huỷ
+
+                if (result) {
+                    List<Order> orders = orderDAO.getOrderFromUserId(user.getUserID());
+                    session.setAttribute("orders", orders);
+
+                    // Cập nhật thành công, chuyển hướng đến trang khác hoặc thông báo
+                    request.getRequestDispatcher("View/pagecontrol/myorder.jsp").forward(request, response);
+
+                } else {
+                    // Nếu không cập nhật thành công
+                    response.sendRedirect("orderList.jsp?status=failure");
+                }
+            }  catch (Exception ex) {
+            Logger.getLogger(CancelOrderServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     } 
 
-    /** 
-     * Handles the HTTP <code>POST</code> method.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+   
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        doGet(request, response);
+        processRequest(request, response);
     }
 
     /** 

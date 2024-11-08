@@ -3,8 +3,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
-package Controller.Login;
+package Controller.User.Profile;
 
+import DAL.OrderDao;
+import Model.Order.Order;
+import Model.User.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -12,12 +15,15 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
- * @author ASUS
+ * @author Dell
  */
-public class logoutServlet extends HttpServlet {
+public class myorder extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -34,10 +40,10 @@ public class logoutServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet LogoutServlet</title>");  
+            out.println("<title>Servlet myorder</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet LogoutServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet myorder at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -54,10 +60,20 @@ public class logoutServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        HttpSession session = request.getSession(false); // Get the session, if it exists
-         session.removeAttribute("account");
-        response.sendRedirect(request.getContextPath() + "/View/Home.jsp");
-//        processRequest(request, response);
+        HttpSession session = request.getSession();
+        User user = (User) request.getSession().getAttribute("account");
+        OrderDao orderDAO = new OrderDao();
+        try {
+            List<Order> orders = orderDAO.getOrderFromUserId(user.getUserID());
+            session.setAttribute("orders", orders);
+
+        // Chuyển tiếp đến trang JSP (hoặc có thể chuyển hướng đến một trang nếu cần thiết)
+            request.getRequestDispatcher("View/pagecontrol/myorder.jsp").forward(request, response);
+
+        } catch (Exception ex) {
+            Logger.getLogger(myorder.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     } 
 
     /** 
@@ -70,7 +86,7 @@ public class logoutServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        doGet(request, response);
+        processRequest(request, response);
     }
 
     /** 

@@ -129,11 +129,10 @@ public class Cart {
         }
         return n;
     }
-//    public void removeItem(int id){
-//        if (getItemById(id)!= null) {
-//            listItems.remove(getItemById(id));
-//        }  
-//    }
+    public void removeItem(int index ){
+         listItems.remove(index);
+        
+    }
     
 //    public float getTotalMoney(){
 //        float total = 0;
