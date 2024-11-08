@@ -14,19 +14,8 @@
     </head>
     <body>
         <c:if test="${not empty sessionScope.account}">
-            
-                <c:if test="${sessionScope.account.role.roleID == 1}">
-                    <h1>Welcome Customer</h1>
-                    <a href="${pageContext.request.contextPath}/logout">
-                        <button>Logout</button>
-                    </a>
-                </c:if>
-                <c:if test="${sessionScope.account.role.roleID != 1}">
-                    <h1>You are not authorized to access this page!</h1>
-                    <script>
-                        window.location.href = '${pageContext.request.contextPath}/View/Login_Register/active.jsp';
-                    </script>
-                </c:if>
+              <jsp:include page="${pageContext.request.contextPath}/View/pagecontrol/header.jsp"></jsp:include>
+              <h1>Submit Order Successful</h1>
             
         </c:if>
         <c:if test="${empty sessionScope.account}">

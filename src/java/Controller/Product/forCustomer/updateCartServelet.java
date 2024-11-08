@@ -79,6 +79,7 @@ public class updateCartServelet extends HttpServlet {
         
         }
         
+        session.setAttribute("cart", cart);
 
     } 
 
@@ -92,7 +93,36 @@ public class updateCartServelet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+        String k = request.getParameter("k");
+        System.out.println(k);
+        HttpSession session = request.getSession();
+        Cart cart = (Cart) session.getAttribute("cart");
+        if (cart != null) {
+            try {
+                // Chuyển 'k' thành kiểu int
+                int index = Integer.parseInt(k);
+
+                // Kiểm tra xem index có nằm trong phạm vi của listItems không
+                if (index >= 0 && index < cart.getListItems().size()) {
+                    // Gọi phương thức removeItem để xóa mục khỏi giỏ hàng theo index
+                    cart.removeItem(index);
+                    System.out.println("Item at index " + index + " removed successfully.");
+                    
+                    
+                    
+                } else {
+                    System.out.println("Index out of range.");
+                }
+
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid index format: " + k);
+            }
+        
+        }
+        session.setAttribute("cart", cart);
+        session.setAttribute("number", cart.coutn());
+        // Chuyển hướng người dùng đến cart.jsp
+        request.getRequestDispatcher(request.getContextPath() + "/View/pagecontrol/cart.jsp").forward(request, response);
     }
 
     /** 

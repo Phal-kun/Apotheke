@@ -28,7 +28,7 @@
         <div class="container">
           <header class="header">
               <a href="${pageContext.request.contextPath}/View/Home.jsp">
-            <div class="title">Medicine Shop</div>
+            <div class="title">APOTHEKE Shop</div>
             </a>
              <div class="header-actions">
             <div class="search-bar">
@@ -50,11 +50,11 @@
                                     <div class="user-popup">
                                         <button class="user-btn">User</button>
                                         <div class="popup-content">
-                                            <a href="#" class="popup-item">
+                                            <a href="${pageContext.request.contextPath}/View/pagecontrol/userprofile.jsp" class="popup-item">
                                             <span class="material-symbols-outlined">account_circle</span>
-                                            Thông tin cá nhân
+                                                Thông tin cá nhân
                                             </a>
-                                            <a href="#" class="popup-item">
+                                            <a href="${pageContext.request.contextPath}/myorder" class="popup-item">
                                             <span class="material-symbols-outlined">inventory_2</span>
                                             Đơn hàng của tôi
                                             </a>
@@ -76,14 +76,7 @@
         <!-- cart -->
         <div class="cart">
             <span class="material-symbols-outlined cart-icon">shopping_cart</span>
-<!--            <form action="cartdetailServlet" method="get">
-                <input type="hidden" name="cartNumber" value="$number}">
-                <input type="hidden" name="cart" value="$cart}">  Nếu cần thiết 
-                <span class="material-symbols-outlined cart-icon">shopping_cart</span>
-                <button type="submit" class="cart-text" style="background: none; border: none; cursor: pointer;">\
-                    <span class="cart-text">Cart $number}</span>
-                </button>
-            </form>-->
+         
         <a href="${pageContext.request.contextPath}/View/pagecontrol/cart.jsp" style="text-decoration: none; color: inherit;">
             <span class="cart-text">Cart ${number}</span>
         </a>

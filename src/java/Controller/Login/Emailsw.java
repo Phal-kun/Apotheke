@@ -60,7 +60,7 @@ public class Emailsw {
                     + "<p>Hi!</p>"
                     + "<p>You are completing new account verification. Your verification code is: <strong>" + code + "</strong>.</p>"
                     + "<p>Please complete the account verification process in 2 seconds.</p>"
-                    + "<p>HoYoverse</p>"
+                    
                     + "<p>This is an automated email. Please do not reply to this email.</p>"
                     + "</body>"
                     + "</html>";

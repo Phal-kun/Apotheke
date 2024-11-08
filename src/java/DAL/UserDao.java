@@ -262,7 +262,123 @@ public class UserDao extends DBContext{
             }
         }
         
+       public void updateUser1(String email, String fullname, String phone, String address) throws SQLException, Exception {
+    String sql = "UPDATE [user] SET fullname = ?, phone = ?, address = ? WHERE username = ?";
+    
+    try {
+        con = getConnection();  // Lấy kết nối từ DBContext
+        ps = con.prepareStatement(sql);  // Chuẩn bị câu lệnh SQL
         
+        // Đặt giá trị cho các tham số trong câu lệnh SQL
+        ps.setString(1, fullname);  // Đặt tên đầy đủ
+        ps.setString(2, phone);     // Đặt số điện thoại
+        ps.setString(3, address);   // Đặt địa chỉ
+        ps.setString(4, email);     // Đặt email (hoặc username) làm điều kiện để xác định người dùng cần cập nhật
         
+        int rowsAffected = ps.executeUpdate(); // Thực thi câu lệnh UPDATE
+
+        if (rowsAffected > 0) {
+            System.out.println("User updated successfully.");
+        } else {
+            System.out.println("No user found with the given email.");
+        }
+    } catch (SQLException e) {
+        throw e;  // Ném lại ngoại lệ nếu có lỗi xảy ra
+    } catch (Exception e) {
+        throw e;  // Ném lại các lỗi khác nếu có
+    } finally {
+        closePreparedStatement(ps);  // Đảm bảo đóng PreparedStatement
+        closeConnection(con);        // Đảm bảo đóng kết nối
+    }
+}
+       public void updateUser2(String email, String phone) throws SQLException, Exception {
+    String sql = "UPDATE [user] SET phone = ? WHERE username = ?";
+    
+    try {
+        con = getConnection();  // Lấy kết nối từ DBContext
+        ps = con.prepareStatement(sql);  // Chuẩn bị câu lệnh SQL
+        
+        // Đặt giá trị cho các tham số trong câu lệnh SQL
+        ps.setString(1, phone);     // Đặt số điện thoại
+        ps.setString(2, email);     // Đặt email (hoặc username) làm điều kiện để xác định người dùng cần cập nhật
+        
+        int rowsAffected = ps.executeUpdate(); // Thực thi câu lệnh UPDATE
+
+        if (rowsAffected > 0) {
+            System.out.println("User's phone updated successfully.");
+        } else {
+            System.out.println("No user found with the given email.");
+        }
+    } catch (SQLException e) {
+        throw e;  // Ném lại ngoại lệ nếu có lỗi xảy ra
+    } catch (Exception e) {
+        throw e;  // Ném lại các lỗi khác nếu có
+    } finally {
+        closePreparedStatement(ps);  // Đảm bảo đóng PreparedStatement
+        closeConnection(con);        // Đảm bảo đóng kết nối
+    }
+}
+       public void updateUser3(String email, String address) throws SQLException, Exception {
+    String sql = "UPDATE [user] SET address = ? WHERE username = ?";
+    
+    try {
+        con = getConnection();  // Lấy kết nối từ DBContext
+        ps = con.prepareStatement(sql);  // Chuẩn bị câu lệnh SQL
+        
+        // Đặt giá trị cho các tham số trong câu lệnh SQL
+        ps.setString(1, address);   // Đặt địa chỉ
+        ps.setString(2, email);     // Đặt email (hoặc username) làm điều kiện để xác định người dùng cần cập nhật
+        
+        int rowsAffected = ps.executeUpdate(); // Thực thi câu lệnh UPDATE
+
+        if (rowsAffected > 0) {
+            System.out.println("User's address updated successfully.");
+        } else {
+            System.out.println("No user found with the given email.");
+        }
+    } catch (SQLException e) {
+        throw e;  // Ném lại ngoại lệ nếu có lỗi xảy ra
+    } catch (Exception e) {
+        throw e;  // Ném lại các lỗi khác nếu có
+    } finally {
+        closePreparedStatement(ps);  // Đảm bảo đóng PreparedStatement
+        closeConnection(con);        // Đảm bảo đóng kết nối
+    }
+}
+
+       
+     public void updateProfile(String username, String fullname, String phone, String gender, String address) throws SQLException, Exception {
+    String sql = "UPDATE [user] SET fullname = ?, phone = ?, gender = ?, address = ? WHERE username = ?";
+    
+    try {
+        con = getConnection();
+        ps = con.prepareStatement(sql);
+        
+        // Đặt giá trị cho các tham số trong câu truy vấn
+        ps.setString(1, fullname);  // Đặt fullname vào tham số thứ 1
+        ps.setString(2, phone);     // Đặt phone vào tham số thứ 2
+        ps.setString(3, gender);    // Đặt gender vào tham số thứ 3
+        ps.setString(4, address);   // Đặt address vào tham số thứ 4
+        ps.setString(5, username);  // Đặt username vào tham số thứ 5
+        
+        // Thực thi câu lệnh UPDATE
+        int rowsAffected = ps.executeUpdate(); 
+        
+        // Kiểm tra xem có bao nhiêu bản ghi bị thay đổi
+        if (rowsAffected > 0) {
+            System.out.println("User profile updated successfully.");
+        } else {
+            System.out.println("No user found with the given username.");
+        }
+        
+    } catch (Exception e) {
+        throw e;  // Ném lỗi nếu có
+    } finally {
+        closePreparedStatement(ps);
+        closeConnection(con);
+    }
+}
+  
+       
         
 }
