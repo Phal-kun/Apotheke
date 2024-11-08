@@ -161,15 +161,16 @@ public class showProductDAO extends DBContext {
                     // Tạo đối tượng ProductDetail và gán giá trị từ ResultSet
                     productDetail = new ProductDetail();
                     productDetail.setProductDetailID(rs.getInt("productDetailID"));
-                    productDetail.setPrice(rs.getInt("baseSoldPrice"));
+                    productDetail.setSoldPrice(rs.getInt("baseSoldPrice"));
                     Product product = null;
                     productDetail.setProduct(product);
                     ProductUnit productUnit = new ProductUnit();
                     productUnit.setProductUnitID(rs.getInt("unitID"));
                     productUnit.setProductUnitName("");
                     productUnit.setUnitToBaseConvertRate(0);
-                    productDetail.setProductUnit(productUnit);
-                    productDetail.setVolume(0);
+            
+                    productDetail.setUnit(productUnit);
+                    
                     productDetail.setStock(0);
                     productDetail.setBatchNo(0);              
                 }

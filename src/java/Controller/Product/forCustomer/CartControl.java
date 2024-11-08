@@ -44,7 +44,7 @@ public class CartControl {
 
                         // Thêm giá vào item
                         for (ProductUnit productUnit : productUnits) {
-                            newItem.addPrice(productUnit.getProductUnitName(), newproductDetail.getPrice() * (productUnit.getUnitToBaseConvertRate() / baseUnit.getUnitToBaseConvertRate()));
+                            newItem.addPrice(productUnit.getProductUnitName(), newproductDetail.getSoldPrice()* (productUnit.getUnitToBaseConvertRate() / baseUnit.getUnitToBaseConvertRate()));
                         }
 
                         // Duyệt từ cuối đến đầu để xây dựng nameShow
