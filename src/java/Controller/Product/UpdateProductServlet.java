@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 
 package Controller.Product;
 
@@ -99,31 +95,33 @@ public class UpdateProductServlet extends HttpServlet {
         if (productName == null || productName.trim().isEmpty()) {
             hasError = true;
             errorMsg.append("Product Name ");
+            System.out.println("Error: Product Name is empty");
         }
-        int productID = 0 ,categoryID = 0, originID = 0, manufacturerID = 0, formID = 0;
+        int productID = 0, categoryID = 0, originID = 0, manufacturerID = 0, formID = 0;
 
         try {
-            if (productIDStr != null) {
+            if (productIDStr != null && !productIDStr.trim().isEmpty()) {
                 productID = Integer.parseInt(productIDStr);
             }
-            
-            if (categoryIDStr != null) {
+            if (categoryIDStr != null && !categoryIDStr.trim().isEmpty()) {
                 categoryID = Integer.parseInt(categoryIDStr);
             }
-            if (originIDStr != null) {
+            if (originIDStr != null && !originIDStr.trim().isEmpty()) {
                 originID = Integer.parseInt(originIDStr);
             }
-            if (manufacturerIDStr != null) {
+            if (manufacturerIDStr != null && !manufacturerIDStr.trim().isEmpty()) {
                 manufacturerID = Integer.parseInt(manufacturerIDStr);
             }
         } catch (NumberFormatException e) {
             hasError = true;
             errorMsg.append("Invalid ID format ");
+            System.out.println("Error: Invalid ID format in one of the ID fields.");
         }
 
         if (componentIDs == null || componentIDs.length == 0) {
             hasError = true;
             errorMsg.append("Components ");
+            System.out.println("Error: No components provided.");
         }
 
         if (hasError) {
@@ -166,6 +164,6 @@ public class UpdateProductServlet extends HttpServlet {
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
+    }
 
 }

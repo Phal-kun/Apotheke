@@ -5,6 +5,9 @@
 
 package Controller.Product;
 
+import DAL.WarehouseOrderDAO;
+import Model.Order.OrderDetail;
+import Model.Product.ProductDetail;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -12,6 +15,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 
 /**
  *
@@ -55,7 +59,20 @@ public class ProductDetailServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+                WarehouseOrderDAO db = WarehouseOrderDAO.INSTANCE;
+
+        int orderDetailID = Integer.parseInt(request.getParameter("orderDetailID"));
+        int orderStatusID = Integer.parseInt(request.getParameter("orderStatusID"));
+
+        OrderDetail orderDetail = db.findOrderDetailBaseOnId(orderDetailID);
+        ArrayList<ProductDetail> productDetailList = db.findProductDetailBaseOnUnit(orderDetail.getUnit().getProductUnitID());
+
+        request.setAttribute("orderDetail", orderDetail);
+        request.setAttribute("productDetailList", productDetailList);
+        request.getSession().setAttribute("orderStatusID", orderStatusID);
+
+        request.getRequestDispatcher("/View/ProductManage/ViewProductDetail.jsp").forward(request, response);
+
     } 
 
     /** 

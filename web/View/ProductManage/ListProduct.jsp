@@ -65,10 +65,10 @@
                                     <input type="hidden" name="productID" value="${product.getProductID()}" />
                                     <button type="submit" class="select-btn">Update</button>
                                 </form>
-                                <form action="ProductDetailServlet" method="get" style="display:inline-block;">
+<!--                                <form action="ProductDetailServlet" method="get" style="display:inline-block;">
                                     <input type="hidden" name="productID" value="${product.getProductID()}" />
                                     <button type="submit" class="select-btn">View Detail</button>
-                                </form>
+                                </form>-->
                             </td>
                         </tr>
                     </c:forEach>
