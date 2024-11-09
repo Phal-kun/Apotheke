@@ -4,11 +4,9 @@
  */
 package Controller.WarehouseOrderManage;
 
-import DAL.ProductDAO;
 import DAL.WarehouseOrderDAO;
 import Model.Order.Order;
 import Model.Order.OrderDetail;
-import Model.Product.Product;
 import Model.Product.ProductDetail;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -71,7 +69,7 @@ public class ProductDetailList extends HttpServlet {
         int orderStatusID = Integer.parseInt(request.getParameter("orderStatusID"));
 
         OrderDetail orderDetail = db.findOrderDetailBaseOnId(orderDetailID);
-        ArrayList<ProductDetail> productDetailList = db.findProductDetailBaseOnUnit(orderDetail.getUnit().getProductUnitID());
+        ArrayList<ProductDetail> productDetailList = db.getProductDetailList(orderDetail.getProduct().getProductID());
 
         request.setAttribute("orderDetail", orderDetail);
         request.setAttribute("productDetailList", productDetailList);
@@ -103,7 +101,8 @@ public class ProductDetailList extends HttpServlet {
 
             db.chooseStock(orderDetailID, productDetailID);
             OrderDetail orderDetail = db.findOrderDetailBaseOnId(orderDetailID);
-            ArrayList<ProductDetail> productDetailList = db.findProductDetailBaseOnUnit(orderDetail.getUnit().getProductUnitID());
+             ArrayList<ProductDetail> productDetailList = db.getProductDetailList(orderDetail.getProduct().getProductID());
+             
             request.setAttribute("orderDetail", orderDetail);
             request.setAttribute("productDetailList", productDetailList);
 

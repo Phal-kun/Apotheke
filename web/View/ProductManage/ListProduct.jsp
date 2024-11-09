@@ -23,6 +23,11 @@
                     <button>Management Menu</button>
                 </a>
                 <hr>
+                <div class="btn">
+                <a href="CreateProduct">
+                    <button id="create-product-btn" type="button">Create New Product</button>
+                </a>
+            </div>
                 <p id="description">Below is the list of products available</p>
             </div>
         </header>
@@ -75,11 +80,7 @@
                 </tbody>
             </table>
 
-            <div class="btn">
-                <a href="CreateProduct">
-                    <button id="create-product-btn" type="button">Create New Product</button>
-                </a>
-            </div>
+            
         </div>
 
 

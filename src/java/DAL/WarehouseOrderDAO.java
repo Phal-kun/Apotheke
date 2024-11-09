@@ -18,7 +18,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -539,24 +541,24 @@ public class WarehouseOrderDAO {
         }
     }
 
-    public ArrayList<ProductDetail> getProductDetailList(int unitID) {
+    public ArrayList<ProductDetail> getProductDetailList(int productID) {
         ArrayList<ProductDetail> productDetailList = new ArrayList<>();
 
         try {
             String sql = """
                      SELECT pd.productDetailID, pd.stock, pd.avgImportPrice AS importPrice, pd.baseSoldPrice AS soldPrice,
-                            pd.manufactureDate, pd.expiredDate, pd.isActive, pd.batchNo,
-                            p.productID, p.productName, p.categoryID, p.originID, p.manufacturer, 
-                            p.componentDescription, p.description AS productDescription, p.isActive AS productActive,
-                            pu.unitID, pu.unitName, pu.unitToBaseConvertRate
-                     FROM productDetail pd
-                     JOIN productUnit pu ON pd.unitID = pu.unitID
-                     JOIN product p ON pu.productID = p.productID
-                     WHERE pd.unitID = ?
+                                                 pd.manufactureDate, pd.expiredDate, pd.isActive, pd.batchNo,
+                                                 p.productID, p.productName, p.categoryID, p.originID, p.manufacturer, 
+                                                 p.componentDescription, p.description, p.isActive, p.baseUnitID,
+                                                 pu.unitID, pu.unitName, pu.unitToBaseConvertRate
+                                          FROM productDetail pd
+                                          JOIN productUnit pu ON pd.unitID = pu.unitID
+                                          JOIN product p ON pu.productID = p.productID
+                                          WHERE p.productID = ? and pd.unitID = p.baseUnitID
                      """;
 
             PreparedStatement statement = con.prepareStatement(sql);
-            statement.setInt(1, unitID); // Set the orderID parameter
+            statement.setInt(1, productID); // Set the orderID parameter
             ResultSet rs = statement.executeQuery();
 
             productDetailList = toProductDetailList(rs);
@@ -795,13 +797,17 @@ public class WarehouseOrderDAO {
             // SQL query to select the order details for the given order
             String sql = """
              UPDATE [order]
-             SET statusID = ?
+             SET statusID = ?, orderCompleted = ?
              WHERE orderID = ?
              """;
 
+            LocalDate now = LocalDate.now();
+            java.sql.Date nowSql =  java.sql.Date.valueOf(now);
+            
             PreparedStatement statement = con.prepareStatement(sql);
             statement.setInt(1, completedStatus);
-            statement.setInt(2, orderID); // Set the order ID in the query
+            statement.setDate(2, nowSql);
+            statement.setInt(3, orderID); // Set the order ID in the query
             statement.executeUpdate();
 
             // Populating the order with its details
@@ -820,9 +826,9 @@ public class WarehouseOrderDAO {
 
 //        OrderDetail ob = INSTANCE.findOrderDetailBaseOnId(1);
 
-        ArrayList ob = INSTANCE.findProductDetailBaseOnUnit(4);
-        INSTANCE.chooseStock(7, 6);
-        System.out.println("A");
+        ArrayList ob = INSTANCE.getProductDetailList(1);
+        System.out.println(ob);
+
     }
 
 }

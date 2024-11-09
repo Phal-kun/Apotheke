@@ -8,7 +8,6 @@ import Model.Order.Order;
 import Model.Order.OrderDetail;
 import Model.Order.Status;
 import Model.Product.Product;
-import Model.Product.ProductDetail;
 import Model.Product.ProductUnit;
 import Model.User.User;
 import java.sql.Connection;
@@ -313,7 +312,6 @@ public class DAOOrderManage {
              SELECT *
              FROM orderDetail od
              JOIN product p ON od.productID = p.productID
-             JOIN productDetail pd ON od.productDetailID = pd.productDetailID
              JOIN productUnit pu ON od.unitID = pu.unitID
              WHERE od.orderID = ?
              """;
@@ -339,8 +337,6 @@ public class DAOOrderManage {
                 product.setProductName(rs.getString("productName"));
                 product.setManufacturer(rs.getString("manufacturer"));
                 
-                ProductDetail productDetail = new ProductDetail();
-                productDetail.setBatchNo(rs.getInt("batchNo"));
                 
                 ProductUnit productUnit = new ProductUnit();
                 productUnit.setProductUnitName(rs.getString("unitName"));
@@ -348,7 +344,6 @@ public class DAOOrderManage {
                 OrderDetail orderDetail = new OrderDetail();
                 orderDetail.setOrderDetailID(rs.getInt("orderDetailID"));
                 orderDetail.setProduct(product);
-                orderDetail.setProductDetail(productDetail);
                 orderDetail.setUnit(productUnit);
                 orderDetail.setSoldPrice(rs.getDouble("soldPrice"));
                 orderDetail.setQuantity(rs.getInt("quantity"));
@@ -361,7 +356,7 @@ public class DAOOrderManage {
             order.setOrderDetail(orderDetailList);
             
         } catch(SQLException e){
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }             
         return order;
     }
@@ -413,8 +408,11 @@ public class DAOOrderManage {
 //            System.out.println(object);
 //        }
         INSTANCE.rejectOrder(1, "Unable to ship");
-
-        System.out.println(INSTANCE.getOrderDetail(1));
+        
+        Order order = new Order();
+        order.setOrderID(48);
+        INSTANCE.insertOrderDetail(order);
+        System.out.println(order.getOrderDetail());
     }
     
     
