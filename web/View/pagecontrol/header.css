@@ -35,6 +35,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
   font-size: 1.875rem;
   color: #1d4ed8;
 }
+.searchbutton{
+    margin-right: 50px;
+}
 
 .header-actions {
   display: flex;
@@ -47,6 +50,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
   height: 50px;
     width: 600px;
     padding-left: 50px;
+    padding-right:50px;
 }
 
 .search-input {

@@ -31,10 +31,16 @@
             <div class="title">APOTHEKE Shop</div>
             </a>
              <div class="header-actions">
-            <div class="search-bar">
-              <input type="text" placeholder="Search medicines..." class="search-input" />
-              <span class="material-symbols-outlined search-icon">search</span>
-            </div>
+                 <form action="${pageContext.request.contextPath}/searchproductbykeywords" method="GET">
+                    <div class="search-bar">
+
+                        <input type="text" name="keyword" placeholder="Search medicines..." class="search-input" />
+                        <span class="material-symbols-outlined search-icon">
+                            <button id="searchbutton"type="submit">Search</button>
+                        </span>
+
+                    </div>
+                </form>  
       <!--  pop up -->
        
         <div class="header-actions">
@@ -99,6 +105,12 @@
           <div>
             <nav class="navbar1">
               <ul class="nav-items1">
+                  <li>
+                        <form action="${pageContext.request.contextPath}/productbycategoryServerl" method="post">
+                            <input type="hidden" name="categoryID" value="1">
+                            <button type="submit" class="btn btn-link">Best Seller</button>
+                        </form>
+                  </li>
                   <li>
                         <form action="${pageContext.request.contextPath}/productbycategoryServerl" method="get">
                             <input type="hidden" name="categoryID" value="1">

@@ -14,6 +14,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  *
@@ -298,11 +299,32 @@ public class ProductDAO {
         }      
     }
 
-    
-   
-    public static void main(String[] args) {
-        insertProductTest();
+    public List<Integer> getTopSellingProducts(){
+        List<Integer> topProductIDs = new ArrayList<>();
+
+        // Câu lệnh SQL để lấy 6 sản phẩm bán chạy nhất
+        String selectSql = "SELECT TOP 6 od.productID " +
+                            "FROM dbo.orderDetail od " +
+                            "GROUP BY od.productID " +
+                            "ORDER BY SUM(od.quantity) DESC";
+
+        try (PreparedStatement statement = con.prepareStatement(selectSql);
+             ResultSet rs = statement.executeQuery()) {
+
+            // Lặp qua các kết quả trả về và thêm vào danh sách
+            while (rs.next()) {
+                int productID = rs.getInt("productID");
+                topProductIDs.add(productID);
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error retrieving top selling products: " + e.getMessage());
+        }
+
+        return topProductIDs;
     }
+   
+    
     
     static void insertProductTest() {
 //        int productID = 1;

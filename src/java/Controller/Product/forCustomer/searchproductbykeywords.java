@@ -5,7 +5,6 @@
 
 package Controller.Product.forCustomer;
 
-import Model.Product.Product;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -20,7 +19,7 @@ import java.util.List;
  *
  * @author Dell
  */
-public class productbycategoryServerl extends HttpServlet {
+public class searchproductbykeywords extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -37,10 +36,10 @@ public class productbycategoryServerl extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet productbycategoryServerl</title>");  
+            out.println("<title>Servlet searchproductbykeywords</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet productbycategoryServerl at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet searchproductbykeywords at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -57,41 +56,38 @@ public class productbycategoryServerl extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        String categoryID = request.getParameter("categoryID");
-        System.out.println("Category"+categoryID);
-        try{
-            int cate = Integer.parseInt(categoryID);
-           
-            List<Item> listItems = CartControl.displayProductList2(cate);
-            // Chia danh sách thành các nhóm 12 item
-            List<List<Item>> groupedItems = CartControl.splitItemsIntoGroups(listItems, 12);
+        String keyword = request.getParameter("keyword");
+        System.out.println(keyword);
+        if (keyword != null && !keyword.trim().isEmpty()) {
+            // Tìm kiếm các sản phẩm phù hợp với từ khóa
+            CartControl cartcontrol = new CartControl();
+            List<Item> searchResults = CartControl.searchItemsByKeyword(cartcontrol.displayProductList(), keyword);
+            List<List<Item>> groupedItems = CartControl.splitItemsIntoGroups(searchResults, 12);
             // size
             int groupCount = groupedItems.size();
-            List<Item> itemsAtPageIndex = getItemsByIndex(listItems,0);
+            List<Item> itemsAtPageIndex = getItemsByIndex(searchResults,0);
              for (Item item : itemsAtPageIndex) {
                     System.out.println(item.toString()); // In thông tin của từng item
              }
-            System.out.print("so size cua ban la "+ groupedItems.size());
-            HttpSession session = request.getSession();
+             HttpSession session = request.getSession();
             
-            session.removeAttribute("listItems");
+             session.removeAttribute("listItems");
             session.removeAttribute("itemsAtPageIndex");
             session.removeAttribute("groupCount");
             session.removeAttribute("currentIndex");
-
-            // Thêm các thuộc tính mới vào session
-            session.setAttribute("listItems", listItems);
+            session.setAttribute("listItems", searchResults);
             session.setAttribute("itemsAtPageIndex", itemsAtPageIndex);
             session.setAttribute("groupCount", groupCount);
             session.setAttribute("currentIndex", 0);
     
-           
+            // Gửi kết quả tìm kiếm đến JSP hoặc trả về dưới dạng JSON
+          
+            // Chuyển tiếp (forward) đến trang JSP hiển thị kết quả tìm kiếm
             request.getRequestDispatcher("View/Home.jsp").forward(request, response);
-  
-        }catch(Exception e){
-            
-        }
+        } else {
+            request.getRequestDispatcher("View/Home.jsp").forward(request, response);
        
+        }
     } 
 
     /** 
@@ -127,5 +123,4 @@ public class productbycategoryServerl extends HttpServlet {
         // Trả về nhóm sản phẩm tại vị trí index
         return groupedItems.get(index);
     }
-    
 }
