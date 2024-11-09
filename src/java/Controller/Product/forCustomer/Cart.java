@@ -31,26 +31,11 @@ public class Cart {
         this.listItems = listItems;
     }
     
-//    private Item getItemById(int id){
-//        for (Item item : listItems) {
-//            if (item.getProduct().()==id) {
-//                return item;               
-//            }           
-//        }
-//        return null;
-//    }
-    
-//    public int getQuantityById(int id){           
-//        return getItemById(id).getQuantity();
-//        
-//    }
-//    
-    
-//    add item 
+
    public void addItem(Item item) {
     boolean itemExists = false; // Biến kiểm tra xem item đã tồn tại hay chưa
 
-    for (Item existingItem : listItems) {
+        for (Item existingItem : listItems) {
         // Nếu productID đã tồn tại trong giỏ hàng
         if (existingItem.getProductID() == item.getProductID()) {
             itemExists = true; // Đánh dấu item đã tồn tại
@@ -81,7 +66,40 @@ public class Cart {
         listItems.add(item);
     }
 }
-   
+    public void addItem2(Item item, int quantity) {
+    boolean itemExists = false; // Biến kiểm tra xem item đã tồn tại hay chưa
+
+        for (Item existingItem : listItems) {
+        // Nếu productID đã tồn tại trong giỏ hàng
+        if (existingItem.getProductID() == item.getProductID()) {
+            itemExists = true; // Đánh dấu item đã tồn tại
+
+            // Duyệt qua listPrice của existingItem
+            for (Map<String, Object> existingPriceInfo : existingItem.getListPrice()) {
+                String existingName = (String) existingPriceInfo.get("name");
+                float existingPrice = ((Number) existingPriceInfo.get("price")).floatValue();
+                
+                // Kiểm tra xem giá trong listPrice có trùng với item không
+                if (existingName.equals(item.getListPrice().get(0).get("name")) && existingPrice == ((Number) item.getListPrice().get(0).get("price")).floatValue()) {
+                    // Nếu trùng, tăng quantity lên 1
+                    existingItem.setQuantity(existingItem.getQuantity() + quantity);
+                    // Cập nhật giá tổng của existingItem
+                    existingItem.setPrice(existingItem.getPrice() + existingPrice);
+                    return; // Kết thúc hàm sau khi đã xử lý xong
+                }
+            }
+            item.setQuantity(quantity);
+            // Nếu không tìm thấy giá trong danh sách listPrice, thêm item mới vào giỏ hàng
+            listItems.add(item);
+            return; // Kết thúc hàm sau khi thêm
+        }
+    }
+
+    // Nếu item chưa tồn tại trong giỏ hàng, thêm mới
+    if (!itemExists) {
+        listItems.add(item);
+    }
+}
    public void consolidateCart() {
     List<Item> consolidatedItems = new ArrayList<>(); // Danh sách mới để lưu các mục đã gộp
 

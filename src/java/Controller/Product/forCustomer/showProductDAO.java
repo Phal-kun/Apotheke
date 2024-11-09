@@ -32,7 +32,7 @@ public class showProductDAO extends DBContext {
     public List<Product> list() throws Exception,   SQLException{
         List<Product> products = new ArrayList<>();
         String sql = "SELECT p.productID, p.productName, p.categoryID, p.originID, p.manufacturer, p.componentDescription, "
-                   + "p.description, p.baseUnitID, p.isActive, c.categoryName, o.originName "
+                   + "p.description, p.baseUnitID, p.isActive, c.categoryName, o.originName, p.product_image "
                    + "FROM product p "
                    + "LEFT JOIN category c ON p.categoryID = c.categoryID "
                    + "LEFT JOIN origin o ON p.originID = o.originID";
@@ -73,7 +73,7 @@ public class showProductDAO extends DBContext {
 //                product.setBaseUnitID(rs.getInt("baseUnitID"));
 //                product.setActive(rs.getBoolean("isActive")); // Giả sử bạn có phương thức này
 
-
+                product.setProduct_image(rs.getString("product_image"));
                 products.add(product);
             }
         } catch (Exception e) {
@@ -168,6 +168,7 @@ public class showProductDAO extends DBContext {
                     productUnit.setProductUnitID(rs.getInt("unitID"));
                     productUnit.setProductUnitName("");
                     productUnit.setUnitToBaseConvertRate(0);
+
                     productDetail.setUnit(productUnit);
                     
                     productDetail.setStock(0);
@@ -180,6 +181,139 @@ public class showProductDAO extends DBContext {
         return productDetail;
         
     }
+    
+    public Category getCategoryByCategoryID(int categoryID) throws Exception {
+    Category category = null;
+    String sql = "SELECT categoryID, categoryName, description, status, parentCategoryID " +
+                 "FROM dbo.category " +
+                 "WHERE categoryID = ?"; 
+    try {
+        // Thiết lập kết nối với cơ sở dữ liệu
+        con = new DBContext().getConnection();
+        ps = con.prepareStatement(sql);
+        
+        // Gán giá trị cho tham số trong câu truy vấn SQL
+        ps.setInt(1, categoryID);
+        
+        // Thực thi câu truy vấn
+        rs = ps.executeQuery();
+        
+        // Nếu có dữ liệu trả về, khởi tạo và gán giá trị cho đối tượng Category
+        if (rs.next()) {
+            category = new Category();
+            category.setCategoryID(rs.getInt("categoryID"));
+            category.setCategoryName(rs.getString("categoryName"));
+            category.setDescription(rs.getString("description"));
+            category.setStatus(rs.getBoolean("status"));
+            
+            // Xử lý parentCategoryID nếu có
+            int parentCategoryID = rs.getInt("parentCategoryID");
+            if (parentCategoryID != 0) {
+                Category parentCategory = getCategoryByCategoryID(parentCategoryID);
+                category.setParentCategory(parentCategory);
+            } else {
+                category.setParentCategory(null);
+            }
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+        throw new Exception("Error retrieving category by category ID", e);
+    } finally {
+        // Đảm bảo đóng tài nguyên sau khi hoàn thành
+        if (rs != null) rs.close();
+        if (ps != null) ps.close();
+        if (con != null) con.close();
+    }
+    return category;
+}
+    public Origin getOriginByProductID(int productID) throws Exception {
+        Origin origin = null;
+        String sql = "SELECT o.originID, o.originName " +
+                     "FROM dbo.product p " +
+                     "INNER JOIN dbo.origin o ON p.originID = o.originID " +
+                     "WHERE p.productID = ?";
 
+        try {
+            // Thiết lập kết nối với cơ sở dữ liệu
+            con = new DBContext().getConnection(); // Đảm bảo DBContext cung cấp kết nối đúng
+            ps = con.prepareStatement(sql);
 
+            // Gán giá trị cho tham số trong câu truy vấn SQL
+            ps.setInt(1, productID);
+
+            // Thực thi câu truy vấn
+            rs = ps.executeQuery();
+
+            // Nếu có dữ liệu trả về, khởi tạo và gán giá trị cho đối tượng Origin
+            if (rs.next()) {
+                origin = new Origin();
+                origin.setOriginID(rs.getInt("originID"));
+                origin.setOriginName(rs.getString("originName"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new Exception("Error retrieving origin by product ID", e);
+        } finally {
+            // Đảm bảo đóng tài nguyên sau khi hoàn thành
+            if (rs != null) rs.close();
+            if (ps != null) ps.close();
+            if (con != null) con.close();
+        }
+        return origin;
+    }
+    
+     public Product getProductByID(int productID) throws SQLException, Exception {
+        Product product = null;
+        String sql = "SELECT p.productID, p.categoryID, c.categoryName, c.description AS categoryDescription, " +
+                     "p.originID, o.originName, p.manufacturer, p.componentDescription, p.isActive, p.product_image " +
+                     "FROM product p " +
+                     "JOIN category c ON p.categoryID = c.categoryID " +
+                     "JOIN origin o ON p.originID = o.originID " +
+                     "JOIN productUnit u ON p.baseUnitID = u.unitID " +
+                     "WHERE p.productID = ?";
+        
+        try {
+            // Thiết lập kết nối với cơ sở dữ liệu
+            con = new DBContext().getConnection();
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, productID);
+
+            // Thực thi câu truy vấn
+            rs = ps.executeQuery();
+
+            // Nếu có kết quả
+            if (rs.next()) {
+                product = new Product();
+                product.setProductID(rs.getInt("productID"));
+                
+                // Lấy thông tin Category
+                Category category = new Category();
+                category.setCategoryID(rs.getInt("categoryID"));
+                category.setCategoryName(rs.getString("categoryName"));
+                category.setDescription(rs.getString("categoryDescription"));
+                product.setCategory(category);
+                
+                // Lấy thông tin Origin
+                Origin origin = new Origin();
+                origin.setOriginID(rs.getInt("originID"));
+                origin.setOriginName(rs.getString("originName"));
+                product.setOrigin(origin);
+
+                // Các trường khác
+                product.setManufacturer(rs.getString("manufacturer"));
+                product.setComponentDescription(rs.getString("componentDescription"));
+                product.setIsActive(rs.getBoolean("isActive"));
+                product.setProduct_image(rs.getString("product_image"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new SQLException("Error retrieving product by ID", e);
+        } finally {
+            // Đảm bảo đóng tài nguyên sau khi hoàn thành
+            if (rs != null) rs.close();
+            if (ps != null) ps.close();
+            if (con != null) con.close();
+        }
+        return product;
+    }
 }

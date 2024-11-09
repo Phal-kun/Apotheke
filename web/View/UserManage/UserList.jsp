@@ -10,7 +10,9 @@
 
     </head>
     <body>
-        <h1>User Management
+
+        <h1>User Management</h1>  
+
         <div>
             <a href="${pageContext.request.contextPath}/logout" class ="dsdawe">
             <button>Logout</button>

@@ -38,6 +38,7 @@ public class ShowProductHomeServlet extends HttpServlet {
             }
         System.out.print("so size cua ban la "+ groupedItems.size());
         HttpSession session = request.getSession();
+        session.setAttribute("listItems", listItems);
         session.setAttribute("itemsAtPageIndex", itemsAtPageIndex);
         session.setAttribute("groupCount", groupedItems.size());
         session.setAttribute("currentIndex", 0);

@@ -78,8 +78,8 @@ public class loginGoogleServlet extends HttpServlet {
                       
                                break; 
                             case 2:
-                                response.sendRedirect(request.getContextPath() + "/ListProduct");
-                                break;
+                               request.getRequestDispatcher("View/Login_Register/warehouseHome.jsp").forward(request, response);
+                        break;
                             case 3:
                                 response.sendRedirect("View/Login_Register/saleHome.jsp");
                                 break;
