@@ -811,7 +811,7 @@ public class WarehouseOrderDAO {
     }
         
     public static void main(String[] args) {
-        INSTANCE.loadDB();
+//        INSTANCE.loadDB();
 //        ArrayList list = INSTANCE.getOrder(1, false, "orderDate", "", 0);
 //        for (Object object : list) {
 //            System.out.println(object);
@@ -821,7 +821,8 @@ public class WarehouseOrderDAO {
 //        OrderDetail ob = INSTANCE.findOrderDetailBaseOnId(1);
 
         ArrayList ob = INSTANCE.findProductDetailBaseOnUnit(4);
-        System.out.println(ob);
+        INSTANCE.chooseStock(7, 6);
+        System.out.println("A");
     }
 
 }
