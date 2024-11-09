@@ -5,7 +5,6 @@
 package Model.Product;
 
 import java.util.ArrayList;
-import java.sql.Date;
 import java.util.Objects;
 
 /**
@@ -27,8 +26,25 @@ public class Product {
     String product_image;
     public Product() {
     }
-    
 
+    public String getProduct_image() {
+        return product_image;
+    }
+
+    public void setProduct_image(String product_image) {
+        this.product_image = product_image;
+    }
+
+    public Product(int productID, Category category, Origin origin, String manufacturer, boolean isActive, String product_image) {
+        this.productID = productID;
+        this.category = category;
+        this.origin = origin;
+        this.manufacturer = manufacturer;
+        this.isActive = isActive;
+        this.product_image = product_image;
+    }
+    
+    
     public Product(int productID, String productName, Category category, Origin origin, String manufacturer,  String description, ArrayList<Component> component, boolean isActive, String product_image) {
 
         this.productID = productID;

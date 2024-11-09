@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.sql.Date;
 
 import java.util.List;
+import java.sql.Types; 
 
 
 /**
@@ -78,7 +79,7 @@ public class OrderDao extends DBContext {
      return -1;
 }
 
-      public void insertOrderDetail(int orderID, int productID, int productDetailID, int unitID, BigDecimal soldPrice, int quantity) throws Exception {
+    public void insertOrderDetail(int orderID, int productID, int productDetailID, int unitID, BigDecimal soldPrice, int quantity) throws Exception {
         String sql = "INSERT INTO [dbo].[orderDetail] " +
                      "([orderID], [productID], [productDetailID], [unitID], [soldPrice], [quantity]) " +
                      "VALUES (?, ?, ?, ?, ?, ?)";
@@ -90,7 +91,7 @@ public class OrderDao extends DBContext {
             ps = con.prepareStatement(sql);
             ps.setInt(1, orderID);
             ps.setInt(2, productID);
-            ps.setInt(3, productDetailID);
+            ps.setNull(3, Types.INTEGER); 
             ps.setInt(4, unitID);
             ps.setBigDecimal(5, soldPrice);
             ps.setInt(6, quantity);

@@ -27,7 +27,7 @@
 
         <div class="container">
           <header class="header">
-              <a href="${pageContext.request.contextPath}/View/Home.jsp">
+              <a href="${pageContext.request.contextPath}/ShowProductHomeServlet">
             <div class="title">APOTHEKE Shop</div>
             </a>
              <div class="header-actions">
@@ -99,10 +99,31 @@
           <div>
             <nav class="navbar1">
               <ul class="nav-items1">
-                  <li><a href="#">Pharmaceutical Cosmetics</a></li>
-                  <li><a href="#">Functional food</a></li>
-                  <li><a href="#">Medicine</a></li>
-                  <li><a href="#">Pharmaceutical support</a></li>
+                  <li>
+                        <form action="${pageContext.request.contextPath}/productbycategoryServerl" method="get">
+                            <input type="hidden" name="categoryID" value="1">
+                            <button type="submit" class="btn btn-link">Pharmaceutical Cosmetics</button>
+                        </form>
+                  </li>
+                  <li>
+                    <form action="${pageContext.request.contextPath}/productbycategoryServerl" method="get">
+                        <input type="hidden" name="categoryID" value="2">
+                        <button type="submit" class="btn btn-link">Functional food</button>
+                    </form>
+                </li>
+                   <li>
+                    <form action="${pageContext.request.contextPath}/productbycategoryServerl" method="get">
+                        <input type="hidden" name="categoryID" value="11">
+                        <button type="submit" class="btn btn-link">Medicine</button>
+                    </form>
+                </li>
+                <li>
+                    <form action="${pageContext.request.contextPath}/productbycategoryServerl" method="get">
+                        <input type="hidden" name="categoryID" value="12">
+                        <button type="submit" class="btn btn-link">Pharmaceutical support</button>
+                    </form>
+                </li>
+                
 
               </ul>
           </nav>

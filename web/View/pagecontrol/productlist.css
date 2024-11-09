@@ -131,3 +131,6 @@ button#options-bt:hover {
     margin-top: 50px ; /* Khoảng cách trên và dưới tiêu đề */
     margin-bottom: -40px;
 }
+input[type="image"] {
+    width:110px;
+}

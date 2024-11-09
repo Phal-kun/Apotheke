@@ -25,21 +25,32 @@ public class Item {
     private String nameShow;
     private int quantity; 
     private float price;
-    
+    private String imagine;
     public Item() {
-        this.listPrice = new ArrayList<>(); // Khởi tạo listPrice để tránh NullPointerException
+        this.listPrice = new ArrayList<>(); 
     }
-    public Item(int productID, String productName, String description, List<Map<String, Object>> listPrice,
-                 String nameShow, int quantity, float price) {
-         this.productID = productID;
-         this.productName = productName;
-         this.description = description;
-         this.listPrice = listPrice;
-         this.nameShow = nameShow;
-         this.quantity = quantity;
-         this.price = price;
-     }
-public int getProductID() {
+
+    public Item(int productID, String productName, String description, List<Map<String, Object>> listPrice, String nameShow, int quantity, float price, String imagine) {
+        this.productID = productID;
+        this.productName = productName;
+        this.description = description;
+        this.listPrice = listPrice;
+        this.nameShow = nameShow;
+        this.quantity = quantity;
+        this.price = price;
+        this.imagine = imagine;
+    }
+
+    public String getImagine() {
+        return imagine;
+    }
+
+    public void setImagine(String imagine) {
+        this.imagine = imagine;
+    }
+    
+    
+    public int getProductID() {
         return productID;
     }
 

@@ -44,8 +44,12 @@
             <c:forEach var="item" items="${itemsAtPageIndex}">
                 <div class="product-card">
                     <!-- Hình ảnh sản phẩm   <img src="$item.image}" alt="$item.name}">-->
-                    <img src="tovalgan-ef.jpg" alt="Tovalgan Ef">
-
+                    <form action="${pageContext.request.contextPath}/productdetail" method="get">
+                <input type="hidden" name="productID" value="${item.productID}">
+                        
+                <input type="image" src="IMAGINE/productima/${item.imagine}" alt="Tovalgan Ef" />
+                
+                    </form> 
                     <!-- Tên và mô tả sản phẩm -->
                     <h2>${item.productName} - ${item.description}</h2>
                         

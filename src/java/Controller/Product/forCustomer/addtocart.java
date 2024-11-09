@@ -104,7 +104,20 @@ public class addtocart extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+        String productID = request.getParameter("productID");
+        String selectedPrice = request.getParameter("selectedPrice");
+        String selectedOption = request.getParameter("selectedOption");
+        String quantity = request.getParameter("quantity");
+
+        // Chuyển đổi các giá trị thành kiểu dữ liệu cần thiết (nếu cần)
+//        int prodID = Integer.parseInt(productID);
+//        double price = Double.parseDouble(selectedPrice);
+//        int qty = Integer.parseInt(quantity);
+        System.out.println("Product ID: " + productID);
+        System.out.println("Selected Price: " + selectedPrice);
+        System.out.println("Selected Option: " + selectedOption);
+        System.out.println("Quantity: " + quantity);
+
     }
 
     /** 
