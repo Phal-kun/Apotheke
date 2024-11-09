@@ -9,8 +9,8 @@ package Controller.Login;
  * @author Dell
  */
 public class Constants {
-    public static final String GOOGLE_CLIENT_ID ="449291266604-3l1csn63b5aagsdmj5mccu2r7bdeuc9t.apps.googleusercontent.com";
-    public static final String GOOGLE_CLIENT_SECRET="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";
+    public static final String GOOGLE_CLIENT_ID ="281219533244-p3s850ncnfsj1lhkh49vc21nvjmo2tjh.apps.googleusercontent.com";
+    public static final String GOOGLE_CLIENT_SECRET="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";
     public static final String GOOGLE_REDIRECT_URL="http://localhost:9998/Apotheke/loginGoogle";
     public static final String GOOGLE_GRANT_TYPE="authorization_code";
     public static final String GOOGLE_LINK_GET_TOKEN="https://accounts.google.com/o/oauth2/token";

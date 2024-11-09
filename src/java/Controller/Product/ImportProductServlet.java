@@ -29,31 +29,35 @@ public class ImportProductServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
+            // Parse form data
             int unitID = Integer.parseInt(request.getParameter("unitID"));
             double importPrice = Double.parseDouble(request.getParameter("importPrice"));
-            double salePrice = Double.parseDouble(request.getParameter("salePrice")); // Get sale price
+            double salePrice = Double.parseDouble(request.getParameter("salePrice"));
             int quantity = Integer.parseInt(request.getParameter("quantity"));
             int batchNo = Integer.parseInt(request.getParameter("batchNo"));
-            // Use SimpleDateFormat for flexible date parsing
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // Match your input format
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
             Date manufacturerDate = sdf.parse(request.getParameter("manufacturerDate"));
             Date expiredDate = sdf.parse(request.getParameter("expiredDate"));
 
-            // Convert java.util.Date to java.sql.Date if necessary
+            // Convert dates to java.sql.Date
             java.sql.Date sqlManufacturerDate = new java.sql.Date(manufacturerDate.getTime());
             java.sql.Date sqlExpiredDate = new java.sql.Date(expiredDate.getTime());
 
-            // Call the DAO method to handle product import
+            // Call DAO method to import product
             ProductDAO.INSTANCE.importProduct(unitID, importPrice, quantity, batchNo, sqlManufacturerDate, sqlExpiredDate, salePrice);
 
-            // Redirect or forward to success page
-            doGet(request, response);
+            // Redirect to the GET request after success
+            response.sendRedirect("ImportProduct");  // Redirect to refresh the page and load product list
 
         } catch (ParseException | NumberFormatException e) {
             e.printStackTrace();
-            System.out.println(e);
+            request.setAttribute("errorMsg", "Invalid input format. Please check your entries and try again.");
+            request.getRequestDispatcher("View/ProductManage/ImportProduct.jsp").forward(request, response); // Forward to JSP with error message
         } catch (SQLException ex) {
             Logger.getLogger(ImportProductServlet.class.getName()).log(Level.SEVERE, null, ex);
+            request.setAttribute("errorMsg", "Database error occurred. Please try again later.");
+            request.getRequestDispatcher("View/ProductManage/ImportProduct.jsp").forward(request, response); // Forward to JSP with error message
         }
     }
 
