@@ -27,6 +27,12 @@ public class ShowProductHomeServlet extends HttpServlet {
      
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
+         processRequest(request, response);
+    } 
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, IOException {
         List<Item> listItems = CartControl.displayProductList();
         // Chia danh sách thành các nhóm 12 item
         List<List<Item>> groupedItems = CartControl.splitItemsIntoGroups(listItems, 12);
@@ -44,13 +50,19 @@ public class ShowProductHomeServlet extends HttpServlet {
         session.setAttribute("currentIndex", 0);
         request.getRequestDispatcher("View/Home.jsp").forward(request, response);
     } 
-
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        processRequest(request, response);
       
-    }   
+    private List<Item> getItemsByIndex(int index) {
+        List<Item> listItems = CartControl.displayProductList();
+
+        // Chia danh sách thành các nhóm 12 item
+        List<List<Item>> groupedItems = CartControl.splitItemsIntoGroups(listItems, 12);
+        // size
+        int groupCount = groupedItems.size();
+        List<Item> itemsAtIndex1 = groupedItems.get(index); 
+        return itemsAtIndex1;
+    }
+    
+    
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
@@ -76,15 +88,6 @@ public class ShowProductHomeServlet extends HttpServlet {
     }
     
     
-    private List<Item> getItemsByIndex(int index) {
-        List<Item> listItems = CartControl.displayProductList();
-
-        // Chia danh sách thành các nhóm 12 item
-        List<List<Item>> groupedItems = CartControl.splitItemsIntoGroups(listItems, 12);
-        // size
-        int groupCount = groupedItems.size();
-        List<Item> itemsAtIndex1 = groupedItems.get(index); 
-        return itemsAtIndex1;
-    }
+    
     
 }
