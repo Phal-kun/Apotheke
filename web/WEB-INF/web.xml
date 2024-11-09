@@ -28,6 +28,10 @@
         <servlet-name>productbycategoryServerl</servlet-name>
         <servlet-class>Controller.Product.forCustomer.productbycategoryServerl</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>searchproductbykeywords</servlet-name>
+        <servlet-class>Controller.Product.forCustomer.searchproductbykeywords</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>addtocartServerlet</servlet-name>
         <url-pattern>/addtocart</url-pattern>
@@ -67,6 +71,10 @@
     <servlet-mapping>
         <servlet-name>productbycategoryServerl</servlet-name>
         <url-pattern>/productbycategoryServerl</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>searchproductbykeywords</servlet-name>
+        <url-pattern>/searchproductbykeywords</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>ShowProductHomeServlet</welcome-file>

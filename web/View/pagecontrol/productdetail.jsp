@@ -29,6 +29,12 @@
         // Thêm lớp 'active' vào nút vừa được nhấn
         button.classList.add('active');
     }
+        if (window.location.search.includes('reload=true')) {
+        // Xóa tham số reload=true khỏi URL và tải lại trang
+        window.history.replaceState(null, '', window.location.pathname);
+        // Thực hiện tải lại trang
+        window.location.reload();
+    }
 </script>
     </head>
     <body>
@@ -77,7 +83,7 @@
             <div class="custom-purchase-options">
                 <label for="custom-quantity">Select quantity</label>
                 <form action="${pageContext.request.contextPath}/addtocart" method="post">
-                    <input type="number" id="custom-quantity" value="1" min="1" max="999">
+                    <input type="number" name ="quantity"id="custom-quantity" value="1" min="1" max="999">
                     <input type="hidden" name="productID" value="${item.productID}">
                     <input type="hidden" id="selectedPrice" name="selectedPrice" value="">
                     <input type="hidden" id="selectedOption" name="selectedOption" value="">
@@ -120,8 +126,8 @@
             const productID = ${item.productID}; // Giả sử item.productID được sử dụng trong JSP
             updateSelectedValues(productID);
             // Có thể thêm các xử lý khác khi click vào nút Buy
-            const quantityValue = document.getElementById("custom-quantity").value;
-            console.log("Selected Quantity: " + quantityValue);
+//            const quantityValue = document.getElementById("custom-quantity").value;
+//            console.log("Selected Quantity: " + quantityValue);
 
             const form = buyButton.closest('form'); // Lấy form chứa nút Buy
             form.submit(); // Gửi form đến servlet

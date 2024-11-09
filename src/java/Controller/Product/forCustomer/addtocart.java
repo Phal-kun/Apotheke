@@ -5,6 +5,8 @@
 
 package Controller.Product.forCustomer;
 
+import Controller.User.Profile.productdetail;
+import Model.Product.Product;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,6 +15,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -108,16 +112,55 @@ public class addtocart extends HttpServlet {
         String selectedPrice = request.getParameter("selectedPrice");
         String selectedOption = request.getParameter("selectedOption");
         String quantity = request.getParameter("quantity");
+         String cleanPriceStr = selectedPrice.replaceAll("[.,đ]", "");
+        
+        // Chuyển đổi chuỗi còn lại thành kiểu int
+        Double price = Double.parseDouble(cleanPriceStr);
+        int prodID = Integer.parseInt(productID);
+        int qty = Integer.parseInt(quantity);
+        Double totalprice = price* qty;
+        float priceeds = totalprice.floatValue();  
+        HttpSession session = request.getSession();
+        Cart cart = (Cart) session.getAttribute("cart");
+        
+        if (cart == null) {
+            cart = new Cart(); 
+        }
+        List<Item> listItems = (List<Item>) session.getAttribute("listItems");
+        Item selectedItem = null;
+        for (Item item : listItems) {
+                if (String.valueOf(item.getProductID()).equals(productID)) {
+                selectedItem = item;
+                break; // Dừng vòng lặp nếu đã tìm thấy item
+            }
+        }
 
-        // Chuyển đổi các giá trị thành kiểu dữ liệu cần thiết (nếu cần)
-//        int prodID = Integer.parseInt(productID);
-//        double price = Double.parseDouble(selectedPrice);
-//        int qty = Integer.parseInt(quantity);
-        System.out.println("Product ID: " + productID);
-        System.out.println("Selected Price: " + selectedPrice);
-        System.out.println("Selected Option: " + selectedOption);
-        System.out.println("Quantity: " + quantity);
+        Item item = new Item();
+        item.setProductID(prodID);
+        item.setProductName(selectedItem.getProductName());
+        item.setDescription(selectedItem.getDescription());
+        item.setQuantity(qty);
+        item.setPrice(priceeds);
+        item.addPrice(selectedOption,price);
+        cart.addItem2(item, qty);
+        cart.coutn();
+        showProductDAO usdao = new showProductDAO();
+        
+        try {
+            Product newproduct = usdao.getProductByID(selectedItem.getProductID());
+            request.setAttribute("product", newproduct);
+            request.setAttribute("items", selectedItem);
+            request.getRequestDispatcher("View/pagecontrol/productdetail.jsp").forward(request, response);
+            session.setAttribute("number", cart.coutn());
+            session.setAttribute("cart", cart);
+           // request.getRequestDispatcher("View/pagecontrol/productdetail.jsp").forward(request, response);
+    response.sendRedirect("View/pagecontrol/productdetail.jsp?reload=true");
 
+        } catch (Exception ex) {
+            Logger.getLogger(productdetail.class.getName()).log(Level.SEVERE, null, ex);
+        }
+      
+         
     }
 
     /** 

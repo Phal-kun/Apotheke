@@ -10,6 +10,7 @@ import Model.Product.ProductUnit;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -167,5 +168,36 @@ public class CartControl {
 
     return listItems; // Trả về danh sách Item
 }
+    
+     public static List<Item> searchItemsByKeyword(List<Item> items, String keyword) {
+        List<Item> result = new ArrayList<>();
+        keyword = keyword.toLowerCase(); // Chuyển từ khóa về chữ thường để tìm kiếm không phân biệt hoa thường
 
+        for (Item item : items) {
+            // Kiểm tra trong tên sản phẩm
+            if (item.getProductName().toLowerCase().contains(keyword)) {
+                result.add(item);
+                continue;
+            }
+
+            // Kiểm tra trong mô tả sản phẩm
+            if (item.getDescription().toLowerCase().contains(keyword)) {
+                result.add(item);
+                continue;
+            }
+
+            // Kiểm tra trong danh sách giá
+           for (Map<String, Object> priceEntry : item.getListPrice()) {
+                String name = (String) priceEntry.get("name");
+                if (name != null && name.toLowerCase().contains(keyword)) {
+                    result.add(item);
+                    break; // Dừng kiểm tra các giá khác nếu tìm thấy từ khóa
+                }
+            }
+                    }
+
+        return result;
+    }
+
+        
 }
