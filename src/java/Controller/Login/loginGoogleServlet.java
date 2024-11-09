@@ -64,8 +64,8 @@ public class loginGoogleServlet extends HttpServlet {
                    // Mật khẩu đúng, thiết lập session
                     HttpSession session = request.getSession();
                     session.setAttribute("account", user);
-                    request.getRequestDispatcher("/View/Login_Register/customerHome.jsp").forward(request,response);
-                }else{  
+                     request.getRequestDispatcher("View/Home.jsp").forward(request, response);
+                         }else{  
                     HttpSession session = request.getSession();
                     User checkuser = usdao.getUserByEmail(email);
                     System.out.println("dhsa"+email);
